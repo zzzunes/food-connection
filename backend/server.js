@@ -10,7 +10,6 @@ const app = express();
 const port = process.env.port || 5000;
 
 /* Middleware: Allows us to parse JSON through server */
-app.use(cors());
 app.use(express.json());
 
 /* Find the URI containing token information for accessing our database */
