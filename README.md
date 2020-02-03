@@ -1,13 +1,14 @@
 # Food Connection
 
-Before running the application, first install `nodejs`.
+Before running the application, first install `nodejs` and `npm`:
+```
+# apt install nodejs npm
+```
 
 Setup guide:
 ```
 $ git clone https://github.com/jragoon/food-connection
 $ cd food-connection
-$ npm install
-$ cd backend
 $ npm install
 ```
 Following the instructions above will clone the repository and install the necessary dependencies. If dependencies change in the project, you will need to
