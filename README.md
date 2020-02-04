@@ -33,6 +33,10 @@ In order for your contribution to be accepted, please respect the following guid
 
 # Testing the application using Expo
 
+Before you can run expo for the first time, you must first install it using npm:
+```
+# npm install -g expo expo-cli
+```
 To run the application and test it on your phone, first install the Expo app from the Google Play Store / iOS store.
 Then, run `npm start` while in the `food-connection` directory. This will bring up and host an expo server locally. At this point, it will provide a QR
 code you can scan and run a test version of your app on your phone.
@@ -42,8 +46,7 @@ code you can scan and run a test version of your app on your phone.
 
 We currently have a free-tier cluster through [MongoDB atlas](https://www.mongodb.com/cloud/atlas).
 This means that we have 512MB of storage space, 500 available connections, and shared CPU time. It is hosted in the Eastern US, and can be trivially upgraded in the future. Behind the scenes it is being hosted with Azure.
-In order to connect to this account, you must enter the password in the connection string (the ATLAS_URI variable in `backend/.env`)
-
+In order to connect to this account, <b>you must enter the password in the connection string</b> (the ATLAS_URI variable in `backend/.env`). Additionally, all calls in the app that reference api endpoints must reference your localhost. If you get a network request failed exception, <b> make sure that all of your calls are valid addresses on the same network as your mobile device. </b>
 
 # Using the DB
 
