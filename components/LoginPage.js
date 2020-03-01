@@ -15,7 +15,7 @@ export default class LoginPage extends Component {
         };
     }
 
-    onLogin() {
+    onLogin = () => {
         this.setState({isLoading: true});
         fetch('http://192.168.1.116:5000/users/login', {
             method: 'POST',
@@ -30,7 +30,7 @@ export default class LoginPage extends Component {
             console.log(json);
             if (json.success) {
                 this.setState({
-                    signUpError: json.message,
+                    signInError: json.message,
                     isLoading: false,
                     email: '',
                     password: '',
@@ -39,7 +39,7 @@ export default class LoginPage extends Component {
             }
             else {
                 this.setState({
-                    signUpError: json.message,
+                    signInError: json.message,
                     isLoading: false,
                 });
             }
@@ -49,6 +49,9 @@ export default class LoginPage extends Component {
     }
 
     render() {
+        if (this.state.isLoading) {
+            return (<Text>Loading...</Text>);
+        }
         return (
             <View style={styles.viewStyle}>
                 <TextInput
@@ -63,6 +66,7 @@ export default class LoginPage extends Component {
                     value={this.state.password}
                     onChangeText={text => { this.setState({password: text}) }}
                 />
+                 <Button onPress={this.onLogin} title="Login"/>
             </View>
         );
     }

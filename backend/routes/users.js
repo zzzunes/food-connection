@@ -8,12 +8,25 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-    //const username = req.body.username;
     const user = req.body;
     const newUser = new User(user);
     newUser.save()
         .then(() => res.json('User added!'))
         .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/login').post((req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    User.findOne({ username }).then(user => {
+        if (!user) return res.status(400).json("Error: User not found.");
+        if (password === user.password) {
+            res.json("User valid!");
+        }
+        else {
+            res.json("Password invalid");
+        }
+    }).catch(err => res.status(400).json("User invalid."));
 });
 
 module.exports = router;
