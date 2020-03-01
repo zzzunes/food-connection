@@ -51,7 +51,11 @@ export default class SignupPage extends Component {
 
     render() {
         if (this.state.isLoading) {
-            return (<Text>Loading...</Text>);
+            return (
+                <View style={styles.viewStyle}>
+                    <Text>Loading...</Text>
+                </View>
+            );
         }
         return (
             <View style={styles.viewStyle}>

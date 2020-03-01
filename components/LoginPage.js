@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
+import NavigationActions, { CommonActions } from '@react-navigation/native'
 
 export default class LoginPage extends Component {
     constructor(props) {
@@ -28,12 +29,10 @@ export default class LoginPage extends Component {
             }),
         }).then(res => res.json()).then(json => {
             console.log(json);
-            if (json.success) {
+            if (json.status != 400) {
                 this.setState({
                     signInError: json.message,
                     isLoading: false,
-                    email: '',
-                    password: '',
                     loginSuccess: true,
                 });
             }
@@ -41,6 +40,7 @@ export default class LoginPage extends Component {
                 this.setState({
                     signInError: json.message,
                     isLoading: false,
+                    loginSuccess: true,
                 });
             }
         }).catch(err => {
@@ -50,7 +50,23 @@ export default class LoginPage extends Component {
 
     render() {
         if (this.state.isLoading) {
-            return (<Text>Loading...</Text>);
+            return (
+                <View style={styles.viewStyle}>
+                    <Text>Loading...</Text>
+                </View>
+            );
+        }
+        if (this.state.loginSuccess) {
+            this.props.navigation.dispatch(CommonActions.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: 'Drawer',
+                        // params: { user: userObject of some kind. },
+                        // In the future, use React-Redux to set the User object
+                    },
+                ],
+            }))
         }
         return (
             <View style={styles.viewStyle}>
@@ -63,8 +79,8 @@ export default class LoginPage extends Component {
                 <TextInput
                     style={{ color: "black", fontSize: 20 }}
                     placeholder="Password"
-                    value={this.state.password}
                     onChangeText={text => { this.setState({password: text}) }}
+                    value={this.state.password}
                 />
                  <Button onPress={this.onLogin} title="Login"/>
             </View>
@@ -83,5 +99,6 @@ const styles = StyleSheet.create({
     textStyle: {
         color: "white",
         padding: 10,
+        justifyContent: 'center',
     },
 });
