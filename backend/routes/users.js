@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/user.model');
+const bcrypt = require('bcryptjs');
 
 router.route('/').get((req, res) => {
     User.find()
@@ -10,9 +11,15 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     const user = req.body;
     const newUser = new User(user);
-    newUser.save()
-        .then(() => res.json('User added!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser.save()
+                .then(() => res.json('User added!'))
+                .catch(err => res.status(400).json('Error: ' + err));
+        })
+    })
 });
 
 router.route('/login').post((req, res) => {
@@ -20,12 +27,14 @@ router.route('/login').post((req, res) => {
     const password = req.body.password;
     User.findOne({ username }).then(user => {
         if (!user) return res.status(400).json("Error: User not found.");
-        if (password === user.password) {
-            res.json("User valid!");
-        }
-        else {
-            res.json("Password invalid");
-        }
+        bcrypt.compare(password, user.password).then(isMatch => {
+            if (isMatch) {
+                res.json("User valid!");
+            }
+            else {
+                res.status(400).json("Password invalid.");
+            }
+        })
     }).catch(err => res.status(400).json("User invalid."));
 });
 
