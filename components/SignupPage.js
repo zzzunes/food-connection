@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
+import { CommonActions } from '@react-navigation/native';
 
 export default class SignupPage extends Component {
     constructor() {
         super();
         this.state = {
             signUpError: '',
-            signInError: '',
             username: '',
             email: '',
             password: '',
             isLoading: false,
+            signUpSuccess: false,
         };
     }
 
@@ -30,12 +31,11 @@ export default class SignupPage extends Component {
             }),
         }).then(res => res.json()).then(json => {
             console.log(json);
-            if (json.success) {
+            if (json.status != 400) {
                 this.setState({
                     signUpError: json.message,
                     isLoading: false,
-                    email: '',
-                    password: '',
+                    signUpSuccess: true,
                 });
             }
             else {
@@ -56,6 +56,18 @@ export default class SignupPage extends Component {
                     <Text>Loading...</Text>
                 </View>
             );
+        }
+        if (this.state.signUpSuccess) {
+            this.props.navigation.dispatch(CommonActions.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: 'Drawer',
+                        // params: { user: userObject of some kind. },
+                        // In the future, use React-Redux to set the User object
+                    },
+                ],
+            }))
         }
         return (
             <View style={styles.viewStyle}>

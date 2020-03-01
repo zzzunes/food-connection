@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
-import NavigationActions, { CommonActions } from '@react-navigation/native'
+import { CommonActions } from '@react-navigation/native';
 
 export default class LoginPage extends Component {
     constructor(props) {

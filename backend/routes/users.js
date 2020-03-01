@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 
 router.route('/').get((req, res) => {
     User.find()
@@ -11,7 +12,7 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     const user = req.body;
     const newUser = new User(user);
-    bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.genSalt(saltRounds, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
             newUser.password = hash;
