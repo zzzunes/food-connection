@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
+import { connect } from 'react-redux';
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -50,6 +51,7 @@ export default class LoginPage extends Component {
     }
 
     render() {
+        console.log(this.props.user.activityLevel);
         if (this.state.isLoading) {
             return (
                 <View style={styles.viewStyle}>
@@ -63,8 +65,6 @@ export default class LoginPage extends Component {
                 routes: [
                     {
                         name: 'Drawer',
-                        // params: { user: userObject of some kind. },
-                        // In the future, use React-Redux to set the User object
                     },
                 ],
             }))
@@ -103,3 +103,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
+
+const mapStateToProps = (state) => {
+    const { user } = state;
+    return { user };
+};
+
+export default connect(mapStateToProps)(LoginPage);

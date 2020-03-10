@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
+import { connect } from 'react-redux';
 
-export default class SignupPage extends Component {
+class SignupPage extends Component {
     constructor() {
         super();
         this.state = {
@@ -64,8 +65,6 @@ export default class SignupPage extends Component {
                 routes: [
                     {
                         name: 'Drawer',
-                        // params: { user: userObject of some kind. },
-                        // In the future, use React-Redux to set the User object
                     },
                 ],
             }))
@@ -109,3 +108,10 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 });
+
+const mapStateToProps = (state) => {
+    const { user } = state
+    return { user }
+};
+
+export default connect(mapStateToProps)(SignupPage);
