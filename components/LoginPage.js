@@ -71,19 +71,24 @@ class LoginPage extends Component {
         }
         return (
             <View style={styles.viewStyle}>
+                <Text style = {styles.textStyleTitle}>
+                    Login
+                </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Username"
                     value={this.state.username}
                     onChangeText={text => { this.setState({username: text}) }}
                 />
+                <Text style = {styles.textStyle}> </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Password"
                     onChangeText={text => { this.setState({password: text}) }}
                     value={this.state.password}
                 />
-                 <Button onPress={this.onLogin} title="Login"/>
+                <Text style = {styles.textStyle}> </Text>
+                <Button onPress={this.onLogin} title="Login"/>
             </View>
         );
     }
@@ -92,14 +97,20 @@ class LoginPage extends Component {
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#664466',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
-        alignItems: 'center',
+        padding: 20,
+    },
+    textStyleTitle: {
+        color: "white",
+        textAlign: 'center',
+        fontSize: 30,
+        marginBottom: 30,
     },
     textStyle: {
         color: "white",
-        padding: 10,
+        marginBottom: 0,
         justifyContent: 'center',
     },
 });
