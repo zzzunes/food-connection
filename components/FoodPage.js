@@ -5,14 +5,14 @@ import Constants from 'expo-constants';
 export default function FoodPage({ route, navigation }) {
     const food = route.params.params.food;
     console.log(JSON.stringify(food));
-    var address = `https://maps.google.com/?q=` + `413 Classic Drive`;
+    var address = `https://maps.google.com/?q=` + `University of Tennessee at Chattanooga`;
     return (
         <View style={styles.viewStyle}>
-            <Text>
+            <Text style={styles.textStyle}>
                 Food name: {food.name}{"\n"}
                 Food score: {food.score}{"\n"}
             </Text>
-            <Text onPress = {() => Linking.openURL(address)}>
+            <Text style={styles.textStyle} onPress = {() => Linking.openURL(address)}>
                 Click here to Navigate!
             </Text>
         </View>
@@ -22,12 +22,13 @@ export default function FoodPage({ route, navigation }) {
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: 'green',
+        backgroundColor: 'black',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
         alignItems: 'center',
     },
     textStyle: {
         padding: 10,
+        color: "white"
     },
 });

@@ -96,20 +96,22 @@ export default class SearchPage extends Component {
 
 const styles = StyleSheet.create({
     foodItem: {
-        backgroundColor: 'orange',
+        backgroundColor: '#343434',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 30,
     },
     foodName: {
         fontSize: 22,
+        color: "white",
     },
     viewStyle: {
       flex: 1,
-      backgroundColor: 'green',
+      backgroundColor: 'black',
       marginTop: Constants.statusBarHeight
     },
     textStyle: {
       padding: 10,
+      color: "white",
     },
 });
