@@ -30,22 +30,23 @@ export default class SignupPage extends Component {
                 password: this.state.password,
             }),
         }).then(res => res.json()).then(json => {
-            console.log(json);
-            if (json.status != 400) {
+            alert(json);
+            if (json === "User added!") {
                 this.setState({
-                    signUpError: json.message,
                     isLoading: false,
                     signUpSuccess: true,
                 });
             }
             else {
                 this.setState({
-                    signUpError: json.message,
+                    signUpError: json,
                     isLoading: false,
                 });
             }
         }).catch(err => {
-            console.log(err);
+            this.setState({
+                isLoading: false,
+            });
         });
     }
 

@@ -28,23 +28,24 @@ export default class LoginPage extends Component {
                 password: this.state.password,
             }),
         }).then(res => res.json()).then(json => {
-            console.log(json);
-            if (json.status != 400) {
+            alert(json);
+            if (json === "User valid!") {
                 this.setState({
-                    signInError: json.message,
                     isLoading: false,
                     loginSuccess: true,
                 });
             }
             else {
                 this.setState({
-                    signInError: json.message,
+                    signInError: json,
                     isLoading: false,
-                    loginSuccess: true,
                 });
             }
         }).catch(err => {
-            console.log(err);
+            alert(err);
+            this.setState({
+                isLoading: false,
+            });
         });
     }
 
