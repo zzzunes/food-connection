@@ -6,7 +6,7 @@ export default class ProfilePage extends Component {
     render() {
         return (
             <View style = {styles.viewStyle}>
-                <Text>Profile Page</Text>
+                <Text style = {styles.textStyle}>Profile Page</Text>
             </View>
         )
     }
@@ -15,12 +15,12 @@ export default class ProfilePage extends Component {
 const styles = StyleSheet.create({
     viewStyle: {
       flex: 1,
-      backgroundColor: 'green',
+      backgroundColor: 'black',
       marginTop: Constants.statusBarHeight,
       justifyContent: 'center',
       alignItems: 'center',
     },
     textStyle: {
-      padding: 10,
+      color: "white",
     },
 });

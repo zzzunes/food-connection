@@ -4,7 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
 /* Components */
 import SearchPage from './components/SearchPage';
@@ -17,17 +17,18 @@ import SignupPage from './components/SignupPage';
 import OpeningPage from './components/OpeningPage';
 
 /* Reducers */
-import reducers from './reducers/Reducers';
+import user from './reducers/UserReducer';
+import food from './reducers/FoodReducer';
 
 enableScreens();
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-const store = createStore(reducers);
+const store = createStore(combineReducers({user, food}));
 
 function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="Search" drawerStyle={{ backgroundColor: '#444444', width: 250 }} edgeWidth={125}>
+        <Drawer.Navigator initialRouteName="Search" drawerStyle={{ backgroundColor: '#664466', width: 250 }} edgeWidth={125}>
             <Drawer.Screen name = "Search"      component = {SearchPage} />
             <Drawer.Screen name = "Profile"     component = {ProfilePage} />
             <Drawer.Screen name = "Data"        component = {DataPage} />

@@ -27,7 +27,7 @@ export default class OpeningPage extends Component {
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#664466',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
         flexDirection: 'column',
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     textStyle: {
-        color: "black",
+        color: "white",
         textAlign: 'center',
         fontSize: 30,
         marginBottom: 30,

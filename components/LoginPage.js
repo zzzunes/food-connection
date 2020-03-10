@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Linking } from 'react-native';
+import { StyleSheet, Text, View, Button, Linking, TouchableHighlightBase } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
@@ -51,7 +51,7 @@ class LoginPage extends Component {
     }
 
     render() {
-        console.log(this.props.user.activityLevel);
+        console.log(this.props.user);
         if (this.state.isLoading) {
             return (
                 <View style={styles.viewStyle}>
@@ -105,8 +105,20 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { user } = state;
-    return { user };
+    return {
+        user: state.user,
+    };
 };
 
-export default connect(mapStateToProps)(LoginPage);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setName: (user) => {
+            dispatch({
+                type: "SET_USER",
+                payload: user,
+            });
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

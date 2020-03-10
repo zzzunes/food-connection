@@ -1,5 +1,3 @@
-import { combineReducers } from "redux";
-
 const INITIAL_USER_STATE = {
     name: "",
     username: "",
@@ -14,36 +12,21 @@ const INITIAL_USER_STATE = {
     signUpDate: Date.now(),
 }
 
-const INITIAL_FOOD_STATE = {
-
-}
-
 const userReducer = (state = INITIAL_USER_STATE, action) => {
     switch (action.type) {
         case 'SET_USER':
             state = action.payload;
             break;
-        /* case 'CHANGE_NAME':
+        case 'CHANGE_NAME':
             state = {
                 ...state,
                 name: action.payload,
             };
-            break; */
+            break;
         default:
             break;
     }
     return state;
 }
 
-const foodReducer = (state = INITIAL_FOOD_STATE, action) => {
-    switch (action.type) {
-        default:
-            break;
-    }
-    return state;
-}
-
-export default combineReducers({
-    user: userReducer,
-    food: foodReducer,
-});
+export default userReducer;

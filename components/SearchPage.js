@@ -96,7 +96,7 @@ export default class SearchPage extends Component {
 
 const styles = StyleSheet.create({
     foodItem: {
-        backgroundColor: '#343434',
+        backgroundColor: '#664466',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 30,
