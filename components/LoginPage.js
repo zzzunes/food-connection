@@ -29,21 +29,22 @@ class LoginPage extends Component {
                 password: this.state.password,
             }),
         }).then(res => res.json()).then(json => {
-            alert(json);
-            if (json === "User valid!") {
+            alert(json.message);
+            if (json.result == 1) {
                 this.setState({
                     isLoading: false,
                     loginSuccess: true,
                 });
+                this.props.setUser(json.user);
             }
             else {
                 this.setState({
-                    signInError: json,
+                    signInError: json.message,
                     isLoading: false,
                 });
             }
         }).catch(err => {
-            alert(err);
+            console.log(err);
             this.setState({
                 isLoading: false,
             });
@@ -123,7 +124,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setName: (user) => {
+        setUser: (user) => {
             dispatch({
                 type: "SET_USER",
                 payload: user,

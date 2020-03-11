@@ -31,20 +31,22 @@ class SignupPage extends Component {
                 password: this.state.password,
             }),
         }).then(res => res.json()).then(json => {
-            alert(json);
-            if (json === "User added!") {
+            alert(json.message);
+            if (json.result == 1) {
                 this.setState({
                     isLoading: false,
                     signUpSuccess: true,
                 });
+                this.props.setUser(json.user);
             }
             else {
                 this.setState({
-                    signUpError: json,
+                    signUpError: json.message,
                     isLoading: false,
                 });
             }
         }).catch(err => {
+            console.log(err);
             this.setState({
                 isLoading: false,
             });
@@ -52,6 +54,7 @@ class SignupPage extends Component {
     }
 
     render() {
+        console.log(this.props.user);
         if (this.state.isLoading) {
             return (
                 <View style={styles.viewStyle}>
@@ -75,21 +78,21 @@ class SignupPage extends Component {
                     Sign Up
                 </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Username"
                     value={this.state.username}
                     onChangeText={text => { this.setState({username: text}) }}
                 />
                 <Text style = {styles.textStyle}> </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Email"
                     value={this.state.email}
                     onChangeText={text => { this.setState({email: text}) }}
                 />
                 <Text style = {styles.textStyle}> </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Password"
                     value={this.state.password}
                     onChangeText={text => { this.setState({password: text}) }}
@@ -127,4 +130,15 @@ const mapStateToProps = (state) => {
     return { user }
 };
 
-export default connect(mapStateToProps)(SignupPage);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setUser: (user) => {
+            dispatch({
+                type: "SET_USER",
+                payload: user,
+            });
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
