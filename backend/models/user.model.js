@@ -26,7 +26,7 @@ const userSchema = new Schema({
     },
     age: {
         type: Number,
-        default: 25,
+        default: 20,
     },
     weight: {
         type: Number,

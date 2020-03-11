@@ -14,15 +14,15 @@ router.route('/add').post((req, res) => {
     const user = req.body;
     const newUser = new User(user);
     if (newUser.password.length < passwordMinimum) {
-        return res.status(400).json("Error: Password length must be at least 6 characters.");
+        return res.json({result: 0, message: "Error: Password length must be at least 6 characters."});
     }
     bcrypt.genSalt(saltRounds, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
             newUser.password = hash;
             newUser.save()
-                .then(() => res.status(200).json('User added!'))
-                .catch(err => res.status(400).json('Error: ' + err));
+                .then(() => res.json({result: 1, message: 'User added!', user: newUser }))
+                .catch(err => res.json({result: 0, message: 'Error: ' + err}));
         })
     })
 });
@@ -31,16 +31,16 @@ router.route('/login').post((req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     User.findOne({ username }).then(user => {
-        if (!user) return res.status(400).json("Error: User not found.");
+        if (!user) return res.json({result: 0, message: "Error: User not found."});
         bcrypt.compare(password, user.password).then(isMatch => {
             if (isMatch) {
-                res.status(200).json("User valid!");
+                res.json({result: 1, message: "User valid!", user: user});
             }
             else {
-                res.status(400).json("Password invalid.");
+                res.json({result: 0, message: "Password invalid."});
             }
         })
-    }).catch(err => res.status(400).json("User invalid."));
+    }).catch(err => res.json({result: 0, message: "User invalid."}));
 });
 
 module.exports = router;

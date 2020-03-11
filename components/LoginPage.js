@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Linking } from 'react-native';
+import { StyleSheet, Text, View, Button, Linking, TouchableHighlightBase } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
+import { connect } from 'react-redux';
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,21 +29,22 @@ export default class LoginPage extends Component {
                 password: this.state.password,
             }),
         }).then(res => res.json()).then(json => {
-            alert(json);
-            if (json === "User valid!") {
+            alert(json.message);
+            if (json.result == 1) {
                 this.setState({
                     isLoading: false,
                     loginSuccess: true,
                 });
+                this.props.setUser(json.user);
             }
             else {
                 this.setState({
-                    signInError: json,
+                    signInError: json.message,
                     isLoading: false,
                 });
             }
         }).catch(err => {
-            alert(err);
+            console.log(err);
             this.setState({
                 isLoading: false,
             });
@@ -50,6 +52,7 @@ export default class LoginPage extends Component {
     }
 
     render() {
+        console.log(this.props.user);
         if (this.state.isLoading) {
             return (
                 <View style={styles.viewStyle}>
@@ -63,27 +66,30 @@ export default class LoginPage extends Component {
                 routes: [
                     {
                         name: 'Drawer',
-                        // params: { user: userObject of some kind. },
-                        // In the future, use React-Redux to set the User object
                     },
                 ],
             }))
         }
         return (
             <View style={styles.viewStyle}>
+                <Text style = {styles.textStyleTitle}>
+                    Login
+                </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Username"
                     value={this.state.username}
                     onChangeText={text => { this.setState({username: text}) }}
                 />
+                <Text style = {styles.textStyle}> </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Password"
                     onChangeText={text => { this.setState({password: text}) }}
                     value={this.state.password}
                 />
-                 <Button onPress={this.onLogin} title="Login"/>
+                <Text style = {styles.textStyle}> </Text>
+                <Button onPress={this.onLogin} title="Login"/>
             </View>
         );
     }
@@ -92,14 +98,39 @@ export default class LoginPage extends Component {
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#664466',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
-        alignItems: 'center',
+        padding: 20,
+    },
+    textStyleTitle: {
+        color: "white",
+        textAlign: 'center',
+        fontSize: 30,
+        marginBottom: 30,
     },
     textStyle: {
         color: "white",
-        padding: 10,
+        marginBottom: 0,
         justifyContent: 'center',
     },
 });
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setUser: (user) => {
+            dispatch({
+                type: "SET_USER",
+                payload: user,
+            });
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

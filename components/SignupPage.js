@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
+import { connect } from 'react-redux';
 
-export default class SignupPage extends Component {
+class SignupPage extends Component {
     constructor() {
         super();
         this.state = {
@@ -30,20 +31,22 @@ export default class SignupPage extends Component {
                 password: this.state.password,
             }),
         }).then(res => res.json()).then(json => {
-            alert(json);
-            if (json === "User added!") {
+            alert(json.message);
+            if (json.result == 1) {
                 this.setState({
                     isLoading: false,
                     signUpSuccess: true,
                 });
+                this.props.setUser(json.user);
             }
             else {
                 this.setState({
-                    signUpError: json,
+                    signUpError: json.message,
                     isLoading: false,
                 });
             }
         }).catch(err => {
+            console.log(err);
             this.setState({
                 isLoading: false,
             });
@@ -51,6 +54,7 @@ export default class SignupPage extends Component {
     }
 
     render() {
+        console.log(this.props.user);
         if (this.state.isLoading) {
             return (
                 <View style={styles.viewStyle}>
@@ -64,32 +68,36 @@ export default class SignupPage extends Component {
                 routes: [
                     {
                         name: 'Drawer',
-                        // params: { user: userObject of some kind. },
-                        // In the future, use React-Redux to set the User object
                     },
                 ],
             }))
         }
         return (
             <View style={styles.viewStyle}>
+                <Text style = {styles.textStyleTitle}>
+                    Sign Up
+                </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Username"
                     value={this.state.username}
                     onChangeText={text => { this.setState({username: text}) }}
                 />
+                <Text style = {styles.textStyle}> </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Email"
                     value={this.state.email}
                     onChangeText={text => { this.setState({email: text}) }}
                 />
+                <Text style = {styles.textStyle}> </Text>
                 <TextInput
-                    style={{ color: "black", fontSize: 20 }}
+                    style={{ fontSize: 20 }}
                     placeholder="Password"
                     value={this.state.password}
                     onChangeText={text => { this.setState({password: text}) }}
                 />
+                <Text style = {styles.textStyle}> </Text>
                 <Button onPress={this.onSignUp} title="Sign Up"/>
             </View>
         )
@@ -99,13 +107,38 @@ export default class SignupPage extends Component {
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#664466',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
-        alignItems: 'center',
+        padding: 20,
     },
     textStyle: {
         color: "white",
-        padding: 10,
+        marginBottom: 0,
+        justifyContent: 'center',
+    },
+    textStyleTitle: {
+        color: "white",
+        textAlign: 'center',
+        fontSize: 30,
+        marginBottom: 30,
     },
 });
+
+const mapStateToProps = (state) => {
+    const { user } = state
+    return { user }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setUser: (user) => {
+            dispatch({
+                type: "SET_USER",
+                payload: user,
+            });
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
