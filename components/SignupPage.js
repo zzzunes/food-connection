@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Linking } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
@@ -31,7 +31,7 @@ class SignupPage extends Component {
                 password: this.state.password,
             }),
         }).then(res => res.json()).then(json => {
-            alert(json.message);
+            Alert.alert("Notification received: ", json.message);
             if (json.result == 1) {
                 this.setState({
                     isLoading: false,

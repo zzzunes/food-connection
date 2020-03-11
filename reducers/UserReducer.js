@@ -1,5 +1,4 @@
 const INITIAL_USER_STATE = {
-    name: "",
     username: "",
     email: "",
     age: 0,
