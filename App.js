@@ -28,11 +28,15 @@ const store = createStore(combineReducers({user, food}));
 
 function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="Search" drawerStyle={{ backgroundColor: '#664466', width: 250 }} edgeWidth={125}>
-            <Drawer.Screen name = "Search"      component = {SearchPage} />
-            <Drawer.Screen name = "Profile"     component = {ProfilePage} />
-            <Drawer.Screen name = "Data"        component = {DataPage} />
-            <Drawer.Screen name = "Settings"    component = {SettingsPage} />
+        <Drawer.Navigator
+            initialRouteName="Search"
+            drawerStyle={{ backgroundColor: '#664466', width: 250 }}
+            edgeWidth={125}
+            drawerContentOptions = {{labelStyle: {color: "white"}}}>
+            <Drawer.Screen name = "Search"      component = {SearchPage}    />
+            <Drawer.Screen name = "Profile"     component = {ProfilePage}   />
+            <Drawer.Screen name = "Data"        component = {DataPage}      />
+            <Drawer.Screen name = "Settings"    component = {SettingsPage}  />
         </Drawer.Navigator>
     );
 }

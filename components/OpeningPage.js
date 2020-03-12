@@ -20,7 +20,7 @@ export default class OpeningPage extends Component {
                     this.props.navigation.navigate("Login Page")} title="Login" color="#CC5CFF"/>
                 <Text style = {styles.smallTextStyle}> </Text>
                 <Button onPress={() => 
-                    this.props.navigation.navigate("Signup Page")} title="Sign up!" color="#11CC33"/>
+                    this.props.navigation.navigate("Signup Page")} title="Sign up" color="#11CC33"/>
                 <Text style = {styles.smallTextStyle}> </Text>
                 <Button onPress={() => 
                     this.props.navigation.replace("Drawer")} title="Development tool - Skip" color="#CC3333"/>

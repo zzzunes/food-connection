@@ -4,9 +4,18 @@ import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import SettingsList from 'react-native-settings-list';
 
+const porygon = require('../assets/porygondigital.jpeg');
+
 /* Made using example found here: https://github.com/evetstech/react-native-settings-list/blob/master/Example/example.js */
 
 class SettingsPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            //
+        }
+    }
+
     render() {
         return (
             <View style={styles.viewStyle}>
@@ -16,34 +25,31 @@ class SettingsPage extends React.Component {
                 <SettingsList borderColor = "#C8C7CC" defaultItemSize = {50}>
                     <SettingsList.Header/>
                     <SettingsList.Item 
-                        icon = {<Image style = {styles.imageStyle} source = {require('../assets/porygondigital.jpeg')}/>}
+                        icon = {<Image style = {styles.imageStyle} source = {porygon}/>}
                         title = {this.props.user.username}
-                        hasNavArrow = {false}
                     />
-                    <SettingsList.Header headerStyle={{marginTop:15}}/>
                     <SettingsList.Item 
-                        icon = {<Image style = {styles.imageStyle} source = {require('../assets/porygondigital.jpeg')}/>}
+                        icon = {<Image style = {styles.imageStyle} source = {porygon}/>}
                         title = {"Change name"}
                         titleInfo = "Please change your name"
-                        hasNavArrow = {false}
+                        hasNavArrow = {true}
                         //onPress = {() => route}
                     />
                     <SettingsList.Item 
-                        icon = {<Image style = {styles.imageStyle} source = {require('../assets/porygondigital.jpeg')}/>}
+                        icon = {<Image style = {styles.imageStyle} source = {porygon}/>}
                         title = {"Change name"}
                         titleInfo = "Please change your name"
-                        hasNavArrow = {false}
+                        hasNavArrow = {true}
                         //onPress = {() => route}
                     />
                     <SettingsList.Item 
-                        icon = {<Image style = {styles.imageStyle} source = {require('../assets/porygondigital.jpeg')}/>}
-                        title = {"Change name"}
-                        titleInfo = "Please change your name"
+                        icon = {<Image style = {styles.imageStyle} source = {porygon}/>}
+                        title = {"Data Permissions"}
+                        titleInfo = "Opt in/out of data permission"
                         hasNavArrow = {false}
                         hasSwitch = {true}
-                        switchState = {false}
+                        switchState = {true}
                         switchOnValueChange = {() => {}}
-                        onPress = {() => {/* Navigate */}}
                     />
                 </SettingsList>
                 <Text style = {styles.textStyle}>{JSON.stringify(this.props.user)}</Text>
@@ -68,7 +74,7 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         alignSelf: "center",
-        marginTop: 10,
+        marginTop: 20,
         marginBottom: 10,
         fontWeight: "bold",
         fontSize: 16,
@@ -86,4 +92,10 @@ const mapStateToProps = (state) => {
     return { user };
 };
 
-export default connect(mapStateToProps)(SettingsPage);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);

@@ -52,10 +52,6 @@ const userSchema = new Schema({
         type: String,
         default: "undeclared",
     },
-    dataCollection: {
-        type: Boolean,
-        default: false,
-    }
 },);
 
 const User = mongoose.model('User', userSchema);
