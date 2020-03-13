@@ -19,6 +19,7 @@ import OpeningPage from './components/OpeningPage';
 /* Reducers */
 import user from './reducers/UserReducer';
 import food from './reducers/FoodReducer';
+import ChangeUsernamePage from './components/settings_subpages/ChangeUsernamePage';
 
 enableScreens();
 
@@ -53,6 +54,7 @@ export default class App extends React.Component {
                         <Stack.Screen name = "Login Page"   component = {LoginPage}/>
                         <Stack.Screen name = "Signup Page"  component = {SignupPage}/>
                         <Stack.Screen name = "Opening Page" component = {OpeningPage}/>
+                        <Stack.Screen name = "Change Username Page" component = {ChangeUsernamePage}/>
                     </Stack.Navigator>
                 </NavigationContainer>
             </Provider>

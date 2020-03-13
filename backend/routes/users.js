@@ -3,6 +3,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 const passwordMinimum = 6;
+const usernameMinimum = 3;
 
 router.route('/').get((req, res) => {
     User.find()
@@ -41,6 +42,18 @@ router.route('/login').post((req, res) => {
             }
         })
     }).catch(err => res.json({result: 0, message: "User invalid."}));
+});
+
+router.route('/update').post((req, res) => {
+    if (req.body.user.username.length < usernameMinimum) {
+        return res.json({result: 0, message: "Username must be at least 3 characters."});
+    }
+    User.findByIdAndUpdate(req.body.user._id,
+        { $set: req.body.user },
+        function(err, result) {
+            if (err) return res.json({result: 0, message: "Error: " + err});
+            return res.json({result: 1, message: "Updated successfully!"});
+        });
 });
 
 module.exports = router;
