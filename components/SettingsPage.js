@@ -17,7 +17,8 @@ const globe = require('../assets/globe.png');
 const ruler = require('../assets/ruler.png');
 const cake = require('../assets/cake.png');
 
-/* Made using example found here: https://github.com/evetstech/react-native-settings-list/blob/master/Example/example.js */
+/*  Made using example found here: https://github.com/evetstech/react-native-settings-list/blob/master/Example/example.js 
+    Icons come from Google Material and https://www.iconfinder.com, filtered by "free" and "No link back" type of license. */
 
 class SettingsPage extends React.Component {
     constructor(props) {
@@ -27,6 +28,13 @@ class SettingsPage extends React.Component {
         }
     }
 
+    convertHeight = (heightInInches) => {
+        var height = Number(heightInInches);
+        var feet = ~~(height / 12);
+        var inches = height % 12;
+        return feet.toString() + " ft. " + inches.toString() + " in."
+    }
+
     render() {
         return (
             <View style={styles.viewStyle}>
@@ -34,7 +42,6 @@ class SettingsPage extends React.Component {
                     <Text style = {styles.textTitle}>Settings</Text>
                 </View>
                 <SettingsList borderColor = "#C8C7CC" defaultItemSize = {50}>
-                    <SettingsList.Header/>
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {user}/>}
                         title = {this.props.user.username}
@@ -45,50 +52,51 @@ class SettingsPage extends React.Component {
                         icon = {<Image style = {styles.imageStyle} source = {email}/>}
                         title = {this.props.user.email}
                         titleInfo = "Change Email"
-                        //onPress = {() => route}
+                        onPress = {() => this.props.navigation.navigate("Change Email Page")}
                     />
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {cake}/>}
                         title = {`Age: ` + this.props.user.age}
                         titleInfo = "Change Age"
-                        //onPress = {() => route}
+                        onPress = {() => this.props.navigation.navigate("Change Age Page")}
                     />
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {ruler}/>}
-                        title = {`Height: ` + this.props.user.height}
+                        title = {`Height: ` + this.convertHeight(this.props.user.height)}
                         titleInfo = "Change Height"
-                        //onPress = {() => route}
+                        onPress = {() => this.props.navigation.navigate("Change Height Page")}
                     />
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {scale}/>}
-                        title = {`Weight: ` + this.props.user.weight}
+                        title = {`Weight: ` + this.props.user.weight + ` lbs.`}
                         titleInfo = "Change Weight"
-                        //onPress = {() => route}
+                        onPress = {() => this.props.navigation.navigate("Change Weight Page")}
                     />
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {dumbell}/>}
                         title = {`Activity Level: ` + this.props.user.activityLevel}
-                        titleInfo = "Change Major"
-                        //onPress = {() => route}
+                        titleInfo = "Change Activity Level"
+                        onPress = {() => this.props.navigation.navigate("Change AL Page")}
                     />
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {school}/>}
                         title = {`Major: ` + this.props.user.major}
                         titleInfo = "Change Major"
-                        //onPress = {() => route}
+                        onPress = {() => this.props.navigation.navigate("Change Major Page")}
                     />
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {gender}/>}
                         title = {`Gender: ` + this.props.user.gender}
                         titleInfo = "Change Gender"
-                        //onPress = {() => route}
+                        onPress = {() => this.props.navigation.navigate("Change Gender Page")}
                     />
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {globe}/>}
                         title = {`Race: ` + this.props.user.race}
                         titleInfo = "Change Race"
-                        //onPress = {() => route}
+                        onPress = {() => this.props.navigation.navigate("Change Race Page")}
                     />
+                    <SettingsList.Header/>
                     <SettingsList.Item 
                         icon = {<Image style = {styles.imageStyle} source = {time}/>}
                         title = {`Account created: \n` + dateFormat(Date.parse(this.props.user.signUpDate), "dddd, mmmm dS, yyyy, h:MM:ss TT")}
@@ -111,8 +119,8 @@ const styles = StyleSheet.create({
     },
     headerStyle: {
         borderBottomWidth:1,
-        backgroundColor:'#f7f7f8',
-        borderColor:'#c8c7cc'
+        backgroundColor:'#FFFFFF',
+        borderColor:'#FFFFFF'
     },
     textTitle: {
         alignSelf: "center",

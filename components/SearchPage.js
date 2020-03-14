@@ -96,7 +96,7 @@ export default class SearchPage extends Component {
 
 const styles = StyleSheet.create({
     foodItem: {
-        backgroundColor: '#664466',
+        backgroundColor: '#967496',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 30,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
     viewStyle: {
       flex: 1,
-      backgroundColor: 'black',
+      backgroundColor: '#664466',
       marginTop: Constants.statusBarHeight
     },
     textStyle: {

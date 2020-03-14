@@ -63,6 +63,12 @@ const userReducer = (state = INITIAL_USER_STATE, action) => {
                 major: action.payload,
             };
             break;
+        case 'CHANGE_GENDER':
+            state = {
+                ...state,
+                gender: action.payload,
+            };
+            break;
         default:
             break;
     }

@@ -48,6 +48,15 @@ router.route('/update').post((req, res) => {
     if (req.body.user.username.length < usernameMinimum) {
         return res.json({result: 0, message: "Username must be at least 3 characters."});
     }
+    if (req.body.user.age < 18) {
+        return res.json({result: 0, message: "User must be at least 18 years old."});
+    }
+    if (req.body.user.height < 0 || req.body.user.weight < 0) {
+        return res.json({result: 0, message: "User cannot have a negative height or weight."});
+    }
+    if (req.body.user.major.length <= 0) {
+        return res.json({result: 0, message: "User must have a major."});
+    }
     User.findByIdAndUpdate(req.body.user._id,
         { $set: req.body.user },
         function(err, result) {
