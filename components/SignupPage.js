@@ -31,7 +31,6 @@ class SignupPage extends Component {
                 password: this.state.password,
             }),
         }).then(res => res.json()).then(json => {
-            Alert.alert("Notification received: ", json.message);
             if (json.result == 1) {
                 this.setState({
                     isLoading: false,
@@ -40,6 +39,7 @@ class SignupPage extends Component {
                 this.props.setUser(json.user);
             }
             else {
+                Alert.alert("Warning: ", json.message);
                 this.setState({
                     signUpError: json.message,
                     isLoading: false,
@@ -54,7 +54,6 @@ class SignupPage extends Component {
     }
 
     render() {
-        console.log(this.props.user);
         if (this.state.isLoading) {
             return (
                 <View style={styles.viewStyle}>
@@ -63,14 +62,7 @@ class SignupPage extends Component {
             );
         }
         if (this.state.signUpSuccess) {
-            this.props.navigation.dispatch(CommonActions.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: 'Drawer',
-                    },
-                ],
-            }))
+            this.props.navigation.navigate("Age Question Page");
         }
         return (
             <View style={styles.viewStyle}>

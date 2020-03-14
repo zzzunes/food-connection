@@ -30,6 +30,12 @@ import ChangeMajorPage from './components/settings_subpages/ChangeMajorPage';
 /* Reducers */
 import user from './reducers/UserReducer';
 import food from './reducers/FoodReducer';
+import AgeQPage from './components/questions_subpages/AgeQPage';
+import GenderQPage from './components/questions_subpages/GenderQPage';
+import HeightQPage from './components/questions_subpages/HeightQPage';
+import MajorQPage from './components/questions_subpages/MajorQPage';
+import RaceQPage from './components/questions_subpages/RaceQPage';
+import WeightQPage from './components/questions_subpages/WeightQPage';
 
 enableScreens();
 
@@ -59,11 +65,17 @@ export default class App extends React.Component {
             <Provider store = {store}>
                 <NavigationContainer>
                     <Stack.Navigator initialRouteName = "Opening Page" screenOptions = {{headerTransparent: true, headerTitle: null}}>
-                        <Stack.Screen name = "Drawer"       component = {DrawerNavigator}/>
-                        <Stack.Screen name = "Food Page"    component = {FoodPage}/>
-                        <Stack.Screen name = "Login Page"   component = {LoginPage}/>
-                        <Stack.Screen name = "Signup Page"  component = {SignupPage}/>
-                        <Stack.Screen name = "Opening Page" component = {OpeningPage}/>
+                        <Stack.Screen name = "Drawer"               component = {DrawerNavigator}/>
+                        <Stack.Screen name = "Food Page"            component = {FoodPage}/>
+                        <Stack.Screen name = "Login Page"           component = {LoginPage}/>
+                        <Stack.Screen name = "Signup Page"          component = {SignupPage}/>
+                        <Stack.Screen name = "Opening Page"         component = {OpeningPage}/>
+                        <Stack.Screen name = "Age Question Page"    component = {AgeQPage}/>
+                        <Stack.Screen name = "Gender Question Page" component = {GenderQPage}/>
+                        <Stack.Screen name = "Height Question Page" component = {HeightQPage}/>
+                        <Stack.Screen name = "Major Question Page"  component = {MajorQPage}/>
+                        <Stack.Screen name = "Race Question Page"   component = {RaceQPage}/>
+                        <Stack.Screen name = "Weight Question Page" component = {WeightQPage}/>
                         <Stack.Screen name = "Change Username Page" component = {ChangeUsernamePage}/>
                         <Stack.Screen name = "Change Email Page"    component = {ChangeEmailPage}/>
                         <Stack.Screen name = "Change Age Page"      component = {ChangeAgePage}/>
