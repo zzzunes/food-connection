@@ -16,6 +16,17 @@ import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import OpeningPage from './components/OpeningPage';
 
+/* Settings Screens */
+import ChangeUsernamePage from './components/settings_subpages/ChangeUsernamePage';
+import ChangeEmailPage from './components/settings_subpages/ChangeEmailPage';
+import ChangeAgePage from './components/settings_subpages/ChangeAgePage';
+import ChangeHeightPage from './components/settings_subpages/ChangeHeightPage';
+import ChangeWeightPage from './components/settings_subpages/ChangeWeightPage';
+import ChangeALPage from './components/settings_subpages/ChangeALPage';
+import ChangeGenderPage from './components/settings_subpages/ChangeGenderPage';
+import ChangeRacePage from './components/settings_subpages/ChangeRacePage';
+import ChangeMajorPage from './components/settings_subpages/ChangeMajorPage';
+
 /* Reducers */
 import user from './reducers/UserReducer';
 import food from './reducers/FoodReducer';
@@ -28,11 +39,15 @@ const store = createStore(combineReducers({user, food}));
 
 function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="Search" drawerStyle={{ backgroundColor: '#664466', width: 250 }} edgeWidth={125}>
-            <Drawer.Screen name = "Search"      component = {SearchPage} />
-            <Drawer.Screen name = "Profile"     component = {ProfilePage} />
-            <Drawer.Screen name = "Data"        component = {DataPage} />
-            <Drawer.Screen name = "Settings"    component = {SettingsPage} />
+        <Drawer.Navigator
+            initialRouteName="Search"
+            drawerStyle={{ backgroundColor: '#664466', width: 250 }}
+            edgeWidth={125}
+            drawerContentOptions = {{labelStyle: {color: "white"}}}>
+            <Drawer.Screen name = "Search"      component = {SearchPage}    />
+            <Drawer.Screen name = "Profile"     component = {ProfilePage}   />
+            <Drawer.Screen name = "Data"        component = {DataPage}      />
+            <Drawer.Screen name = "Settings"    component = {SettingsPage}  />
         </Drawer.Navigator>
     );
 }
@@ -49,6 +64,15 @@ export default class App extends React.Component {
                         <Stack.Screen name = "Login Page"   component = {LoginPage}/>
                         <Stack.Screen name = "Signup Page"  component = {SignupPage}/>
                         <Stack.Screen name = "Opening Page" component = {OpeningPage}/>
+                        <Stack.Screen name = "Change Username Page" component = {ChangeUsernamePage}/>
+                        <Stack.Screen name = "Change Email Page"    component = {ChangeEmailPage}/>
+                        <Stack.Screen name = "Change Age Page"      component = {ChangeAgePage}/>
+                        <Stack.Screen name = "Change Height Page"   component = {ChangeHeightPage}/>
+                        <Stack.Screen name = "Change Weight Page"   component = {ChangeWeightPage}/>
+                        <Stack.Screen name = "Change AL Page"       component = {ChangeALPage}/>
+                        <Stack.Screen name = "Change Major Page"    component = {ChangeMajorPage}/>
+                        <Stack.Screen name = "Change Gender Page"   component = {ChangeGenderPage}/>
+                        <Stack.Screen name = "Change Race Page"     component = {ChangeRacePage}/>
                     </Stack.Navigator>
                 </NavigationContainer>
             </Provider>

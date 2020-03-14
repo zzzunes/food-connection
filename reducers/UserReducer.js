@@ -1,5 +1,4 @@
 const INITIAL_USER_STATE = {
-    name: "",
     username: "",
     email: "",
     age: 0,
@@ -8,7 +7,6 @@ const INITIAL_USER_STATE = {
     activityLevel: "lol",
     race: "",
     major: "",
-    dataCollection: false,
     signUpDate: Date.now(),
 }
 
@@ -17,10 +15,58 @@ const userReducer = (state = INITIAL_USER_STATE, action) => {
         case 'SET_USER':
             state = action.payload;
             break;
-        case 'CHANGE_NAME':
+        case 'CHANGE_USERNAME':
             state = {
                 ...state,
-                name: action.payload,
+                username: action.payload,
+            };
+            break;
+        case 'CHANGE_AGE':
+            state = {
+                ...state,
+                age: action.payload,
+            };
+            break;
+        case 'CHANGE_EMAIL':
+            state = {
+                ...state,
+                email: action.payload,
+            };
+            break;
+        case 'CHANGE_WEIGHT':
+            state = {
+                ...state,
+                weight: action.payload,
+            };
+            break;
+        case 'CHANGE_HEIGHT':
+            state = {
+                ...state,
+                height: action.payload,
+            };
+            break;
+        case 'CHANGE_ACTIVITY_LEVEL':
+            state = {
+                ...state,
+                activityLevel: action.payload,
+            };
+            break;
+        case 'CHANGE_RACE':
+            state = {
+                ...state,
+                race: action.payload,
+            };
+            break;
+        case 'CHANGE_MAJOR':
+            state = {
+                ...state,
+                major: action.payload,
+            };
+            break;
+        case 'CHANGE_GENDER':
+            state = {
+                ...state,
+                gender: action.payload,
             };
             break;
         default:

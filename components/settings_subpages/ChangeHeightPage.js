@@ -5,43 +5,37 @@ import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 
-class SignupPage extends Component {
+class ChangeHeightPage extends Component {
     constructor() {
         super();
         this.state = {
-            signUpError: '',
-            username: '',
-            email: '',
-            password: '',
+            newHeight: "",
             isLoading: false,
-            signUpSuccess: false,
         };
     }
 
-    onSignUp = () => {
+    save = () => {
         this.setState({isLoading: true});
-        fetch('http://192.168.1.116:5000/users/add', {
+        const newUser = JSON.parse(JSON.stringify(this.props.user));
+        newUser.height = this.state.newHeight;
+        fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: this.state.username,
-                email: this.state.email,
-                password: this.state.password,
+                user: newUser
             }),
         }).then(res => res.json()).then(json => {
             Alert.alert("Notification received: ", json.message);
             if (json.result == 1) {
                 this.setState({
                     isLoading: false,
-                    signUpSuccess: true,
                 });
-                this.props.setUser(json.user);
+                this.props.changeHeight(this.state.newHeight);
             }
             else {
                 this.setState({
-                    signUpError: json.message,
                     isLoading: false,
                 });
             }
@@ -53,6 +47,13 @@ class SignupPage extends Component {
         });
     }
 
+    convertHeight = (heightInInches) => {
+        var height = Number(heightInInches);
+        var feet = ~~(height / 12);
+        var inches = height % 12;
+        return feet.toString() + " ft. " + inches.toString() + " in."
+    }
+
     render() {
         console.log(this.props.user);
         if (this.state.isLoading) {
@@ -62,43 +63,24 @@ class SignupPage extends Component {
                 </View>
             );
         }
-        if (this.state.signUpSuccess) {
-            this.props.navigation.dispatch(CommonActions.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: 'Drawer',
-                    },
-                ],
-            }))
-        }
+
         return (
             <View style={styles.viewStyle}>
                 <Text style = {styles.textStyleTitle}>
-                    Sign Up
+                    Change Height
                 </Text>
+                <Text style = {styles.textStyle}>
+                    Current Height: {this.convertHeight(this.props.user.height)}
+                </Text>
+                <Text style = {styles.textStyle}></Text>
                 <TextInput
                     style={{ fontSize: 20 }}
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChangeText={text => { this.setState({username: text}) }}
+                    placeholder="New Height (in inches)"
+                    value={this.state.newHeight}
+                    onChangeText={text => { this.setState({newHeight: text}) }}
                 />
                 <Text style = {styles.textStyle}> </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Email"
-                    value={this.state.email}
-                    onChangeText={text => { this.setState({email: text}) }}
-                />
-                <Text style = {styles.textStyle}> </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Password"
-                    value={this.state.password}
-                    onChangeText={text => { this.setState({password: text}) }}
-                />
-                <Text style = {styles.textStyle}> </Text>
-                <Button onPress={this.onSignUp} title="Sign Up"/>
+                <Button onPress={this.save} title="Save"/>
             </View>
         )
     }  
@@ -107,18 +89,19 @@ class SignupPage extends Component {
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: '#664466',
+        backgroundColor: 'white',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
         padding: 20,
     },
     textStyle: {
-        color: "white",
+        color: "black",
+        fontSize: 20,
         marginBottom: 0,
         justifyContent: 'center',
     },
     textStyleTitle: {
-        color: "white",
+        color: "black",
         textAlign: 'center',
         fontSize: 30,
         marginBottom: 30,
@@ -132,13 +115,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setUser: (user) => {
+        changeHeight: (height) => {
             dispatch({
-                type: "SET_USER",
-                payload: user,
+                type: "CHANGE_HEIGHT",
+                payload: height,
             });
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeHeightPage);
