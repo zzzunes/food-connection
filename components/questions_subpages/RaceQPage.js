@@ -5,20 +5,20 @@ import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 
-class ChangeALPage extends Component {
+class RaceQPage extends Component {
     constructor() {
         super();
         this.state = {
-            newAL: "Sedentary",
+            newRace: "White",
             isLoading: false,
+            updateSuccess: false,
         };
     }
 
     save = () => {
-        if (this.state.newAL === this.props.user.activityLevel) return;
-        this.setState({ isLoading: true });
+        this.setState({isLoading: true});
         const newUser = JSON.parse(JSON.stringify(this.props.user));
-        newUser.activityLevel = this.state.newAL;
+        newUser.race = this.state.newRace;
         fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
@@ -28,14 +28,15 @@ class ChangeALPage extends Component {
                 user: newUser
             }),
         }).then(res => res.json()).then(json => {
-            Alert.alert("Notification received: ", json.message);
             if (json.result == 1) {
                 this.setState({
                     isLoading: false,
+                    updateSuccess: true,
                 });
-                this.props.changeActivityLevel(this.state.newAL);
+                this.props.changeRace(this.state.newRace);
             }
             else {
+                Alert.alert("Warning: ", json.message);
                 this.setState({
                     isLoading: false,
                 });
@@ -57,47 +58,52 @@ class ChangeALPage extends Component {
             );
         }
 
+        if (this.state.updateSuccess) {
+            this.props.navigation.navigate("Weight Question Page");
+        }
+
         return (
             <View style={styles.viewStyle}>
-                <Text style={styles.textStyleTitle}>
-                    Change Activity Level
+                <Text style = {styles.textStyleTitle}>
+                    Set Race
                 </Text>
-                <Text style={styles.textStyle}>
-                    Current Activity Level: {this.props.user.activityLevel}
-                </Text>
-                <Text style={styles.textStyle}></Text>
                 <Picker
-                    selectedValue={this.state.newAL}
+                    selectedValue={this.state.newRace}
                     onValueChange={(itemValue, itemIndex) =>
-                        this.setState({ newAL: itemValue })
+                        this.setState({ newRace: itemValue })
                     }
-                    prompt = "New Activity Level">
-                    <Picker.Item label="Sedentary" value="Sedentary" />
-                    <Picker.Item label="Active" value="Active" />
+                    prompt = "Set Race">
+                    <Picker.Item label="White" value="White" />
+                    <Picker.Item label="Black" value="Black" />
+                    <Picker.Item label="Asian" value="Asian" />
+                    <Picker.Item label="American Native" value="Native American" />
+                    <Picker.Item label="Hawaiian Native" value="Native Hawaiian" />
+                    <Picker.Item label="Other" value="Other" />
+                    <Picker.Item label="Two or More Races" value="Multiracial" />
                 </Picker>
                 <Text style={styles.textStyle}> </Text>
-                <Button onPress={this.save} title="Save" />
+                <Button onPress={this.save} title="Save"/>
             </View>
         )
-    }
+    }  
 }
 
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#664466',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
         padding: 20,
     },
     textStyle: {
-        color: "black",
+        color: "white",
         fontSize: 20,
         marginBottom: 0,
         justifyContent: 'center',
     },
     textStyleTitle: {
-        color: "black",
+        color: "white",
         textAlign: 'center',
         fontSize: 30,
         marginBottom: 30,
@@ -111,13 +117,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeActivityLevel: (AL) => {
+        changeRace: (race) => {
             dispatch({
-                type: "CHANGE_ACTIVITY_LEVEL",
-                payload: AL,
+                type: "CHANGE_RACE",
+                payload: race,
             });
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangeALPage);
+export default connect(mapStateToProps, mapDispatchToProps)(RaceQPage);

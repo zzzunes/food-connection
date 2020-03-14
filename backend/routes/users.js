@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 const passwordMinimum = 6;
 const usernameMinimum = 3;
+const majorMinimum = 3;
 
 router.route('/').get((req, res) => {
     User.find()
@@ -51,11 +52,12 @@ router.route('/update').post((req, res) => {
     if (req.body.user.age < 18) {
         return res.json({result: 0, message: "User must be at least 18 years old."});
     }
-    if (req.body.user.height < 0 || req.body.user.weight < 0) {
-        return res.json({result: 0, message: "User cannot have a negative height or weight."});
+    if (req.body.user.height === "" || req.body.user.height < 0 ||
+        req.body.user.weight < 0 || req.body.user.weight === "") {
+        return res.json({result: 0, message: "User must have a positive weight and height."});
     }
-    if (req.body.user.major.length <= 0) {
-        return res.json({result: 0, message: "User must have a major."});
+    if (req.body.user.major.length < majorMinimum) {
+        return res.json({result: 0, message: "User must have a major (3 characters or greater)."});
     }
     User.findByIdAndUpdate(req.body.user._id,
         { $set: req.body.user },

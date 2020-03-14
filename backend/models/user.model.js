@@ -38,19 +38,20 @@ const userSchema = new Schema({
     },
     gender: {
         type: String,
-        default: "non-binary",
+        default: "Non-Binary",
     },
     activityLevel: {
         type: String,
-        default: "sedentary",
+        default: "Sedentary",
     },
     race: {
         type: String,
-        default: "unknown",
+        default: "Unknown",
     },
     major: {
         type: String,
-        default: "undeclared",
+        default: "Undeclared",
+        minlength: 3,
     },
 },);
 

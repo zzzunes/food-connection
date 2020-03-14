@@ -5,20 +5,20 @@ import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 
-class ChangeALPage extends Component {
+class GenderQPage extends Component {
     constructor() {
         super();
         this.state = {
-            newAL: "Sedentary",
+            newGender: "Female",
             isLoading: false,
+            updateSuccess: false,
         };
     }
 
     save = () => {
-        if (this.state.newAL === this.props.user.activityLevel) return;
-        this.setState({ isLoading: true });
+        this.setState({isLoading: true});
         const newUser = JSON.parse(JSON.stringify(this.props.user));
-        newUser.activityLevel = this.state.newAL;
+        newUser.gender = this.state.newGender;
         fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
@@ -28,14 +28,15 @@ class ChangeALPage extends Component {
                 user: newUser
             }),
         }).then(res => res.json()).then(json => {
-            Alert.alert("Notification received: ", json.message);
             if (json.result == 1) {
                 this.setState({
                     isLoading: false,
+                    updateSuccess: true,
                 });
-                this.props.changeActivityLevel(this.state.newAL);
+                this.props.changeGender(this.state.newGender);
             }
             else {
+                Alert.alert("Warning: ", json.message);
                 this.setState({
                     isLoading: false,
                 });
@@ -57,47 +58,48 @@ class ChangeALPage extends Component {
             );
         }
 
+        if (this.state.updateSuccess) {
+            this.props.navigation.navigate("Height Question Page");
+        }
+
         return (
             <View style={styles.viewStyle}>
-                <Text style={styles.textStyleTitle}>
-                    Change Activity Level
+                <Text style = {styles.textStyleTitle}>
+                    Set Gender
                 </Text>
-                <Text style={styles.textStyle}>
-                    Current Activity Level: {this.props.user.activityLevel}
-                </Text>
-                <Text style={styles.textStyle}></Text>
                 <Picker
-                    selectedValue={this.state.newAL}
+                    selectedValue={this.state.newGender}
                     onValueChange={(itemValue, itemIndex) =>
-                        this.setState({ newAL: itemValue })
+                        this.setState({ newGender: itemValue })
                     }
-                    prompt = "New Activity Level">
-                    <Picker.Item label="Sedentary" value="Sedentary" />
-                    <Picker.Item label="Active" value="Active" />
+                    prompt = "New Gender">
+                    <Picker.Item label="Female" value="Female" />
+                    <Picker.Item label="Non-Binary" value="Non-Binary" />
+                    <Picker.Item label="Male" value="Male" />
                 </Picker>
                 <Text style={styles.textStyle}> </Text>
-                <Button onPress={this.save} title="Save" />
+                <Button onPress={this.save} title="Save"/>
             </View>
         )
-    }
+    }  
 }
 
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#664466',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
         padding: 20,
     },
     textStyle: {
-        color: "black",
+        color: "white",
         fontSize: 20,
         marginBottom: 0,
         justifyContent: 'center',
     },
     textStyleTitle: {
-        color: "black",
+        color: "white",
         textAlign: 'center',
         fontSize: 30,
         marginBottom: 30,
@@ -111,13 +113,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeActivityLevel: (AL) => {
+        changeGender: (gender) => {
             dispatch({
-                type: "CHANGE_ACTIVITY_LEVEL",
-                payload: AL,
+                type: "CHANGE_GENDER",
+                payload: gender,
             });
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangeALPage);
+export default connect(mapStateToProps, mapDispatchToProps)(GenderQPage);

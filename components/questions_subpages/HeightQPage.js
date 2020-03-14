@@ -1,45 +1,43 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Linking, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 
-class LoginPage extends Component {
-    constructor(props) {
-        super(props);
+class HeightQPage extends Component {
+    constructor() {
+        super();
         this.state = {
-            signInError: '',
-            username: '',
-            password: '',
+            newHeight: "",
             isLoading: false,
-            loginSuccess: false,
+            updateSuccess: false,
         };
     }
 
-    onLogin = () => {
+    save = () => {
         this.setState({isLoading: true});
-        fetch('http://192.168.1.116:5000/users/login', {
+        const newUser = JSON.parse(JSON.stringify(this.props.user));
+        newUser.height = this.state.newHeight;
+        fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.password,
+                user: newUser
             }),
         }).then(res => res.json()).then(json => {
-            Alert.alert("Notification received: ", json.message);
             if (json.result == 1) {
                 this.setState({
                     isLoading: false,
-                    loginSuccess: true,
+                    updateSuccess: true,
                 });
-                this.props.setUser(json.user);
+                this.props.changeHeight(this.state.newHeight);
             }
             else {
+                Alert.alert("Warning: ", json.message);
                 this.setState({
-                    signInError: json.message,
                     isLoading: false,
                 });
             }
@@ -51,6 +49,13 @@ class LoginPage extends Component {
         });
     }
 
+    convertHeight = (heightInInches) => {
+        var height = Number(heightInInches);
+        var feet = ~~(height / 12);
+        var inches = height % 12;
+        return feet.toString() + " ft. " + inches.toString() + " in."
+    }
+
     render() {
         if (this.state.isLoading) {
             return (
@@ -59,39 +64,27 @@ class LoginPage extends Component {
                 </View>
             );
         }
-        if (this.state.loginSuccess) {
-            this.props.navigation.dispatch(CommonActions.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: 'Drawer',
-                    },
-                ],
-            }))
+
+        if (this.state.updateSuccess) {
+            this.props.navigation.navigate("Major Question Page");
         }
+
         return (
             <View style={styles.viewStyle}>
                 <Text style = {styles.textStyleTitle}>
-                    Login
+                    Set Height (in inches)
                 </Text>
                 <TextInput
                     style={{ fontSize: 20 }}
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChangeText={text => { this.setState({username: text}) }}
+                    placeholder="Height (in inches)"
+                    value={this.state.newHeight}
+                    onChangeText={text => { this.setState({newHeight: text}) }}
                 />
                 <Text style = {styles.textStyle}> </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Password"
-                    onChangeText={text => { this.setState({password: text}) }}
-                    value={this.state.password}
-                />
-                <Text style = {styles.textStyle}> </Text>
-                <Button onPress={this.onLogin} title="Login"/>
+                <Button onPress={this.save} title="Save"/>
             </View>
-        );
-    }
+        )
+    }  
 }
 
 const styles = StyleSheet.create({
@@ -102,34 +95,34 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 20,
     },
+    textStyle: {
+        color: "white",
+        fontSize: 20,
+        marginBottom: 0,
+        justifyContent: 'center',
+    },
     textStyleTitle: {
         color: "white",
         textAlign: 'center',
         fontSize: 30,
         marginBottom: 30,
     },
-    textStyle: {
-        color: "white",
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
 });
 
 const mapStateToProps = (state) => {
-    return {
-        user: state.user,
-    };
+    const { user } = state
+    return { user }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setUser: (user) => {
+        changeHeight: (height) => {
             dispatch({
-                type: "SET_USER",
-                payload: user,
+                type: "CHANGE_HEIGHT",
+                payload: height,
             });
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(HeightQPage);

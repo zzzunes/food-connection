@@ -48,7 +48,6 @@ class ChangeEmailPage extends Component {
     }
 
     render() {
-        console.log(this.props.user);
         if (this.state.isLoading) {
             return (
                 <View style={styles.viewStyle}>
