@@ -21,7 +21,9 @@ connection.once('open', () => {
 
 /* API endpoints for connecting users */
 const userRouter = require('./routes/users');
+const foodRouter = require('./routes/foods');
 app.use('/users', userRouter);
+app.use('/foods', foodRouter);
 
 /* Start server by running: nodemon server */
 app.listen(port, () => {
