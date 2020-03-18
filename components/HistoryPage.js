@@ -1,26 +1,61 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import { FlatList, TouchableHighlight } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
+import { connect } from 'react-redux';
 
-export default class ProfilePage extends Component {
-    render() {
+class HistoryPage extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    FoodItem = ({ food }) => {
         return (
-            <View style = {styles.viewStyle}>
-                <Text style = {styles.textStyle}>Profile Page</Text>
+            <View style = {styles.foodItem}>
+                <Text style = {styles.foodName}>{this.props.foods[food.id].name}</Text>
             </View>
-        )
+        );
+    }
+
+    render() {
+        console.log(this.props.user.foodHistory);
+        return (
+            <View style={styles.viewStyle}>
+                <FlatList
+                    data = { this.props.user.foodHistory }
+                    renderItem = {({ item }) => <this.FoodItem food = {item}/>}
+                    keyExtractor = {item => item.time }
+                />
+            </View>
+        );
     }
 }
 
 const styles = StyleSheet.create({
+    foodItem: {
+        backgroundColor: '#883355',
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 30,
+    },
+    foodName: {
+        fontSize: 22,
+        color: "white",
+    },
     viewStyle: {
       flex: 1,
-      backgroundColor: 'black',
-      marginTop: Constants.statusBarHeight,
-      justifyContent: 'center',
-      alignItems: 'center',
+      backgroundColor: '#AA6688',
+      marginTop: Constants.statusBarHeight
     },
     textStyle: {
+      padding: 10,
       color: "white",
     },
 });
+
+const mapStateToProps = (state) => {
+    const { user, foods } = state;
+    return { user, foods };
+};
+
+export default connect(mapStateToProps)(HistoryPage);
