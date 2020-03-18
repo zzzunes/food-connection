@@ -32,6 +32,9 @@ class LoginPage extends Component {
                 this.setState({
                     foodPrepared: true,
                 });
+                json.foods.sort((a, b) => {
+                    return b.healthScore - a.healthScore;
+                });
                 this.props.setFoods(json.foods);
             }
         }).catch(err => {

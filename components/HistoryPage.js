@@ -12,13 +12,12 @@ class HistoryPage extends Component {
     FoodItem = ({ food }) => {
         return (
             <View style = {styles.foodItem}>
-                <Text style = {styles.foodName}>{food.name}</Text>
+                <Text style = {styles.foodName}>{food.healthScore} - {food.name}</Text>
             </View>
         );
     }
 
     render() {
-        console.log(this.props.user.foodHistory);
         return (
             <View style={styles.viewStyle}>
                 <FlatList
