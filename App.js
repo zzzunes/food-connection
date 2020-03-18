@@ -8,7 +8,7 @@ import { createStore, combineReducers } from 'redux';
 
 /* Components */
 import SearchPage from './components/SearchPage';
-import ProfilePage from './components/ProfilePage';
+import HistoryPage from './components/HistoryPage';
 import DataPage from './components/DataPage';
 import SettingsPage from './components/SettingsPage';
 import FoodPage from './components/FoodPage';
@@ -30,6 +30,9 @@ import ChangeMajorPage from './components/settings_subpages/ChangeMajorPage';
 /* Reducers */
 import user from './reducers/UserReducer';
 import foods from './reducers/FoodReducer';
+import global from './reducers/GlobalReducer';
+
+/* Opening Questions */
 import AgeQPage from './components/questions_subpages/AgeQPage';
 import GenderQPage from './components/questions_subpages/GenderQPage';
 import HeightQPage from './components/questions_subpages/HeightQPage';
@@ -41,7 +44,7 @@ enableScreens();
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-const store = createStore(combineReducers({user, foods}));
+const store = createStore(combineReducers({user, foods, global}));
 
 function DrawerNavigator() {
     return (
@@ -51,7 +54,7 @@ function DrawerNavigator() {
             edgeWidth={125}
             drawerContentOptions = {{labelStyle: {color: "white"}}}>
             <Drawer.Screen name = "Search"      component = {SearchPage}    />
-            <Drawer.Screen name = "Profile"     component = {ProfilePage}   />
+            <Drawer.Screen name = "History"     component = {HistoryPage}   />
             <Drawer.Screen name = "Data"        component = {DataPage}      />
             <Drawer.Screen name = "Settings"    component = {SettingsPage}  />
         </Drawer.Navigator>

@@ -1,46 +1,29 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { SearchBar } from 'react-native-elements';
 import { FlatList, TouchableHighlight } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 
-class SearchPage extends Component {
+class HistoryPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            text: '',
-        };
     }
 
     FoodItem = ({ food }) => {
         return (
             <View style = {styles.foodItem}>
-                <TouchableHighlight onPress = {() => {
-                        this.props.selectFood(food);
-                        this.props.navigation.navigate("Food Page");
-                    }}>
-                    <Text style = {styles.foodName}>{food.name}</Text>
-                </TouchableHighlight>
+                <Text style = {styles.foodName}>{this.props.foods[food.id].name}</Text>
             </View>
         );
     }
 
     render() {
-        console.log(this.props.user.foodHistory);
         return (
             <View style={styles.viewStyle}>
-                <SearchBar
-                    round
-                    searchIcon = {{ size: 20 }}
-                    onChangeText={(text) => this.setState({text: text})}
-                    placeholder = "Search for a food..."
-                    value = {this.state.text}
-                />
                 <FlatList
-                    data = { Object.values(this.props.foods) }
+                    data = { this.props.user.foodHistory }
                     renderItem = {({ item }) => <this.FoodItem food = {item}/>}
-                    keyExtractor = {item => item._id }
+                    keyExtractor = {item => item.time.toString() }
                 />
             </View>
         );
@@ -74,15 +57,4 @@ const mapStateToProps = (state) => {
     return { user, foods };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        selectFood: (food) => {
-            dispatch({
-                type: "SELECT_FOOD",
-                payload: food,
-            });
-        },
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
+export default connect(mapStateToProps)(HistoryPage);
