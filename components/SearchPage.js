@@ -10,13 +10,13 @@ class SearchPage extends Component {
         super(props);
         this.state = {
             text: '',
-            foods: Object.values(this.props.foods),
+            foods: this.props.foods.list,
         };
     }
 
     searchList = () => {
         const newFoods = [];
-        const allFoods = Object.values(this.props.foods);
+        const allFoods = this.props.foods.list;
         var searchText = this.state.text.toLowerCase().trim();
         allFoods.forEach((item) => {
             var itemName = item.name.toLowerCase();

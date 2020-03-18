@@ -20,14 +20,6 @@ class SignupPage extends Component {
         };
     }
 
-    mapFoodsToState = (foods) => {
-        const allFoods = {};
-        foods.forEach(food => {
-            allFoods[food._id] = food;
-        });
-        this.props.setFoodMap(allFoods);
-    }
-
     getFoods = () => {
         this.setState({isLoadingFoods: true});
         fetch('http://192.168.1.116:5000/foods', {
@@ -41,7 +33,7 @@ class SignupPage extends Component {
                 this.setState({
                     foodPrepared: true,
                 });
-                this.mapFoodsToState(json.foods);
+                this.props.setFoods(json.foods);
             }
         }).catch(err => {
             console.log(err);
@@ -171,10 +163,10 @@ const mapDispatchToProps = (dispatch) => {
                 payload: user,
             });
         },
-        setFoodMap: (foodMap) => {
+        setFoods: (foods) => {
             dispatch({
-                type: "SET_FOOD_MAP",
-                payload: foodMap,
+                type: "SET_FOODS",
+                payload: foods,
             });
         }
     }
