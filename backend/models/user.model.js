@@ -53,6 +53,10 @@ const userSchema = new Schema({
         default: "Undeclared",
         minlength: 3,
     },
+    foodHistory: {
+        type: Array,
+        default: [],
+    }
 },);
 
 const User = mongoose.model('User', userSchema);

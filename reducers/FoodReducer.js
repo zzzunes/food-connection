@@ -1,5 +1,5 @@
 const INITIAL_FOOD_STATE = {
-
+    all: [],
 }
 
 const foodReducer = (state = INITIAL_FOOD_STATE, action) => {
