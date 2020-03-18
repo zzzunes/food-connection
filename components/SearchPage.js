@@ -4,7 +4,6 @@ import { SearchBar } from 'react-native-elements';
 import { FlatList, TouchableHighlight } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
-import { setProvidesAudioData } from 'expo/build/AR';
 
 class SearchPage extends Component {
     constructor(props) {
@@ -17,10 +16,10 @@ class SearchPage extends Component {
     FoodItem = ({ food }) => {
         return (
             <View style = {styles.foodItem}>
-                <TouchableHighlight onPress = {() => 
-                    this.props.navigation.navigate("Food Page", {
-                        params: { food: food }
-                    })}>
+                <TouchableHighlight onPress = {() => {
+                        this.props.selectFood(food);
+                        this.props.navigation.navigate("Food Page");
+                    }}>
                     <Text style = {styles.foodName}>{food.name}</Text>
                 </TouchableHighlight>
             </View>
@@ -28,6 +27,7 @@ class SearchPage extends Component {
     }
 
     render() {
+        console.log(this.props.user.foodHistory);
         return (
             <View style={styles.viewStyle}>
                 <SearchBar
@@ -49,7 +49,7 @@ class SearchPage extends Component {
 
 const styles = StyleSheet.create({
     foodItem: {
-        backgroundColor: '#967496',
+        backgroundColor: '#883355',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 30,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     viewStyle: {
       flex: 1,
-      backgroundColor: '#664466',
+      backgroundColor: '#AA6688',
       marginTop: Constants.statusBarHeight
     },
     textStyle: {
@@ -74,4 +74,15 @@ const mapStateToProps = (state) => {
     return { user, foods };
 };
 
-export default connect(mapStateToProps)(SearchPage);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        selectFood: (food) => {
+            dispatch({
+                type: "SELECT_FOOD",
+                payload: food,
+            });
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

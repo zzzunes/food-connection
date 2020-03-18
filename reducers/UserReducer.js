@@ -7,6 +7,7 @@ const INITIAL_USER_STATE = {
     activityLevel: "lol",
     race: "",
     major: "",
+    foodHistory: [],
     signUpDate: Date.now(),
 }
 
@@ -14,6 +15,15 @@ const userReducer = (state = INITIAL_USER_STATE, action) => {
     switch (action.type) {
         case 'SET_USER':
             state = action.payload;
+            break;
+        case 'ADD_FOOD_TO_HISTORY':
+            state = {
+                ...state,
+                foodHistory: [
+                    ...state.foodHistory,
+                    action.payload,
+                ]
+            }
             break;
         case 'CHANGE_USERNAME':
             state = {
