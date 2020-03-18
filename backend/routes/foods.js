@@ -3,8 +3,8 @@ const Food = require('../models/food.model');
 
 router.route('/').get((req, res) => {
     Food.find()
-        .then(foods => res.json(foods))
-        .catch(err => res.status(400).json('Error' + err));
+        .then(foods => res.json({ result: 1, foods: foods }))
+        .catch(err => res.status(400).json({ result: 0, message: 'Error' + err }));
 });
 
 router.route('/add').post((req, res) => {

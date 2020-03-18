@@ -142,10 +142,4 @@ const mapStateToProps = (state) => {
     return { user };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);
+export default connect(mapStateToProps)(SettingsPage);
