@@ -1,14 +1,47 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Linking } from 'react-native';
+import { StyleSheet, Text, View, Button, Linking, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 
 class FoodPage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isLoading: false,
+        }
+    }
+
+    save = () => {
+        this.setState({ isLoading: true });
+        fetch('http://192.168.1.116:5000/users/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user: this.props.user
+            }),
+        }).then(res => res.json()).then(json => {
+            Alert.alert("Notification received: ", json.message);
+            this.setState({
+                isLoading: false,
+            });
+        }).catch(err => {
+            console.log(err);
+            this.setState({
+                isLoading: false,
+            });
+        });
     }
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.viewStyle}>
+                    <Text>Loading...</Text>
+                </View>
+            );
+        }
         return (
             <View style={styles.mainView}>
                 <View style={styles.textContainer}>
@@ -40,6 +73,7 @@ class FoodPage extends Component {
                 <View style={styles.buttonContainer1}>
                     <Button color="#CC5CFF" onPress={() => {
                         this.props.logFood({id: this.props.global.selectedFood._id, time: Date.now()});
+                        this.save();
                     }} title="Log Food as Consumed" />
                 </View>
                 <View style={styles.buttonContainer2}>
@@ -96,8 +130,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { global } = state;
-    return { global };
+    const { user, global } = state;
+    return { user, global };
 };
 
 const mapDispatchToProps = (dispatch) => {

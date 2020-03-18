@@ -18,13 +18,12 @@ class HistoryPage extends Component {
     }
 
     render() {
-        console.log(this.props.user.foodHistory);
         return (
             <View style={styles.viewStyle}>
                 <FlatList
                     data = { this.props.user.foodHistory }
                     renderItem = {({ item }) => <this.FoodItem food = {item}/>}
-                    keyExtractor = {item => item.time }
+                    keyExtractor = {item => item.time.toString() }
                 />
             </View>
         );
