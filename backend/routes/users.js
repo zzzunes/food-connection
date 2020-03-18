@@ -16,7 +16,7 @@ router.route('/add').post((req, res) => {
     const user = req.body;
     const newUser = new User(user);
     if (newUser.password.length < passwordMinimum) {
-        return res.json({result: 0, message: "Error: Password length must be at least 6 characters."});
+        return res.status(400).json({result: 0, message: "Error: Password length must be at least 6 characters."});
     }
     bcrypt.genSalt(saltRounds, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -24,7 +24,7 @@ router.route('/add').post((req, res) => {
             newUser.password = hash;
             newUser.save()
                 .then(() => res.json({result: 1, message: 'User added!', user: newUser }))
-                .catch(err => res.json({result: 0, message: 'Error: ' + err}));
+                .catch(err => res.status(400).json({result: 0, message: 'Error: ' + err}));
         })
     })
 });
@@ -39,30 +39,30 @@ router.route('/login').post((req, res) => {
                 res.json({result: 1, message: "User valid!", user: user});
             }
             else {
-                res.json({result: 0, message: "Password invalid."});
+                res.status(400).json({result: 0, message: "Password invalid."});
             }
         })
-    }).catch(err => res.json({result: 0, message: "User invalid."}));
+    }).catch(err => res.status(400).json({result: 0, message: "User invalid."}));
 });
 
 router.route('/update').post((req, res) => {
     if (req.body.user.username.length < usernameMinimum) {
-        return res.json({result: 0, message: "Username must be at least 3 characters."});
+        return res.status(400).json({result: 0, message: "Username must be at least 3 characters."});
     }
     if (req.body.user.age < 18) {
-        return res.json({result: 0, message: "User must be at least 18 years old."});
+        return res.status(400).json({result: 0, message: "User must be at least 18 years old."});
     }
     if (req.body.user.height === "" || req.body.user.height < 0 ||
         req.body.user.weight < 0 || req.body.user.weight === "") {
-        return res.json({result: 0, message: "User must have a positive weight and height."});
+        return res.status(400).json({result: 0, message: "User must have a positive weight and height."});
     }
     if (req.body.user.major.length < majorMinimum) {
-        return res.json({result: 0, message: "User must have a major (3 characters or greater)."});
+        return res.status(400).json({result: 0, message: "User must have a major (3 characters or greater)."});
     }
     User.findByIdAndUpdate(req.body.user._id,
         { $set: req.body.user },
         function(err, result) {
-            if (err) return res.json({result: 0, message: "Error: " + err});
+            if (err) return res.status(400).json({result: 0, message: "Error: " + err});
             return res.json({result: 1, message: "Updated successfully!"});
         });
 });

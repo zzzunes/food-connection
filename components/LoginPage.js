@@ -13,8 +13,41 @@ class LoginPage extends Component {
             username: '',
             password: '',
             isLoading: false,
+            isLoadingFoods: false,
             loginSuccess: false,
+            foodPrepared: false,
         };
+    }
+
+    mapFoodsToState = (foods) => {
+        const allFoods = {};
+        foods.forEach(food => {
+            allFoods[food._id] = food;
+        });
+        this.props.setFoodMap(allFoods);
+    }
+
+    getFoods = () => {
+        this.setState({isLoadingFoods: true});
+        fetch('http://192.168.1.116:5000/foods', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(res => res.json()).then(json => {
+            this.setState({isLoadingFoods: false});
+            if (json.result == 1) {
+                this.setState({
+                    foodPrepared: true,
+                });
+                this.mapFoodsToState(json.foods);
+            }
+        }).catch(err => {
+            console.log(err);
+            this.setState({
+                isLoading: false,
+            });
+        });
     }
 
     onLogin = () => {
@@ -36,6 +69,7 @@ class LoginPage extends Component {
                     loginSuccess: true,
                 });
                 this.props.setUser(json.user);
+                this.getFoods();
             }
             else {
                 this.setState({
@@ -59,7 +93,14 @@ class LoginPage extends Component {
                 </View>
             );
         }
-        if (this.state.loginSuccess) {
+        if (this.state.isLoadingFoods) {
+            return (
+                <View style={styles.viewStyle}>
+                    <Text>Loading Foods...</Text>
+                </View>
+            );
+        }
+        if (this.state.loginSuccess && this.state.foodPrepared) {
             this.props.navigation.dispatch(CommonActions.reset({
                 index: 0,
                 routes: [
@@ -118,6 +159,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         user: state.user,
+        foods: state.foods,
     };
 };
 
@@ -127,6 +169,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({
                 type: "SET_USER",
                 payload: user,
+            });
+        },
+        setFoodMap: (foodMap) => {
+            dispatch({
+                type: "SET_FOOD_MAP",
+                payload: foodMap,
             });
         }
     }

@@ -15,7 +15,40 @@ class SignupPage extends Component {
             password: '',
             isLoading: false,
             signUpSuccess: false,
+            isLoadingFoods: false,
+            foodPrepared: false,
         };
+    }
+
+    mapFoodsToState = (foods) => {
+        const allFoods = {};
+        foods.forEach(food => {
+            allFoods[food._id] = food;
+        });
+        this.props.setFoodMap(allFoods);
+    }
+
+    getFoods = () => {
+        this.setState({isLoadingFoods: true});
+        fetch('http://192.168.1.116:5000/foods', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(res => res.json()).then(json => {
+            this.setState({isLoadingFoods: false});
+            if (json.result == 1) {
+                this.setState({
+                    foodPrepared: true,
+                });
+                this.mapFoodsToState(json.foods);
+            }
+        }).catch(err => {
+            console.log(err);
+            this.setState({
+                isLoading: false,
+            });
+        });
     }
 
     onSignUp = () => {
@@ -37,6 +70,7 @@ class SignupPage extends Component {
                     signUpSuccess: true,
                 });
                 this.props.setUser(json.user);
+                this.getFoods();
             }
             else {
                 Alert.alert("Warning: ", json.message);
@@ -61,7 +95,14 @@ class SignupPage extends Component {
                 </View>
             );
         }
-        if (this.state.signUpSuccess) {
+        if (this.state.isLoadingFoods) {
+            return (
+                <View style={styles.viewStyle}>
+                    <Text>Loading Foods...</Text>
+                </View>
+            );
+        }
+        if (this.state.signUpSuccess && this.state.foodPrepared) {
             this.props.navigation.navigate("Age Question Page");
         }
         return (
@@ -128,6 +169,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({
                 type: "SET_USER",
                 payload: user,
+            });
+        },
+        setFoodMap: (foodMap) => {
+            dispatch({
+                type: "SET_FOOD_MAP",
+                payload: foodMap,
             });
         }
     }

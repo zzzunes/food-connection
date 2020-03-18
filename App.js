@@ -29,7 +29,7 @@ import ChangeMajorPage from './components/settings_subpages/ChangeMajorPage';
 
 /* Reducers */
 import user from './reducers/UserReducer';
-import food from './reducers/FoodReducer';
+import foods from './reducers/FoodReducer';
 import AgeQPage from './components/questions_subpages/AgeQPage';
 import GenderQPage from './components/questions_subpages/GenderQPage';
 import HeightQPage from './components/questions_subpages/HeightQPage';
@@ -41,7 +41,7 @@ enableScreens();
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-const store = createStore(combineReducers({user, food}));
+const store = createStore(combineReducers({user, foods}));
 
 function DrawerNavigator() {
     return (

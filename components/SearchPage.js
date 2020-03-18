@@ -3,61 +3,14 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatList, TouchableHighlight } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
+import { connect } from 'react-redux';
+import { setProvidesAudioData } from 'expo/build/AR';
 
-const dummyData = [
-    {
-        id: '0',
-        name: "burrito",
-        score: 10
-    },
-    {
-        id: '1',
-        name: "chocolate",
-        score: 20
-    },
-    {
-        id: '2',
-        name: "beer",
-        score: 99
-    },
-    {
-        id: '3',
-        name: "quesadilla",
-        score: 10
-    },
-    {
-        id: '4',
-        name: "tofu block",
-        score: 20
-    },
-    {
-        id: '5',
-        name: "rice",
-        score: 99
-    },
-    {
-        id: '6',
-        name: "orange",
-        score: 10
-    },
-    {
-        id: '7',
-        name: "tempura",
-        score: 20
-    },
-    {
-        id: '8',
-        name: "soup",
-        score: 99
-    },
-];
-
-export default class SearchPage extends Component {
+class SearchPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             text: '',
-            data: dummyData
         };
     }
 
@@ -68,7 +21,7 @@ export default class SearchPage extends Component {
                     this.props.navigation.navigate("Food Page", {
                         params: { food: food }
                     })}>
-                    <Text style = {styles.foodName}>{food.score + ` - ` + food.name}</Text>
+                    <Text style = {styles.foodName}>{food.name}</Text>
                 </TouchableHighlight>
             </View>
         );
@@ -85,9 +38,9 @@ export default class SearchPage extends Component {
                     value = {this.state.text}
                 />
                 <FlatList
-                    data = { this.state.data }
+                    data = { Object.values(this.props.foods) }
                     renderItem = {({ item }) => <this.FoodItem food = {item}/>}
-                    keyExtractor = {item => item.id }
+                    keyExtractor = {item => item._id }
                 />
             </View>
         );
@@ -115,3 +68,10 @@ const styles = StyleSheet.create({
       color: "white",
     },
 });
+
+const mapStateToProps = (state) => {
+    const { user, foods } = state;
+    return { user, foods };
+};
+
+export default connect(mapStateToProps)(SearchPage);

@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 export default function FoodPage({ route, navigation }) {
     const food = route.params.params.food;
     console.log(JSON.stringify(food));
-    var address = `https://maps.google.com/?q=` + `University of Tennessee at Chattanooga`;
+    var address = `https://maps.google.com/?q=` + food.restaurant.location;
     return (
         <View style={styles.viewStyle}>
             <Text style={styles.textStyle}>
