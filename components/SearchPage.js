@@ -10,7 +10,21 @@ class SearchPage extends Component {
         super(props);
         this.state = {
             text: '',
+            foods: Object.values(this.props.foods),
         };
+    }
+
+    searchList = () => {
+        const newFoods = [];
+        const allFoods = Object.values(this.props.foods);
+        var searchText = this.state.text.toLowerCase().trim();
+        allFoods.forEach((item) => {
+            var itemName = item.name.toLowerCase();
+            if (itemName.indexOf(searchText) !== -1) {
+                newFoods.push(item);
+            }
+        });
+        this.setState({foods: newFoods});
     }
 
     FoodItem = ({ food }) => {
@@ -20,25 +34,31 @@ class SearchPage extends Component {
                         this.props.selectFood(food);
                         this.props.navigation.navigate("Food Page");
                     }}>
-                    <Text style = {styles.foodName}>{food.name}</Text>
+                    <Text style = {styles.foodName}>{food.healthScore} - {food.name}</Text>
                 </TouchableHighlight>
+                <Text style = {styles.foodName}>{food.restaurant.location}</Text>
             </View>
         );
     }
 
     render() {
-        console.log(this.props.user.foodHistory);
         return (
             <View style={styles.viewStyle}>
                 <SearchBar
                     round
                     searchIcon = {{ size: 20 }}
-                    onChangeText={(text) => this.setState({text: text})}
+                    onChangeText={(text) => {
+                        this.setState({text: text});
+                        this.searchList();
+                    }}
                     placeholder = "Search for a food..."
                     value = {this.state.text}
+                    onKeyPress = {({ nativeEvent }) => {
+                        if (nativeEvent.key === 'Backspace') this.searchList();
+                    }}
                 />
                 <FlatList
-                    data = { Object.values(this.props.foods) }
+                    data = { this.state.foods }
                     renderItem = {({ item }) => <this.FoodItem food = {item}/>}
                     keyExtractor = {item => item._id }
                 />
@@ -49,13 +69,16 @@ class SearchPage extends Component {
 
 const styles = StyleSheet.create({
     foodItem: {
-        backgroundColor: '#883355',
+        backgroundColor: '#AA22AA',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 30,
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between"
     },
     foodName: {
-        fontSize: 22,
+        fontSize: 20,
         color: "white",
     },
     viewStyle: {
