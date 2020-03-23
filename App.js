@@ -39,6 +39,7 @@ import HeightQPage from './components/questions_subpages/HeightQPage';
 import MajorQPage from './components/questions_subpages/MajorQPage';
 import RaceQPage from './components/questions_subpages/RaceQPage';
 import WeightQPage from './components/questions_subpages/WeightQPage';
+import ALQPage from './components/questions_subpages/ALQPage';
 
 enableScreens();
 
@@ -79,6 +80,7 @@ export default class App extends React.Component {
                         <Stack.Screen name = "Major Question Page"  component = {MajorQPage}/>
                         <Stack.Screen name = "Race Question Page"   component = {RaceQPage}/>
                         <Stack.Screen name = "Weight Question Page" component = {WeightQPage}/>
+                        <Stack.Screen name = "AL Question Page"     component = {ALQPage}/>
                         <Stack.Screen name = "Change Username Page" component = {ChangeUsernamePage}/>
                         <Stack.Screen name = "Change Email Page"    component = {ChangeEmailPage}/>
                         <Stack.Screen name = "Change Age Page"      component = {ChangeAgePage}/>

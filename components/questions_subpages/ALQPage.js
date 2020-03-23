@@ -5,17 +5,17 @@ import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 
-class ChangeALPage extends Component {
+class ALQPage extends Component {
     constructor() {
         super();
         this.state = {
             newAL: "Sedentary",
             isLoading: false,
+            updateSuccess: false,
         };
     }
 
     save = () => {
-        if (this.state.newAL === this.props.user.activityLevel) return;
         this.setState({ isLoading: true });
         const newUser = JSON.parse(JSON.stringify(this.props.user));
         newUser.activityLevel = this.state.newAL;
@@ -28,14 +28,15 @@ class ChangeALPage extends Component {
                 user: newUser
             }),
         }).then(res => res.json()).then(json => {
-            Alert.alert("Notification received: ", json.message);
             if (json.result == 1) {
                 this.setState({
                     isLoading: false,
+                    updateSuccess: true,
                 });
                 this.props.changeActivityLevel(this.state.newAL);
             }
             else {
+                Alert.alert("Warning: ", json.message);
                 this.setState({
                     isLoading: false,
                 });
@@ -57,13 +58,14 @@ class ChangeALPage extends Component {
             );
         }
 
+        if (this.state.updateSuccess) {
+            this.props.navigation.navigate("Gender Question Page");
+        }
+
         return (
             <View style={styles.viewStyle}>
                 <Text style={styles.textStyleTitle}>
-                    Change Activity Level
-                </Text>
-                <Text style={styles.textStyle}>
-                    Current Activity Level: {this.props.user.activityLevel}
+                    Set Activity Level
                 </Text>
                 <Text style={styles.textStyle}></Text>
                 <Picker
@@ -87,19 +89,19 @@ class ChangeALPage extends Component {
 const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#664466',
         marginTop: Constants.statusBarHeight,
         justifyContent: 'center',
         padding: 20,
     },
     textStyle: {
-        color: "black",
+        color: "white",
         fontSize: 20,
         marginBottom: 0,
         justifyContent: 'center',
     },
     textStyleTitle: {
-        color: "black",
+        color: "white",
         textAlign: 'center',
         fontSize: 30,
         marginBottom: 30,
@@ -122,4 +124,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangeALPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ALQPage);
