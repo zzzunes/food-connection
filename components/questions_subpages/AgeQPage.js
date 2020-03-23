@@ -59,7 +59,7 @@ class AgeQPage extends Component {
         }
 
         if (this.state.updateSuccess) {
-            this.props.navigation.navigate("Gender Question Page");
+            this.props.navigation.navigate("AL Question Page");
         }
 
         return (

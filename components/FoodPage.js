@@ -72,7 +72,7 @@ class FoodPage extends Component {
                 </View>
                 <View style={styles.buttonContainer1}>
                     <Button color="#CC5CFF" onPress={() => {
-                        this.props.logFood({id: this.props.global.selectedFood._id, time: Date.now()});
+                        this.props.logFood({food: this.props.global.selectedFood, time: Date.now()});
                         this.save();
                     }} title="Log Food as Consumed" />
                 </View>
