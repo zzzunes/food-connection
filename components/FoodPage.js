@@ -56,6 +56,9 @@ class FoodPage extends Component {
                 </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.textStyle}>
+                        Health Score: {this.props.global.selectedFood.healthScore}
+                    </Text>
+                    <Text style={styles.textStyle}>
                         Calories: {this.props.global.selectedFood.calories}
                     </Text>
                 </View>
@@ -68,6 +71,14 @@ class FoodPage extends Component {
                     </Text>
                     <Text style={styles.textStyle}>
                         Protein: {this.props.global.selectedFood.protein}g
+                    </Text>
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.textStyle}>
+                        Fiber: {this.props.global.selectedFood.fiber}g
+                    </Text>
+                    <Text style={styles.textStyle}>
+                        Added Sugars: {this.props.global.selectedFood.addedSugar ? "Yes" : "No"}
                     </Text>
                 </View>
                 <View style={styles.buttonContainer1}>

@@ -56,7 +56,16 @@ const userSchema = new Schema({
     foodHistory: {
         type: Array,
         default: [],
-    }
+    },
+    recommendedCalories: {
+        type: Object,
+        default: {
+            total: 0,
+            fat: 0,
+            carbohydrates: 0,
+            protein: 0,
+        }
+    },
 },);
 
 const User = mongoose.model('User', userSchema);

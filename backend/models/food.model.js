@@ -53,6 +53,14 @@ const userSchema = new Schema({
         default: [],
         trim: true,
     },
+    addedSugar: {
+        type: Boolean,
+        default: false,
+    },
+    fiber: {
+        type: Number,
+        default: 0,
+    }
 },);
 
 const Food = mongoose.model('Food', userSchema);

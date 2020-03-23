@@ -8,6 +8,12 @@ const INITIAL_USER_STATE = {
     race: "",
     major: "",
     foodHistory: [],
+    recommendedCalories: {
+        total: 0,
+        fat: 0,
+        carbohydrates: 0,
+        protein: 0,
+    },
     signUpDate: Date.now(),
 }
 
@@ -77,6 +83,12 @@ const userReducer = (state = INITIAL_USER_STATE, action) => {
             state = {
                 ...state,
                 gender: action.payload,
+            };
+            break;
+        case 'CHANGE_RECOMMENDED_CALORIES':
+            state = {
+                ...state,
+                recommendedCalories: action.payload,
             };
             break;
         default:
