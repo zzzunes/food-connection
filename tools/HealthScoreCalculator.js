@@ -30,8 +30,7 @@ export default class HealthScoreCalculator {
         diet.fat = diet.total * .30;
         return diet;
     }
-    static setHealthScore(foods, user) {
-        const diet = user.recommendedCalories;
+    static setHealthScore(foods, diet) {
         foods.forEach((food) => {
             food.healthScore = 0;
             if (food.addedSugar) {

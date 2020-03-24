@@ -21,7 +21,7 @@ class LoginPage extends Component {
 
     setHealthScores = () => {
         const foods = JSON.parse(JSON.stringify(this.props.foods.list));
-        HealthScoreCalculator.setHealthScore(foods, this.props.user);
+        HealthScoreCalculator.setHealthScore(foods, this.props.user.diet);
         this.props.setFoods(foods);
     }
 

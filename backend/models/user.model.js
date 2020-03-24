@@ -57,14 +57,15 @@ const userSchema = new Schema({
         type: Array,
         default: [],
     },
-    recommendedCalories: {
+    diet: {
         type: Object,
         default: {
             total: 1,
             fat: 1,
             carbohydrates: 1,
             protein: 1,
-        }
+        },
+        required: true,
     },
 },);
 

@@ -7,20 +7,28 @@ import HealthScoreCalculator from '../tools/HealthScoreCalculator';
 
 /* This is the last page in the sign up process, so please call calculations for health score and other adjustments here. */
 
+var diet = {};
+
 class SignUpLoadPage extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     determineDietPlan = () => {
-        const diet = HealthScoreCalculator.createDiet(this.props.user);
-        this.props.setDiet(diet);
+        diet = HealthScoreCalculator.createDiet(this.props.user);
+        this.props.changeDiet(diet);
+        console.log("Diet calculated: " + JSON.stringify(diet));
     }
 
     setHealthScores = () => {
         const foods = JSON.parse(JSON.stringify(this.props.foods.list));
-        HealthScoreCalculator.setHealthScore(foods, this.props.user);
+        HealthScoreCalculator.setHealthScore(foods, diet);
         this.props.setFoods(foods);
     }
 
     save = () => {
         const newUser = JSON.parse(JSON.stringify(this.props.user));
+        newUser.diet = diet;
         fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
@@ -98,9 +106,9 @@ const mapDispatchToProps = (dispatch) => {
                 payload: foods,
             });
         },
-        setDiet: (diet) => {
+        changeDiet: (diet) => {
             dispatch({
-                type: "CHANGE_RECOMMENDED_CALORIES",
+                type: "CHANGE_DIET",
                 payload: diet,
             });
         }

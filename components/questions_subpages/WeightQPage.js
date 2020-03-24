@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
-import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
-
-/* This is the last page in the sign up process, so please call calculations for health score and other adjustments here. */
 
 class WeightQPage extends Component {
     constructor() {
@@ -118,12 +115,6 @@ const mapDispatchToProps = (dispatch) => {
                 payload: foods,
             });
         },
-        setDiet: (diet) => {
-            dispatch({
-                type: "CHANGE_RECOMMENDED_CALORIES",
-                payload: diet,
-            });
-        }
     }
 }
 
