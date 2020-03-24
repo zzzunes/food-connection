@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import Constants from 'expo-constants';
-import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import HealthScoreCalculator from '../tools/HealthScoreCalculator';
 
 /* This is the last page in the sign up process, so please call calculations for health score and other adjustments here. */
 
-class WeightQPage extends Component {
-    constructor() {
-        super();
-        this.state = {
-            newWeight: "",
-            isLoading: false,
-        };
+class SignUpLoadPage extends Component {
+    determineDietPlan = () => {
+        const diet = HealthScoreCalculator.createDiet(this.props.user);
+        this.props.setDiet(diet);
+    }
+
+    setHealthScores = () => {
+        const foods = JSON.parse(JSON.stringify(this.props.foods.list));
+        HealthScoreCalculator.setHealthScore(foods, this.props.user);
+        this.props.setFoods(foods);
     }
 
     save = () => {
-        this.setState({ isLoading: true });
         const newUser = JSON.parse(JSON.stringify(this.props.user));
-        newUser.weight = this.state.newWeight;
         fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
@@ -30,50 +31,35 @@ class WeightQPage extends Component {
             }),
         }).then(res => res.json()).then(json => {
             if (json.result == 1) {
-                this.setState({
-                    isLoading: false,
-                });
-                this.props.changeWeight(this.state.newWeight);
-                this.props.navigation.navigate("Signup Load Page");
+                this.props.navigation.dispatch(CommonActions.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'Drawer',
+                        },
+                    ],
+                }));
             }
             else {
                 Alert.alert("Warning: ", json.message);
-                this.setState({
-                    isLoading: false,
-                });
             }
         }).catch(err => {
             console.log(err);
-            this.setState({
-                isLoading: false,
-            });
         });
     }
 
-    render() {
-        if (this.state.isLoading) {
-            return (
-                <View style={styles.viewStyle}>
-                    <Text>Loading...</Text>
-                </View>
-            );
-        }
+    componentDidMount() {
+        this.determineDietPlan();
+        this.setHealthScores();
+        this.save();
+    }
 
+    render() {
         return (
             <View style={styles.viewStyle}>
-                <Text style={styles.textStyleTitle}>
-                    Set Weight
-                </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Weight"
-                    value={this.state.newWeight}
-                    onChangeText={text => { this.setState({ newWeight: text }) }}
-                />
-                <Text style={styles.textStyle}> </Text>
-                <Button onPress={this.save} title="Save" />
+                <Text>Loading...</Text>
             </View>
-        )
+        );
     }
 }
 
@@ -106,12 +92,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeWeight: (weight) => {
-            dispatch({
-                type: "CHANGE_WEIGHT",
-                payload: weight,
-            });
-        },
         setFoods: (foods) => {
             dispatch({
                 type: "SET_FOODS",
@@ -127,4 +107,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WeightQPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpLoadPage);

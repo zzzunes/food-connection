@@ -15,6 +15,7 @@ import FoodPage from './components/FoodPage';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import OpeningPage from './components/OpeningPage';
+import SignUpLoadPage from './components/SignUpLoadPage';
 
 /* Settings Screens */
 import ChangeUsernamePage from './components/settings_subpages/ChangeUsernamePage';
@@ -73,6 +74,7 @@ export default class App extends React.Component {
                         <Stack.Screen name = "Food Page"            component = {FoodPage}/>
                         <Stack.Screen name = "Login Page"           component = {LoginPage}/>
                         <Stack.Screen name = "Signup Page"          component = {SignupPage}/>
+                        <Stack.Screen name = "Signup Load Page"     component = {SignUpLoadPage}/>
                         <Stack.Screen name = "Opening Page"         component = {OpeningPage}/>
                         <Stack.Screen name = "Age Question Page"    component = {AgeQPage}/>
                         <Stack.Screen name = "Gender Question Page" component = {GenderQPage}/>

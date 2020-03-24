@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import HealthScoreCalculator from '../tools/HealthScoreCalculator';
 
 class LoginPage extends Component {
     constructor(props) {
@@ -15,27 +16,35 @@ class LoginPage extends Component {
             isLoading: false,
             isLoadingFoods: false,
             loginSuccess: false,
-            foodPrepared: false,
         };
     }
 
+    setHealthScores = () => {
+        const foods = JSON.parse(JSON.stringify(this.props.foods.list));
+        HealthScoreCalculator.setHealthScore(foods, this.props.user);
+        this.props.setFoods(foods);
+    }
+
     getFoods = () => {
-        this.setState({isLoadingFoods: true});
+        this.setState({ isLoadingFoods: true });
         fetch('http://192.168.1.116:5000/foods', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
         }).then(res => res.json()).then(json => {
-            this.setState({isLoadingFoods: false});
+            this.setState({ isLoadingFoods: false });
             if (json.result == 1) {
-                this.setState({
-                    foodPrepared: true,
-                });
-                json.foods.sort((a, b) => {
-                    return b.healthScore - a.healthScore;
-                });
                 this.props.setFoods(json.foods);
+                this.setHealthScores();
+                this.props.navigation.dispatch(CommonActions.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'Drawer',
+                        },
+                    ],
+                }));
             }
         }).catch(err => {
             console.log(err);
@@ -46,7 +55,7 @@ class LoginPage extends Component {
     }
 
     onLogin = () => {
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
         fetch('http://192.168.1.116:5000/users/login', {
             method: 'POST',
             headers: {
@@ -88,6 +97,7 @@ class LoginPage extends Component {
                 </View>
             );
         }
+
         if (this.state.isLoadingFoods) {
             return (
                 <View style={styles.viewStyle}>
@@ -95,36 +105,27 @@ class LoginPage extends Component {
                 </View>
             );
         }
-        if (this.state.loginSuccess && this.state.foodPrepared) {
-            this.props.navigation.dispatch(CommonActions.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: 'Drawer',
-                    },
-                ],
-            }))
-        }
+
         return (
             <View style={styles.viewStyle}>
-                <Text style = {styles.textStyleTitle}>
+                <Text style={styles.textStyleTitle}>
                     Login
                 </Text>
                 <TextInput
                     style={{ fontSize: 20 }}
                     placeholder="Username"
                     value={this.state.username}
-                    onChangeText={text => { this.setState({username: text}) }}
+                    onChangeText={text => { this.setState({ username: text }) }}
                 />
-                <Text style = {styles.textStyle}> </Text>
+                <Text style={styles.textStyle}> </Text>
                 <TextInput
                     style={{ fontSize: 20 }}
                     placeholder="Password"
-                    onChangeText={text => { this.setState({password: text}) }}
+                    onChangeText={text => { this.setState({ password: text }) }}
                     value={this.state.password}
                 />
-                <Text style = {styles.textStyle}> </Text>
-                <Button onPress={this.onLogin} title="Login"/>
+                <Text style={styles.textStyle}> </Text>
+                <Button onPress={this.onLogin} title="Login" />
             </View>
         );
     }

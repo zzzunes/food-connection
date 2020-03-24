@@ -60,10 +60,10 @@ const userSchema = new Schema({
     recommendedCalories: {
         type: Object,
         default: {
-            total: 0,
-            fat: 0,
-            carbohydrates: 0,
-            protein: 0,
+            total: 1,
+            fat: 1,
+            carbohydrates: 1,
+            protein: 1,
         }
     },
 },);
