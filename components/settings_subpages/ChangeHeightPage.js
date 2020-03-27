@@ -69,7 +69,7 @@ class ChangeHeightPage extends Component {
                     Change Height
                 </Text>
                 <Text style = {styles.textStyle}>
-                    Current Height: {this.convertHeight(this.props.user.height)}
+                    Changes will be reflected in Health Scores the next day. {"\n\n"}Current Height: {this.convertHeight(this.props.user.height)}
                 </Text>
                 <Text style = {styles.textStyle}></Text>
                 <TextInput

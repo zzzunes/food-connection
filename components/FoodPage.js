@@ -14,7 +14,6 @@ class FoodPage extends Component {
 
     setHealthScores = () => {
         const foods = JSON.parse(JSON.stringify(this.props.foods.list));
-        console.log(this.props.user.diet);
         HealthScoreCalculator.setHealthScore(foods, this.props.user.diet);
         this.props.setFoods(foods);
     }
