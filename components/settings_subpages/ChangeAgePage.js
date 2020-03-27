@@ -62,7 +62,7 @@ class ChangeAgePage extends Component {
                     Change Age
                 </Text>
                 <Text style = {styles.textStyle}>
-                    Current Age: {this.props.user.age}
+                Changes will be reflected in Health Scores the next day. {"\n\n"}Current Age: {this.props.user.age}.
                 </Text>
                 <Text style = {styles.textStyle}></Text>
                 <TextInput

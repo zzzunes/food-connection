@@ -29,15 +29,15 @@ class SearchPage extends Component {
 
     FoodItem = ({ food }) => {
         return (
-            <View style = {styles.foodItem}>
-                <TouchableHighlight onPress = {() => {
-                        this.props.selectFood(food);
-                        this.props.navigation.navigate("Food Page");
-                    }}>
+            <TouchableHighlight activeOpacity = {1.0} underlayColor = "#DDAADD" onPress = {() => {
+                this.props.selectFood(food);
+                this.props.navigation.navigate("Food Page");
+            }}>
+                <View style = {styles.foodItem}>
                     <Text style = {styles.foodName}>{food.healthScore} - {food.name}</Text>
-                </TouchableHighlight>
-                <Text style = {styles.foodName}>{food.restaurant.location}</Text>
-            </View>
+                    <Text style = {styles.foodName}>{food.restaurant.name}</Text>
+                </View>
+            </TouchableHighlight>
         );
     }
 
@@ -62,6 +62,9 @@ class SearchPage extends Component {
                     renderItem = {({ item }) => <this.FoodItem food = {item}/>}
                     keyExtractor = {item => item._id }
                 />
+                <Button color="#CC5CFF" onPress={() =>
+                        this.setState({ foods: this.props.foods.list })
+                } title="Reload Health Scores" />
             </View>
         );
     }

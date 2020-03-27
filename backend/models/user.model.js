@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+getCurrentDay = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today;
+}
+
 const userSchema = new Schema({
     username: {
         type: String,
@@ -56,7 +62,18 @@ const userSchema = new Schema({
     foodHistory: {
         type: Array,
         default: [],
-    }
+    },
+    diet: {
+        type: Object,
+        default: {
+            total: 1,
+            fat: 1,
+            carbohydrates: 1,
+            protein: 1,
+            lastCalculated: getCurrentDay(),
+        },
+        required: true,
+    },
 },);
 
 const User = mongoose.model('User', userSchema);

@@ -62,7 +62,7 @@ class ChangeWeightPage extends Component {
                     Change Weight
                 </Text>
                 <Text style = {styles.textStyle}>
-                    Current Weight: {this.props.user.weight + ` lbs.`}
+                    Changes will be reflected in Health Scores the next day. {"\n\n"}Current Weight: {this.props.user.weight + ` lbs.`}
                 </Text>
                 <Text style = {styles.textStyle}></Text>
                 <TextInput

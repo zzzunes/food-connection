@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, Linking, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
+import HealthScoreCalculator from '../tools/HealthScoreCalculator';
 
 class FoodPage extends Component {
     constructor(props) {
@@ -9,6 +10,12 @@ class FoodPage extends Component {
         this.state = {
             isLoading: false,
         }
+    }
+
+    setHealthScores = () => {
+        const foods = JSON.parse(JSON.stringify(this.props.foods.list));
+        HealthScoreCalculator.setHealthScore(foods, this.props.user.diet);
+        this.props.setFoods(foods);
     }
 
     save = () => {
@@ -42,6 +49,7 @@ class FoodPage extends Component {
                 </View>
             );
         }
+
         return (
             <View style={styles.mainView}>
                 <View style={styles.textContainer}>
@@ -55,6 +63,9 @@ class FoodPage extends Component {
                     </Text>
                 </View>
                 <View style={styles.textContainer}>
+                    <Text style={styles.textStyle}>
+                        Health Score: {this.props.global.selectedFood.healthScore}
+                    </Text>
                     <Text style={styles.textStyle}>
                         Calories: {this.props.global.selectedFood.calories}
                     </Text>
@@ -70,14 +81,23 @@ class FoodPage extends Component {
                         Protein: {this.props.global.selectedFood.protein}g
                     </Text>
                 </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.textStyle}>
+                        Fiber: {this.props.global.selectedFood.fiber}g
+                    </Text>
+                    <Text style={styles.textStyle}>
+                        Added Sugars: {this.props.global.selectedFood.addedSugar ? "Yes" : "No"}
+                    </Text>
+                </View>
                 <View style={styles.buttonContainer1}>
                     <Button color="#CC5CFF" onPress={() => {
-                        this.props.logFood({food: this.props.global.selectedFood, time: Date.now()});
+                        this.props.logFood({ food: this.props.global.selectedFood, time: Date.now() });
+                        this.setHealthScores();
                         this.save();
                     }} title="Log Food as Consumed" />
                 </View>
                 <View style={styles.buttonContainer2}>
-                    <Button color="#11CC33" onPress={() => 
+                    <Button color="#11CC33" onPress={() =>
                         Linking.openURL(`https://maps.google.com/?q=` + this.props.global.selectedFood.restaurant.location)
                     } title="Click here to Navigate" />
                 </View>
@@ -130,8 +150,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { user, global } = state;
-    return { user, global };
+    const { user, global, foods } = state;
+    return { user, global, foods };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -140,6 +160,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({
                 type: "ADD_FOOD_TO_HISTORY",
                 payload: food,
+            });
+        },
+        setFoods: (foods) => {
+            dispatch({
+                type: "SET_FOODS",
+                payload: foods,
             });
         },
     }

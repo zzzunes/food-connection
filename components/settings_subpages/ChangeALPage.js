@@ -63,7 +63,7 @@ class ChangeALPage extends Component {
                     Change Activity Level
                 </Text>
                 <Text style={styles.textStyle}>
-                    Current Activity Level: {this.props.user.activityLevel}
+                    Changes will be reflected in Health Scores the next day. {"\n\n"}Current Activity Level: {this.props.user.activityLevel}
                 </Text>
                 <Text style={styles.textStyle}></Text>
                 <Picker
