@@ -13,11 +13,14 @@ const OVEREATING_PENALTY    = 3;
 
 export default class HealthScoreCalculator {
     static createDiet(user) {
+        const currentDay = new Date();
+        currentDay.setHours(0, 0, 0, 0);
         const diet = {
             total: 0,
             fat: 0,
             protein: 0,
             carbohydrates: 0,
+            lastCalculated: currentDay,
         };
         const age = user.age;
         const physicalActivityCoefficient = 1.0;

@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+getCurrentDay = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today;
+}
+
 const userSchema = new Schema({
     username: {
         type: String,
@@ -64,6 +70,7 @@ const userSchema = new Schema({
             fat: 1,
             carbohydrates: 1,
             protein: 1,
+            lastCalculated: getCurrentDay(),
         },
         required: true,
     },

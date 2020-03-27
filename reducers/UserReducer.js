@@ -18,12 +18,25 @@ const userReducer = (state = INITIAL_USER_STATE, action) => {
             state = action.payload;
             break;
         case 'ADD_FOOD_TO_HISTORY':
+            const previousDiet = state.diet;
+            const foodEntry = action.payload;
+            const newCalories = previousDiet.total - foodEntry.food.calories;
+            const newProtein = previousDiet.protein - foodEntry.food.protein * 9;
+            const newFat = previousDiet.fat - foodEntry.food.fat * 4;
+            const newCarbohydrates = previousDiet.carbohydrates - foodEntry.food.carbs * 4;
             state = {
                 ...state,
                 foodHistory: [
                     ...state.foodHistory,
-                    action.payload,
-                ]
+                    foodEntry,
+                ],
+                diet: {
+                    total: newCalories,
+                    protein: newProtein,
+                    fat: newFat,
+                    carbohydrates: newCarbohydrates,
+                    lastCalculated: previousDiet.lastCalculated,
+                }
             }
             break;
         case 'CHANGE_USERNAME':

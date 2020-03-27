@@ -36,6 +36,12 @@ class LoginPage extends Component {
             this.setState({ isLoadingFoods: false });
             if (json.result == 1) {
                 this.props.setFoods(json.foods);
+                const currentDay = new Date();
+                currentDay.setHours(0, 0, 0, 0);
+                if (currentDay.getTime() !== new Date(this.props.user.diet.lastCalculated).getTime()) {
+                    /* The day has changed, recalculate health scores based off of a day where we haven't eaten anything */
+                    this.props.changeDiet(HealthScoreCalculator.createDiet(this.props.user));
+                }
                 this.setHealthScores();
                 this.props.navigation.dispatch(CommonActions.reset({
                     index: 0,
@@ -171,6 +177,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({
                 type: "SET_FOODS",
                 payload: foods,
+            });
+        },
+        changeDiet: (diet) => {
+            dispatch({
+                type: "CHANGE_DIET",
+                payload: diet,
             });
         }
     }
