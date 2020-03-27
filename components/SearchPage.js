@@ -36,7 +36,7 @@ class SearchPage extends Component {
                     }}>
                     <Text style = {styles.foodName}>{food.healthScore} - {food.name}</Text>
                 </TouchableHighlight>
-                <Text style = {styles.foodName}>{food.restaurant.location}</Text>
+                <Text style = {styles.foodName}>{food.restaurant.name}</Text>
             </View>
         );
     }
