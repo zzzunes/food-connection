@@ -8,7 +8,7 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-    const food = req.body;
+    const food = req.body.food;
     const newFood = new Food(food);
     newFood.save()
         .then(() => res.json({ result: 1, message: 'Food added!' }))

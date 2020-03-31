@@ -66,25 +66,19 @@ export default class HealthScoreCalculator {
             const proteinDistance = 1 - proteinRatio;
             const fatDistance = 1 - fatRatio;
 
-            /* It doesn't meet the daily requirement */
+            const caloriesOver = food.calories - diet.total;
+            if (caloriesOver > 0) {
+                food.healthScore -= (caloriesOver / 10) * OVEREATING_PENALTY;
+            }
+
             if (carbDistance > 0) {
                 food.healthScore += carbRatio * CARB_MAX_POINTS;
             }
-            /* It exceeds the daily requirement */
-            else {
-                food.healthScore += CARB_MAX_POINTS - (OVEREATING_PENALTY * carbDistance);
-            }
-            if (proteinDistance) {
+            if (proteinDistance > 0) {
                 food.healthScore += proteinRatio * PROTEIN_MAX_POINTS;
             }
-            else {
-                food.healthScore += PROTEIN_MAX_POINTS - (OVEREATING_PENALTY * proteinDistance);
-            }
-            if (fatDistance) {
+            if (fatDistance > 0) {
                 food.healthScore += fatRatio * FAT_MAX_POINTS;
-            }
-            else {
-                food.healthScore += FAT_MAX_POINTS - (OVEREATING_PENALTY * fatDistance);
             }
 
             if (food.healthScore < 0) {

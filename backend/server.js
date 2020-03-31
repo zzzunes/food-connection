@@ -10,6 +10,7 @@ const port = process.env.port || 5000;
 
 /* Middleware: Allows us to parse JSON through server */
 app.use(express.json());
+app.use(express.static("manager_portal"));
 
 /* Find the URI containing token information for accessing our database */
 const uri = process.env.ATLAS_URI;

@@ -22,8 +22,6 @@ export default class OpeningPage extends Component {
                 <Button onPress={() => 
                     this.props.navigation.navigate("Signup Page")} title="Sign up" color="#11CC33"/>
                 <Text style = {styles.smallTextStyle}> </Text>
-                <Button onPress={() => 
-                    this.props.navigation.replace("Drawer")} title="Development tool - Skip" color="#CC3333"/>
             </View>
         )
     }  
