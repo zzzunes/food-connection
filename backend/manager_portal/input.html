@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang"en">
+
+<head>
+    <meta charset="utf-8">
+    <title>New Food</title>
+    <h3> Enter the New Food: </h3>
+</head>
+
+<body>
+    <form onsubmit="return false">
+        <label>Food Name: <input type="text" id="name"></label>
+        <label>Calories: <input type="text" id="calories"></label>
+        <label>Protein (g): <input type="text" id="protein"></label>
+        <label>Carbohydrates (g): <input type="text" id="carbs"></label>
+        <label>Fat (g): <input type="text" id="fat"></label>
+        <label>Fiber (g): <input type="text" id="fiber"></label>
+        <label>Price (x.xx): <input type="text" id="price"></label>
+        <label>Restaurant Name: <input type="text" id="r_name"></label>
+        <label>Restaurant Location: <input type="text" id="r_location"></label>
+
+        Allergens: <br><br>
+        <div class="horizontal-select">
+            <label> Nuts <input type="checkbox" name="nuts" id="nuts"></label>
+            <label> Milk <input type="checkbox" name="milk" id="milk"></label>
+            <label> Eggs <input type="checkbox" name="eggs" id="eggs"></label>
+            <label> Wheat <input type="checkbox" name="wheat" id="wheat"></label>
+            <label> Fish <input type="checkbox" name="fish" id="fish"></label>
+            <label> Soy <input type="checkbox" name="soy" id="soy"></label>
+        </div>
+
+        <br> Added Sugars: <br><br>
+        <div class="horizontal-select">
+            <label> Yes <input type="radio" name="added_sugars" id="added_yes" checked></label>
+            <label> No <input type="radio" name="added_sugars" id="added_no"></label>
+        </div>
+
+        <input type="submit" value="Submit" OnClick="submitFood()">
+    </form>
+</body>
+
+<script type="text/javascript">
+    function submitFood() {
+        const name          = document.getElementById("name").value.trim();
+        const calories      = document.getElementById("calories").value.trim();
+        const protein       = document.getElementById("protein").value.trim();
+        const carbs         = document.getElementById("carbs").value.trim();
+        const fat           = document.getElementById("fat").value.trim();
+        const fiber         = document.getElementById("fiber").value.trim();
+        const price         = document.getElementById("price").value.trim();
+        const r_name        = document.getElementById("r_name").value.trim();
+        const r_location    = document.getElementById("r_location").value.trim();
+
+        const nut_allergen      = document.getElementById("nuts");
+        const milk_allergen     = document.getElementById("milk");
+        const egg_allergen      = document.getElementById("eggs");
+        const wheat_allergen    = document.getElementById("wheat");
+        const fish_allergen     = document.getElementById("fish");
+        const soy_allergen      = document.getElementById("soy");
+        const added_sugar       = document.getElementById("added_yes");
+
+        if (name.length < 3) {
+            alert("Error: Name must be at least 3 characters.");
+            die();
+        }
+        if (calories.length == 0 || isNaN(calories)) {
+            alert("Error: Calories is not a number.");
+            die();
+        }
+        if (protein.length == 0 || isNaN(protein)) {
+            alert("Error: Protein is not a number.");
+            die();
+        }
+        if (carbs.length == 0 || isNaN(carbs)) {
+            alert("Error: Carbohydrates is not a number.");
+            die();
+        }
+        if (fat.length == 0 || isNaN(fat)) {
+            alert("Error: Fat is not a number.");
+            die();
+        }
+        if (fiber.length == 0 || isNaN(fiber)) {
+            alert("Error: Fiber is not a number.");
+            die();
+        }
+        if (price.length == 0 || isNaN(price)) {
+            alert("Error: Price is not valid. Please remove the $ symbol if you have included it.");
+            die();
+        }
+        if (r_name.length < 3) {
+            alert("Error: Name must be at least 3 characters.");
+            die();
+        }
+        if (r_location.length < 5) {
+            alert("Error: Location must be at least 5 characters.");
+            die();
+        }
+
+        const allergens = [];
+        if (nut_allergen.checked) {
+            allergens.push("nuts");
+        }
+        if (milk_allergen.checked) {
+            allergens.push("milk");
+        }
+        if (egg_allergen.checked) {
+            allergens.push("eggs");
+        }
+        if (wheat_allergen.checked) {
+            allergens.push("wheat");
+        }
+        if (fish_allergen.checked) {
+            allergens.push("fish");
+        }
+        if (soy_allergen.checked) {
+            allergens.push("soy");
+        }
+
+        const restaurant = {
+            name: r_name,
+            location: r_location,
+        };
+
+        const food = {
+            name: name,
+            calories: calories,
+            protein: protein,
+            fat: fat,
+            carbs: carbs,
+            fiber: fiber,
+            price: price,
+            restaurant: restaurant,
+            addedSugar: added_sugar.checked,
+            allergens: allergens,
+        };
+
+        fetch('foods/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                food: food
+            }),
+        }).then(res => res.json()).then(json => {
+            if (json.result == 1) {
+                alert("Food added successfully!");
+            }
+            else alert(json.message);
+        }).catch(err => {
+            alert(json.message);
+        });
+    }
+</script>
+
+<style>
+    label, input {
+        display: block;
+    }
+    label {
+        margin-bottom: 20px;
+        color: white;
+    }
+    body {
+        background-color: #2d2d2d;
+        color: white;
+    }
+    .horizontal-select {
+        display: inline-block;
+    }
+    .horizontal-select > label {
+        display: inline-block;
+    }
+    .horizontal-select > label > input {
+        display: inline-block;
+        margin-right: 20px;
+    }
+</style>
+
+</html>
