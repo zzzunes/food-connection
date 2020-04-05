@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Settings, Image } from 'react-native';
+import { StyleSheet,Dimensions, Text, View, Button, Settings, Image,ImageBackground } from 'react-native';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import SettingsList from 'react-native-settings-list';
+const {width,height} = Dimensions.get("window");
+const image = {uri: "https://www.flavorofindia.com/wp-content/uploads/2014/07/photodune-6761938-food-background-on-dark-slate-m1-1024x1024.jpg"}
 
 const dateFormat = require('dateformat');
 
@@ -38,6 +40,7 @@ class SettingsPage extends React.Component {
     render() {
         return (
             <View style={styles.viewStyle}>
+                <ImageBackground style= {styles.background} source= {image}>
                 <View style = {styles.headerStyle}>
                     <Text style = {styles.textTitle}>Settings</Text>
                 </View>
@@ -103,6 +106,7 @@ class SettingsPage extends React.Component {
                         hasNavArrow = {false}
                     />
                 </SettingsList>
+                </ImageBackground>
             </View>
         );
     }
@@ -135,6 +139,11 @@ const styles = StyleSheet.create({
         height:30,
         width:30,
     },
+    background: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+      },
 });
 
 const mapStateToProps = (state) => {

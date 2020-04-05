@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Linking, Alert } from 'react-native';
+import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import HealthScoreCalculator from '../tools/HealthScoreCalculator';
+const {width,height} = Dimensions.get("window");
+const image = {uri: "https://www.flavorofindia.com/wp-content/uploads/2014/07/photodune-6761938-food-background-on-dark-slate-m1-1024x1024.jpg"}
 
 class FoodPage extends Component {
     constructor(props) {
@@ -20,7 +22,7 @@ class FoodPage extends Component {
 
     save = () => {
         this.setState({ isLoading: true });
-        fetch('http://192.168.1.116:5000/users/update', {
+        fetch('http://192.168.1.10:5000/users/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -51,7 +53,10 @@ class FoodPage extends Component {
         }
 
         return (
-            <View style={styles.mainView}>
+            <View style={styles.container}>
+                <Text style={{width:'100%', paddingTop:40,paddingBottom:15,backgroundColor:'lightgreen',justifyContent:'center',fontSize:20,textAlign:'center'}}>Additional Info </Text>
+
+                <ImageBackground style= {styles.backgroundImage} source= {image}>
                 <View style={styles.textContainer}>
                     <Text style={styles.restaurantStyle}>
                         {this.props.global.selectedFood.restaurant.name} - {this.props.global.selectedFood.restaurant.location}
@@ -89,18 +94,19 @@ class FoodPage extends Component {
                         Added Sugars: {this.props.global.selectedFood.addedSugar ? "Yes" : "No"}
                     </Text>
                 </View>
-                <View style={styles.buttonContainer1}>
-                    <Button color="#CC5CFF" onPress={() => {
+                <View style={styles.button}>
+                    <Button  onPress={() => {
                         this.props.logFood({ food: this.props.global.selectedFood, time: Date.now() });
                         this.setHealthScores();
                         this.save();
                     }} title="Log Food as Consumed" />
                 </View>
-                <View style={styles.buttonContainer2}>
-                    <Button color="#11CC33" onPress={() =>
+                <View style={styles.button}>
+                    <Button  onPress={() =>
                         Linking.openURL(`https://maps.google.com/?q=` + this.props.global.selectedFood.restaurant.location)
                     } title="Click here to Navigate" />
                 </View>
+            </ImageBackground>
             </View>
         )
     }
@@ -124,7 +130,7 @@ const styles = StyleSheet.create({
         width: 380,
     },
     textContainer: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -146,6 +152,138 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 20,
         fontWeight: "bold",
+    },
+    container: {
+        flex: 1,
+        alignContent:'center',
+        justifyContent:'center'
+      },
+      markWrap: {
+        flex: 1,
+        paddingVertical: 30,
+      },
+      mark: {
+        width: null,
+        height: null,
+        flex: 1,
+      },
+      background: {
+        width,
+        height,
+      },
+      wrapper: {
+        marginTop: 10,
+        
+      },
+      Healthscore: {
+          fontSize:15,
+          lineHeight:40,
+          width:130,
+          alignContent: "space-between",
+          
+          fontWeight: 'bold',
+          color: "white",
+          marginLeft:30
+      },
+      row: {
+          paddingVertical:25,
+          paddingHorizontal:15,
+          borderBottomWidth: 1,
+          borderBottomColor: 'white'
+      },
+      inputWrap: {
+        flexDirection: "row",
+        marginVertical: 5,
+        height: 40,
+        borderBottomWidth: 1,
+        borderRadius: 25,
+        paddingLeft: 25,
+        backgroundColor: "rgba(0,0,0,0.35)",
+      },
+      iconWrap: {
+        paddingHorizontal: 7,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      logo: {
+          width :200,
+          height: 200,
+      },
+      logoText: {
+          color:'lightgreen',
+          fontSize: 20,
+          fontWeight: '500',
+          marginTop: 10,
+      },
+      icon: {
+        height: 20,
+        width: 20,
+      },
+      logoContainer: {
+          alignItems: 'center',
+      },
+      input: {
+        width: width - 55,
+        height: 45,
+        borderRadius: 25,
+        fontSize: 16,
+        backgroundColor: "rgba(0,0,0,.5)",
+        marginHorizontal: 25,
+        marginTop: 20,
+        paddingLeft: 45,
+        color: "rgba(255,255,255,0.7)",
+      },
+      button: {
+        width: width - 55,
+        height: 45,
+        borderRadius: 25,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 40,
+        paddingLeft: 4,
+        marginHorizontal: 25,
+      },
+      buttonText: {
+        color: "rgba(255,255,255,0.7)",
+        fontSize: 20,
+        
+        textAlign: 'center',
+        
+      },
+      forgotPasswordText: {
+        color: "#D8D8D8",
+        backgroundColor: "transparent",
+        textAlign: "right",
+        paddingRight: 15,
+      },
+      signupWrap: {
+        backgroundColor: "transparent",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      accountText: {
+        color: "#D8D8D8"
+      },
+      signupLinkText: {
+        fontWeight:'bold',
+        color: "grey",
+        textAlign: 'center',
+        fontSize: 40,
+        paddingVertical: 0,
+        marginBottom: 10,
+        
+      },
+      backgroundImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        justifyContent: "center",
+       //alignItems: "center",
+        //opacity: 0.7,
+    },
+    align: {
+        marginBottom: 40,
     },
 });
 
