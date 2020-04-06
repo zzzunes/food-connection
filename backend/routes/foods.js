@@ -12,7 +12,9 @@ router.route('/add').post((req, res) => {
     const newFood = new Food(food);
     newFood.save()
         .then(() => res.json({ result: 1, message: 'Food added!' }))
-        .catch(err => res.status(400).json({ result: 0, message: 'Error: ' + err }));
+        .catch(err => {
+            res.status(400).json({ result: 0, message: 'Error: ' + err })
+        });
 });
 
 module.exports = router;
