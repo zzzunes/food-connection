@@ -71,9 +71,7 @@ class WeightQPage extends Component {
                     keyboardType = 'numeric'
                     onChangeText={text => { this.setState({ newWeight: text }) }}
                 />
-                <View style = {styles.button}>
                 <Button onPress={this.save} title="Save" />
-                </View>
             </ImageBackground>
             </View>
         )
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
       backgroundColor: "rgba(0,0,0,.2)",
       marginHorizontal: 25,
       paddingLeft: 45,
-      color: "rgba(255,255,255,0.7)",
+      color: "white",
     },
     button: {
       width: width - 55,

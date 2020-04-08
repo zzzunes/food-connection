@@ -20,17 +20,13 @@ export default class OpeningPage extends Component {
                     </Text>
                     </View>
 
-                            <View style = {styles.button}>
                             <Button onPress={() => 
                                 this.props.navigation.navigate("Login Page")} title="Login" style = {styles.button}/>
-                                </View>
                                 
-                                <View style = {styles.button}>
                                     
                                     <Button onPress={() => 
                                         this.props.navigation.navigate("Signup Page")} title="Sign up" style = {styles.button}/>
                                 
-                        </View>
                         <Text style = {styles.buttonText}>Don't have an account?</Text>
                         
                     </ImageBackground>

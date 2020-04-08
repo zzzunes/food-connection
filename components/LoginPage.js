@@ -140,9 +140,7 @@ class LoginPage extends Component {
                 />
                 </View>
                 
-                <View style = {styles.button}>
                 <Button onPress={this.onLogin} title="Login" style = {styles.button} />
-                </View>
             </ImageBackground>
             </View>
         
@@ -198,7 +196,7 @@ const styles = StyleSheet.create({
       backgroundColor: "rgba(0,0,0,.2)",
       marginHorizontal: 25,
       paddingLeft: 45,
-      color: "rgba(255,255,255,0.7)",
+      color: "white",
     },
     button: {
       width: width - 55,

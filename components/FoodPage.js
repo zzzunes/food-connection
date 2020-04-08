@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         padding: 10,
-        color: "white",
+        color: "green",
         fontSize: 20,
         fontWeight: "bold",
     },
