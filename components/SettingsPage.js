@@ -41,10 +41,10 @@ class SettingsPage extends React.Component {
 
     render() {
         return (
-            <View style={styles.viewStyle}>
+            <View style={styles.viewStyle2}>
                 <ImageBackground style= {styles.background} source= {image}>
-                <View style = {styles.headerStyle}>
-                    <Text style = {styles.textTitle}>Settings</Text>
+                <View style = {styles.headerStyle2}>
+                    <Text style = {styles.textTitle2}>Settings</Text>
                 </View>
                 <SettingsList borderColor = "#C8C7CC" defaultItemSize = {50}>
                     <SettingsList.Item 

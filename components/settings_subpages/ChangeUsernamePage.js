@@ -4,8 +4,8 @@ import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import styles from './frontendstyle';
-const image = (require('../assets/background.jpg'));
+import styles from '../frontendstyle';
+const image = (require('../../assets/background.jpg'));
 const {width,height} = Dimensions.get("window");
 
 class ChangeUsernamePage extends Component {
@@ -70,6 +70,7 @@ class ChangeUsernamePage extends Component {
                 </Text>
                 <Text style = {styles.textStyle}></Text>
                 <TextInput
+                    placeholderTextColor = 'white'
                     style= {styles.input}
                     placeholder="New Username"
                     value={this.state.newUsername}

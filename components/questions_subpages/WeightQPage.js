@@ -3,8 +3,8 @@ import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimen
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import styles from './frontendstyle';
-const image = (require('../assets/background.jpg'));
+import styles from '../frontendstyle';
+const image = (require('../../assets/background.jpg'));
 const {width,height} = Dimensions.get("window");
 
 class WeightQPage extends Component {
@@ -66,6 +66,7 @@ class WeightQPage extends Component {
                     Set Weight
                 </Text>
                 <TextInput
+                    placeholderTextColor = 'white'
                     style={styles.input}
                     placeholder="Weight"
                     value={this.state.newWeight}

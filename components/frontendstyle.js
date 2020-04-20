@@ -121,10 +121,13 @@ export default styles = StyleSheet.create({
           height: 200,
       },
       logoText: {
-          color:'lightgreen',
+          color:'red',
           fontSize: 20,
           fontWeight: '500',
           marginTop: 10,
+          textAlign: 'center',
+          
+          marginBottom:30,          
       },
       icon: {
         height: 20,
@@ -142,7 +145,7 @@ export default styles = StyleSheet.create({
         marginHorizontal: 25,
         marginTop: 20,
         paddingLeft: 45,
-        color: "rgba(255,255,255,0.7)",
+        color: "white",
       },
       button: {
         width: width - 55,
@@ -178,7 +181,7 @@ export default styles = StyleSheet.create({
       },
       signupLinkText: {
         fontWeight:'bold',
-        color: "grey",
+        color: "white",
         textAlign: 'center',
         fontSize: 40,
         paddingVertical: 0,
@@ -195,7 +198,7 @@ export default styles = StyleSheet.create({
         //opacity: 0.7,
     },
     align: {
-        marginBottom: 40,
+        marginTop: 35,
     },
     viewStyle2: {
       flex: 1,
@@ -217,7 +220,7 @@ export default styles = StyleSheet.create({
       fontWeight: "bold",
       fontSize: 16,
   },
-  imageStyle2:{
+  imageStyle:{
       marginLeft:15,
       alignSelf:'center',
       height:30,
@@ -267,5 +270,19 @@ export default styles = StyleSheet.create({
       color: "white",
       fontSize: 20,
       fontWeight: "bold",
+  },
+  foodItem: {
+    flex:1,
+    paddingHorizontal: 15,
+    paddingVertical:25,
+    flexDirection:'row',
+    justifyContent: 'space-between',
+    borderBottomColor:'white',
+    borderBottomWidth:1,
+    
+  },
+  foodName: {
+    fontSize:20,
+    color:'red',
   },
 });

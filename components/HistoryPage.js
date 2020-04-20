@@ -15,7 +15,7 @@ class HistoryPage extends Component {
 
     FoodItem = ({ food }) => {
         return (
-            <View style = {styles.foodItem}>   
+            <View style = {styles.foodItem1}>   
             <Text style = {styles.Healthscore}>{food.healthScore} - {food.name}</Text>
                </View> 
                 );

@@ -4,9 +4,9 @@ import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import styles from './frontendstyle';
+import styles from '../frontendstyle';
 const {width,height} = Dimensions.get("window");
-const image = (require('../assets/background.jpg'));
+const image = (require('../../assets/background.jpg'));
 
 class ChangeEmailPage extends Component {
     constructor() {
@@ -70,6 +70,7 @@ class ChangeEmailPage extends Component {
                 </Text>
                 <Text style = {styles.textStyle}></Text>
                 <TextInput
+                    placeholderTextColor = 'white'
                     style={styles.input}
                     placeholder="New Email"
                     value={this.state.newEmail}

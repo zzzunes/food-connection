@@ -4,8 +4,8 @@ import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import styles from './frontendstyle';
-const image = (require('../assets/background.jpg'));
+import styles from '../frontendstyle';
+const image = (require('../../assets/background.jpg'));
 const {width,height} = Dimensions.get("window");
 
 class HeightQPage extends Component {
@@ -80,6 +80,7 @@ class HeightQPage extends Component {
                 </Text>
                 <View style={styles.wrapper}>
                 <TextInput
+                    placeholderTextColor = 'white'
                     style={ styles.input }
                     keyboardType = {"numeric"}
                     placeholder="Height (in inches)"
