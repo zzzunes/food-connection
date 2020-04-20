@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import HealthScoreCalculator from '../tools/HealthScoreCalculator';
+import styles from './frontendstyle';
 
 /* This is the last page in the sign up process, so please call calculations for health score and other adjustments here. */
 
@@ -71,27 +72,6 @@ class SignUpLoadPage extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: '#664466',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyle: {
-        color: "white",
-        fontSize: 20,
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-    textStyleTitle: {
-        color: "white",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-});
 
 const mapStateToProps = (state) => {
     const { user, foods } = state

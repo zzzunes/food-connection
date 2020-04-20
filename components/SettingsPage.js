@@ -3,8 +3,10 @@ import { StyleSheet,Dimensions, Text, View, Button, Settings, Image,ImageBackgro
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import SettingsList from 'react-native-settings-list';
+import styles from './frontendstyle';
+
 const {width,height} = Dimensions.get("window");
-const image = {uri: "https://www.flavorofindia.com/wp-content/uploads/2014/07/photodune-6761938-food-background-on-dark-slate-m1-1024x1024.jpg"}
+const image = (require('../assets/background.jpg'));
 
 const dateFormat = require('dateformat');
 
@@ -112,39 +114,7 @@ class SettingsPage extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: 'white',
-        marginTop: Constants.statusBarHeight,
-    },
-    textStyle: {
-        color: "black",
-    },
-    headerStyle: {
-        borderBottomWidth:1,
-        backgroundColor:'#FFFFFF',
-        borderColor:'#FFFFFF'
-    },
-    textTitle: {
-        alignSelf: "center",
-        marginTop: 20,
-        marginBottom: 10,
-        fontWeight: "bold",
-        fontSize: 16,
-    },
-    imageStyle:{
-        marginLeft:15,
-        alignSelf:'center',
-        height:30,
-        width:30,
-    },
-    background: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-      },
-});
+
 
 const mapStateToProps = (state) => {
     const { user } = state;
