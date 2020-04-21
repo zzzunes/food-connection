@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
-import { enableScreens } from 'react-native-screens';
+
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 
@@ -42,7 +42,7 @@ import RaceQPage from './components/questions_subpages/RaceQPage';
 import WeightQPage from './components/questions_subpages/WeightQPage';
 import ALQPage from './components/questions_subpages/ALQPage';
 
-enableScreens();
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();

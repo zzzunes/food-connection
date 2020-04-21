@@ -31,7 +31,7 @@ class LoginPage extends Component {
 
     getFoods = () => {
         this.setState({ isLoadingFoods: true });
-        fetch('http://192.168.1.10:5000/foods', {
+        fetch('http://192.168.1.204:5000/foods', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ class LoginPage extends Component {
 
     onLogin = () => {
         this.setState({ isLoading: true });
-        fetch('http://192.168.1.10:5000/users/login', {
+        fetch('http://192.168.1.204:5000/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

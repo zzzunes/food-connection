@@ -30,7 +30,7 @@ class SignUpLoadPage extends Component {
     save = () => {
         const newUser = JSON.parse(JSON.stringify(this.props.user));
         newUser.diet = diet;
-        fetch('http://192.168.1.10:5000/users/update', {
+        fetch('http://192.168.1.204:5000/users/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity } from 'react-native';
+import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity, Platform } from 'react-native';
 import Constants from 'expo-constants';
 const {width,height} = Dimensions.get("window");
 const image = (require('../assets/background.jpg'));
@@ -198,7 +198,14 @@ export default styles = StyleSheet.create({
         //opacity: 0.7,
     },
     align: {
-        marginTop: 35,
+      ...Platform.select({
+        ios: {
+          marginTop: 35,
+        },
+        android: {
+          marginTop: Constants.statusBarHeight,
+        },
+      })
     },
     viewStyle2: {
       flex: 1,
