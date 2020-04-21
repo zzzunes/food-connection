@@ -14,7 +14,7 @@ app.use(express.static("manager_portal"));
 
 /* Find the URI containing token information for accessing our database */
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true});
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("Connection to MongoDB successfully established.");
@@ -27,6 +27,8 @@ app.use('/users', userRouter);
 app.use('/foods', foodRouter);
 
 /* Start server by running: nodemon server */
-app.listen(port, () => {
+var server = app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
+
+module.exports = server;
