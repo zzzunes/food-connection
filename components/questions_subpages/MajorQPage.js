@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
-import Constants from 'expo-constants';
+import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import styles from '../frontendstyle';
+const image = (require('../../assets/background.jpg'));
 
 class MajorQPage extends Component {
     constructor() {
@@ -64,44 +64,26 @@ class MajorQPage extends Component {
         }
 
         return (
-            <View style={styles.viewStyle}>
-                <Text style = {styles.textStyleTitle}>
+            <View style={styles.container}>
+                <ImageBackground style ={styles.backgroundImage} source={image} >
+                <Text style = {styles.signupLinkText}>
                     Set Major
                 </Text>
                 <TextInput
-                    style={{ fontSize: 20 }}
+                    placeholderTextColor = 'white'
+                    style = {styles.input}
                     placeholder="Major"
                     value={this.state.newMajor}
                     onChangeText={text => { this.setState({newMajor: text}) }}
                 />
-                <Text style = {styles.textStyle}> </Text>
-                <Button onPress={this.save} title="Save"/>
+                <View style = {styles.buttonContainerAlt}>
+                    <Button onPress={this.save} style={styles.button} title="Next" />
+                </View>
+            </ImageBackground>
             </View>
         )
     }  
 }
-
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: '#664466',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyle: {
-        color: "white",
-        fontSize: 20,
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-    textStyleTitle: {
-        color: "white",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-});
 
 const mapStateToProps = (state) => {
     const { user } = state

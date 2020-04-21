@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Linking, Alert } from 'react-native';
-import Constants from 'expo-constants';
+import { AppRegistry, StyleSheet, Image, ImageBackground, Text, View, Button, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import HealthScoreCalculator from '../tools/HealthScoreCalculator';
+import styles from './frontendstyle';
+
+const image = (require('../assets/background.jpg'));
 
 class LoginPage extends Component {
     constructor(props) {
@@ -113,50 +115,36 @@ class LoginPage extends Component {
         }
 
         return (
-            <View style={styles.viewStyle}>
-                <Text style={styles.textStyleTitle}>
-                    Login
-                </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChangeText={text => { this.setState({ username: text }) }}
-                />
-                <Text style={styles.textStyle}> </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Password"
-                    onChangeText={text => { this.setState({ password: text }) }}
-                    value={this.state.password}
-                />
-                <Text style={styles.textStyle}> </Text>
-                <Button onPress={this.onLogin} title="Login" />
+            <View style={styles.container}>
+                <ImageBackground style={styles.backgroundImage} source={image} >
+                    <Text style={styles.signupLinkText}>
+                        Login
+                    </Text>
+                    <View style={styles.wrapper}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Username"
+                            placeholderTextColor="white"
+                            value={this.state.username}
+                            onChangeText={text => { this.setState({ username: text }) }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            placeholderTextColor="white"
+                            onChangeText={text => { this.setState({ password: text }) }}
+                            value={this.state.password}
+                            secureTextEntry
+                        />
+                    </View>
+                    <View style = {styles.buttonContainerAlt}>
+                        <Button onPress={this.onLogin} title="Login" style={styles.button} />
+                    </View>
+                </ImageBackground>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: '#664466',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyleTitle: {
-        color: "white",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-    textStyle: {
-        color: "white",
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-});
 
 const mapStateToProps = (state) => {
     return {

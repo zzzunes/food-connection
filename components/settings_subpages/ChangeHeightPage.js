@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import styles from '../frontendstyle';
 
+const {width,height} = Dimensions.get("window");
+const image = (require('../../assets/background.jpg'));
 class ChangeHeightPage extends Component {
     constructor() {
         super();
@@ -64,48 +67,32 @@ class ChangeHeightPage extends Component {
         }
 
         return (
-            <View style={styles.viewStyle}>
-                <Text style = {styles.textStyleTitle}>
+            <View style={styles.container}>
+                <ImageBackground style ={styles.backgroundImage} source={image} >
+                <Text style = {styles.signupLinkText}>
                     Change Height
                 </Text>
-                <Text style = {styles.textStyle}>
+                <Text style = {styles.logoText}>
                     Changes will be reflected in Health Scores the next day. {"\n\n"}Current Height: {this.convertHeight(this.props.user.height)}
                 </Text>
                 <Text style = {styles.textStyle}></Text>
                 <TextInput
-                    style={{ fontSize: 20 }}
+                    placeholderTextColor = 'white'
+                    style={styles.input}
+                    keyboardType = 'numeric'
                     placeholder="New Height (in inches)"
                     value={this.state.newHeight}
                     onChangeText={text => { this.setState({newHeight: text}) }}
                 />
                 <Text style = {styles.textStyle}> </Text>
                 <Button onPress={this.save} title="Save"/>
+            </ImageBackground>
             </View>
         )
     }  
 }
 
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: 'white',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyle: {
-        color: "black",
-        fontSize: 20,
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-    textStyleTitle: {
-        color: "black",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-});
+
 
 const mapStateToProps = (state) => {
     const { user } = state

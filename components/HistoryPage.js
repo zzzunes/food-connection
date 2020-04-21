@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity, StatusBar } from 'react-native';
 import { FlatList, TouchableHighlight } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
+import styles from './frontendstyle';
+
+const {width,height} = Dimensions.get("window");
+const image = (require('../assets/background.jpg'));
 
 class HistoryPage extends Component {
     constructor(props) {
@@ -11,46 +15,37 @@ class HistoryPage extends Component {
 
     FoodItem = ({ food }) => {
         return (
-            <View style = {styles.foodItem}>
-                <Text style = {styles.foodName}>{food.healthScore} - {food.name}</Text>
-            </View>
-        );
+            <View style = {styles.foodItem1}>   
+            <Text style = {styles.Healthscore}>{food.healthScore} - {food.name}</Text>
+               </View> 
+                );
     }
 
     render() {
         return (
-            <View style={styles.viewStyle}>
+            <View style={styles.container}>
+                <ImageBackground style= {styles.backgroundImage} source= {image}>
+                <StatusBar barStyle="light-content"/>
+                <Text style={{width:'100%', paddingTop:40,paddingBottom:15,backgroundColor:'lightgreen',justifyContent:'center',fontSize:20,textAlign:'center'}}>History </Text>
                 <FlatList
+                    style={{width: '100%'}}
                     data = { this.props.user.foodHistory }
-                    renderItem = {({ item }) => <this.FoodItem food = {item.food}/>}
+                    renderItem = {({ item }) => (
+                    <View style = {styles.row}>
+                    <this.FoodItem food = {item.food}/>
+                    </View>
+                    )}
                     keyExtractor = {item => item.time.toString() }
+                    
+                        
                 />
+            </ImageBackground>
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    foodItem: {
-        backgroundColor: '#883355',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 30,
-    },
-    foodName: {
-        fontSize: 22,
-        color: "white",
-    },
-    viewStyle: {
-      flex: 1,
-      backgroundColor: '#AA6688',
-      marginTop: Constants.statusBarHeight
-    },
-    textStyle: {
-      padding: 10,
-      color: "white",
-    },
-});
+
 
 const mapStateToProps = (state) => {
     const { user, foods } = state;

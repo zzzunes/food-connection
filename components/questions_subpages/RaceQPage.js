@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Picker } from 'react-native';
-import Constants from 'expo-constants';
-import { TextInput } from 'react-native-gesture-handler';
-import { CommonActions } from '@react-navigation/native';
+import { AppRegistry,Picker, StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import styles from '../frontendstyle';
+const image = (require('../../assets/background.jpg'));
 
 class RaceQPage extends Component {
     constructor() {
@@ -63,11 +62,13 @@ class RaceQPage extends Component {
         }
 
         return (
-            <View style={styles.viewStyle}>
-                <Text style = {styles.textStyleTitle}>
+            <View style={styles.container}>
+                <ImageBackground style ={styles.backgroundImage} source={image} >
+                <Text style = {styles.signupLinkText}>
                     Set Race
                 </Text>
                 <Picker
+                    itemStyle = {{color:"white"}}
                     selectedValue={this.state.newRace}
                     onValueChange={(itemValue, itemIndex) =>
                         this.setState({ newRace: itemValue })
@@ -81,34 +82,14 @@ class RaceQPage extends Component {
                     <Picker.Item label="Other" value="Other" />
                     <Picker.Item label="Two or More Races" value="Multiracial" />
                 </Picker>
-                <Text style={styles.textStyle}> </Text>
-                <Button onPress={this.save} title="Save"/>
+                <View style = {styles.buttonContainerAlt}>
+                    <Button onPress={this.save} style={styles.button} title="Next" />
+                </View>
+            </ImageBackground>
             </View>
         )
     }  
 }
-
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: '#664466',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyle: {
-        color: "white",
-        fontSize: 20,
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-    textStyleTitle: {
-        color: "white",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-});
 
 const mapStateToProps = (state) => {
     const { user } = state

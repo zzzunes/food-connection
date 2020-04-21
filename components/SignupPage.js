@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
-import Constants from 'expo-constants';
-import { TextInput } from 'react-native-gesture-handler';
-import { CommonActions } from '@react-navigation/native';
+import { AppRegistry, StyleSheet, Image, ImageBackground, Text, View, Button, Dimensions, Alert } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
+import styles from './frontendstyle';
 
+const image = (require('../assets/background.jpg'));
 class SignupPage extends Component {
     constructor() {
         super();
@@ -21,14 +21,14 @@ class SignupPage extends Component {
     }
 
     getFoods = () => {
-        this.setState({isLoadingFoods: true});
+        this.setState({ isLoadingFoods: true });
         fetch('http://192.168.1.116:5000/foods', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
         }).then(res => res.json()).then(json => {
-            this.setState({isLoadingFoods: false});
+            this.setState({ isLoadingFoods: false });
             if (json.result == 1) {
                 this.setState({
                     foodPrepared: true,
@@ -44,7 +44,7 @@ class SignupPage extends Component {
     }
 
     onSignUp = () => {
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
         fetch('http://192.168.1.116:5000/users/add', {
             method: 'POST',
             headers: {
@@ -82,14 +82,14 @@ class SignupPage extends Component {
     render() {
         if (this.state.isLoading) {
             return (
-                <View style={styles.viewStyle}>
+                <View style={styles.container}>
                     <Text>Loading...</Text>
                 </View>
             );
         }
         if (this.state.isLoadingFoods) {
             return (
-                <View style={styles.viewStyle}>
+                <View style={styles.container}>
                     <Text>Loading Foods...</Text>
                 </View>
             );
@@ -98,57 +98,45 @@ class SignupPage extends Component {
             this.props.navigation.navigate("Age Question Page");
         }
         return (
-            <View style={styles.viewStyle}>
-                <Text style = {styles.textStyleTitle}>
-                    Sign Up
+            <View style={styles.container}>
+                <ImageBackground style={styles.backgroundImage} source={image} >
+                    <View style={styles.align}>
+                        <Text style={styles.signupLinkText}>
+                            Sign Up
                 </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChangeText={text => { this.setState({username: text}) }}
-                />
-                <Text style = {styles.textStyle}> </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Email"
-                    value={this.state.email}
-                    onChangeText={text => { this.setState({email: text}) }}
-                />
-                <Text style = {styles.textStyle}> </Text>
-                <TextInput
-                    style={{ fontSize: 20 }}
-                    placeholder="Password"
-                    value={this.state.password}
-                    onChangeText={text => { this.setState({password: text}) }}
-                />
-                <Text style = {styles.textStyle}> </Text>
-                <Button onPress={this.onSignUp} title="Sign Up"/>
+                    </View>
+                    <View style={styles.wrapper}>
+                        <TextInput
+                            style={styles.input}
+                            placeholderTextColor="white"
+                            placeholder="Username"
+                            value={this.state.username}
+                            onChangeText={text => { this.setState({ username: text }) }}
+                        />
+                        <TextInput
+                            placeholderTextColor="white"
+                            style={styles.input}
+                            placeholder="Email"
+                            value={this.state.email}
+                            onChangeText={text => { this.setState({ email: text }) }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholderTextColor="white"
+                            placeholder="Password"
+                            value={this.state.password}
+                            onChangeText={text => { this.setState({ password: text }) }}
+                            secureTextEntry
+                        />
+                    </View>
+                    <View style = {styles.buttonContainerAlt}>
+                        <Button onPress={this.onSignUp} title="Sign Up" style={styles.button} fontSize={20} />
+                    </View>
+                </ImageBackground>
             </View>
         )
-    }  
+    }
 }
-
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: '#664466',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyle: {
-        color: "white",
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-    textStyleTitle: {
-        color: "white",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-});
 
 const mapStateToProps = (state) => {
     const { user } = state

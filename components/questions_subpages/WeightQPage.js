@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
-import Constants from 'expo-constants';
+import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
+import styles from '../frontendstyle';
+const image = (require('../../assets/background.jpg'));
 
 class WeightQPage extends Component {
     constructor() {
@@ -57,44 +58,27 @@ class WeightQPage extends Component {
         }
 
         return (
-            <View style={styles.viewStyle}>
-                <Text style={styles.textStyleTitle}>
+            <View style={styles.container}>
+                <ImageBackground style ={styles.backgroundImage} source={image} >
+                <Text style={styles.signupLinkText}>
                     Set Weight
                 </Text>
                 <TextInput
-                    style={{ fontSize: 20 }}
+                    placeholderTextColor = 'white'
+                    style={styles.input}
                     placeholder="Weight"
                     value={this.state.newWeight}
+                    keyboardType = 'numeric'
                     onChangeText={text => { this.setState({ newWeight: text }) }}
                 />
-                <Text style={styles.textStyle}> </Text>
-                <Button onPress={this.save} title="Save" />
+                <View style = {styles.buttonContainerAlt}>
+                    <Button onPress={this.save} style={styles.button} title="Finish" />
+                </View>
+            </ImageBackground>
             </View>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: '#664466',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyle: {
-        color: "white",
-        fontSize: 20,
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-    textStyleTitle: {
-        color: "white",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-});
 
 const mapStateToProps = (state) => {
     const { user, foods } = state

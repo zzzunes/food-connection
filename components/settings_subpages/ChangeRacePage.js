@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Picker } from 'react-native';
+import { AppRegistry,Picker, StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import styles from '../frontendstyle';
+const image = (require('../../assets/background.jpg'));
+const {width,height} = Dimensions.get("window");
 
 class ChangeRacePage extends Component {
     constructor() {
@@ -58,15 +61,17 @@ class ChangeRacePage extends Component {
         }
 
         return (
-            <View style={styles.viewStyle}>
-                <Text style = {styles.textStyleTitle}>
+            <View style={styles.container}>
+                <ImageBackground style ={styles.backgroundImage} source={image} >
+                <Text style = {styles.signupLinkText}>
                     Change Race
                 </Text>
-                <Text style = {styles.textStyle}>
+                <Text style = {styles.logoText}>
                     Current Race: {this.props.user.race}
                 </Text>
                 <Text style = {styles.textStyle}></Text>
                 <Picker
+                    itemStyle = {{color:'white'}}
                     selectedValue={this.state.newRace}
                     onValueChange={(itemValue, itemIndex) =>
                         this.setState({ newRace: itemValue })
@@ -82,32 +87,13 @@ class ChangeRacePage extends Component {
                 </Picker>
                 <Text style={styles.textStyle}> </Text>
                 <Button onPress={this.save} title="Save"/>
+            </ImageBackground>
             </View>
         )
     }  
 }
 
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: 'white',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyle: {
-        color: "black",
-        fontSize: 20,
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-    textStyleTitle: {
-        color: "black",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-});
+
 
 const mapStateToProps = (state) => {
     const { user } = state

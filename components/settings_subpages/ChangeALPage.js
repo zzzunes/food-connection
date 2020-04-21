@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Picker } from 'react-native';
+import { AppRegistry,Picker, StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import styles from '../frontendstyle';
+
+const {width,height} = Dimensions.get("window");
+const image = (require('../../assets/background.jpg'));
 
 class ChangeALPage extends Component {
     constructor() {
@@ -58,15 +62,17 @@ class ChangeALPage extends Component {
         }
 
         return (
-            <View style={styles.viewStyle}>
-                <Text style={styles.textStyleTitle}>
+            <View style={styles.container}>
+                <ImageBackground style ={styles.backgroundImage} source={image} >
+                <Text style={styles.signupLinkText}>
                     Change Activity Level
                 </Text>
-                <Text style={styles.textStyle}>
+                <Text style={styles.logoText}>
                     Changes will be reflected in Health Scores the next day. {"\n\n"}Current Activity Level: {this.props.user.activityLevel}
                 </Text>
                 <Text style={styles.textStyle}></Text>
                 <Picker
+                    itemStyle = {{color:'white'}}
                     selectedValue={this.state.newAL}
                     onValueChange={(itemValue, itemIndex) =>
                         this.setState({ newAL: itemValue })
@@ -79,32 +85,13 @@ class ChangeALPage extends Component {
                 </Picker>
                 <Text style={styles.textStyle}> </Text>
                 <Button onPress={this.save} title="Save" />
+            </ImageBackground>
             </View>
         )
     }
 }
 
-const styles = StyleSheet.create({
-    viewStyle: {
-        flex: 1,
-        backgroundColor: 'white',
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    textStyle: {
-        color: "black",
-        fontSize: 20,
-        marginBottom: 0,
-        justifyContent: 'center',
-    },
-    textStyleTitle: {
-        color: "black",
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 30,
-    },
-});
+
 
 const mapStateToProps = (state) => {
     const { user } = state

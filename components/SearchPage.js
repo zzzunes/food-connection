@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { AppRegistry, StyleSheet, Image, ImageBackground, Text, View, Button, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatList, TouchableHighlight } from 'react-native-gesture-handler';
-import Constants from 'expo-constants';
 import { connect } from 'react-redux';
+import styles from './frontendstyle';
+
+const image = (require('../assets/background.jpg'));
 
 class SearchPage extends Component {
     constructor(props) {
@@ -24,18 +26,18 @@ class SearchPage extends Component {
                 newFoods.push(item);
             }
         });
-        this.setState({foods: newFoods});
+        this.setState({ foods: newFoods });
     }
 
     FoodItem = ({ food }) => {
         return (
-            <TouchableHighlight activeOpacity = {1.0} underlayColor = "#DDAADD" onPress = {() => {
+            <TouchableHighlight activeOpacity={1.0} underlayColor="#000000" onPress={() => {
                 this.props.selectFood(food);
                 this.props.navigation.navigate("Food Page");
             }}>
-                <View style = {styles.foodItem}>
-                    <Text style = {styles.foodName}>{food.healthScore} - {food.name}</Text>
-                    <Text style = {styles.foodName}>{food.restaurant.name}</Text>
+                <View style={styles.foodItem}>
+                    <Text style={styles.foodName}>{food.healthScore} - {food.name}</Text>
+                    <Text style={styles.foodName}>{food.restaurant.name}</Text>
                 </View>
             </TouchableHighlight>
         );
@@ -43,57 +45,35 @@ class SearchPage extends Component {
 
     render() {
         return (
-            <View style={styles.viewStyle}>
-                <SearchBar
-                    round
-                    searchIcon = {{ size: 20 }}
-                    onChangeText={(text) => {
-                        this.setState({text: text});
-                        this.searchList();
-                    }}
-                    placeholder = "Search for a food..."
-                    value = {this.state.text}
-                    onKeyPress = {({ nativeEvent }) => {
-                        if (nativeEvent.key === 'Backspace') this.searchList();
-                    }}
-                />
-                <FlatList
-                    data = { this.state.foods }
-                    renderItem = {({ item }) => <this.FoodItem food = {item}/>}
-                    keyExtractor = {item => item._id }
-                />
-                <Button color="#CC5CFF" onPress={() =>
+            <View style={styles.container}>
+                <ImageBackground style={styles.backgroundImage} source={image}>
+                        <SearchBar
+                            style = {styles.align}
+                            round
+                            searchIcon={{ size: 20 }}
+                            onChangeText={(text) => {
+                                this.setState({ text: text });
+                                this.searchList();
+                            }}
+                            placeholder="Search for a food..."
+                            value={this.state.text}
+                            onKeyPress={({ nativeEvent }) => {
+                                if (nativeEvent.key === 'Backspace') this.searchList();
+                            }}
+                        />
+                    <FlatList
+                        data={this.state.foods}
+                        renderItem={({ item }) => <this.FoodItem food={item} />}
+                        keyExtractor={item => item._id}
+                    />
+                    <Button color="#CC5CFF" onPress={() =>
                         this.setState({ foods: this.props.foods.list })
-                } title="Reload Health Scores" />
+                    } title="Reload Health Scores" />
+                </ImageBackground>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    foodItem: {
-        backgroundColor: '#AA22AA',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 30,
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between"
-    },
-    foodName: {
-        fontSize: 20,
-        color: "white",
-    },
-    viewStyle: {
-      flex: 1,
-      backgroundColor: '#AA6688',
-      marginTop: Constants.statusBarHeight
-    },
-    textStyle: {
-      padding: 10,
-      color: "white",
-    },
-});
 
 const mapStateToProps = (state) => {
     const { user, foods } = state;
