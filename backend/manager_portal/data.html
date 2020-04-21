@@ -21,16 +21,16 @@ Demography: <br><br>
     </div><br><br>
     Age Range:
     <div>
-        <input type="text" name="min_age" id="min_age">
+        <label>min<input type="text" name="min_age" id="min_age"></label>
         to
-        <input type="text" name="min_age" id="max_age">
+        <label>max<input type="text" name="min_age" id="max_age"></label>
     </div><br><br>
 
     Gender:
     <div >
-        <label>male<input type="checkbox" name="black" id="male"></label>
-        <label>female<input type="checkbox" name="black" id="female"></label>
-        <label>non-binary<input type="checkbox" name="black" id="non_binary"></label>
+        <label>male<input type="checkbox" name="male" id="male"></label>
+        <label>female<input type="checkbox" name="female" id="female"></label>
+        <label>non-binary<input type="checkbox" name="non_binary" id="non_binary"></label>
     </div><br><br>
 
     Major:
@@ -41,51 +41,50 @@ Demography: <br><br>
         <label>Health Science<input type="checkbox" name="black" id="health_science"></label>
     </div><br><br>
 
-    <input type="submit" value="Submit" onclick="display()">
-    <label>name="kkk" id="kkk"></label>
+    <input type="submit" value="Submit" onclick="main()">
+    <label>Response<input type="text" name="kkk" id="kkk"></label>
 </body>
 <script type="text/javascript">
-    function getData(){
-        var jsonData;
-        fetch('http://192.168.1.103:5000/users/', {
+
+
+    /*Fetch data from DB
+    * returns array of User objects
+    * */
+    async function getData(){
+        var jsonData= await fetch('/users/', {
             method: 'GET',
             headers: {
-                'Content-Type': 'Application/json'
+                'Content-Type': 'application/json'
             }
-        }).then(res=>{jsonData=res})
-        .catch(err => {alert(JSON.message);});
-        alert(typeof(jsonData));
+        }).then(res=>res.json())
+            .then( json=> {return json;});
+        console.log("Data fetched.");
         return jsonData;
+    }//end getData()
 
-    }
-    function createElementsFromJSON(json, parent) {
-        alert(typeof json);
-        for (var i in json){
-            var object= json [i];
-            var obj = document.createElement(object.element);
 
-            for(var tag in object)
-                if (tag!="children"&&tag!="element")
-                    obj.setAttribute(tag, object[tag]);
+    /*Displays data
+    * prints: user data as: gender, age, race
+    * */
+    function display(data){
 
-            parent.appendChild(obj);
 
-            if (typeof(object.children)=="object")
-                createElementsFromJSON(object.children, obj)
+        for (let e=0;e<data.length; e++){
+            console.log(data[e].gender,data[e].age,data[e].race);
         }
-        alert(typeof object);
-        return object;
-    }
-    function display(){
-        //var response=Document.getElementById("kkk");
-        createElementsFromJSON(getData(),Document.body);
-        alert("display() finished");
-        //location.reload(true);
-    }
-    function selectedDemos(){
+
+
+    }//end display()
+
+
+    /*Collects user criterias from HTML input
+    * returns: an Array of criterias
+    * */
+    async function selectedDemos(){
+        var demos={};
         const male = document.getElementById("male");
         const female = document.getElementById("female");
-        const non_binary = document.getElementById("non-binary");
+        const non_binary = document.getElementById("non_binary");
         const black = document.getElementById("black");
         const white = document.getElementById("white");
         const asian = document.getElementById("asian");
@@ -98,18 +97,21 @@ Demography: <br><br>
             genders.push("Male");
         }
         if (female.checked){
-            genders.push("Male");
+            genders.push("Female");
         }
-        if (non_binary.checked){
-            genders.push("Male");
+        if (non_binary.checked) {
+            genders.push("Non-Binary");
         }
 
+        var key="genders";
+        demos[key]=genders;
+        console.log(demos.genders);
         var races=[];
         if (black.checked){
             races.push("Black");
         }
         if (white.checked){
-            races.push("");;
+            races.push("White");
         }
         if (asian.checked){
             races.push("Asian");
@@ -117,52 +119,86 @@ Demography: <br><br>
         if (hispanic.checked){
             races.push("Hispanic");
         }
+        key="races";
+        demos[key] = races;
 
-        var ageRange=[0,100]
-        if (min_age!=null){
+        var ageRange=[];
+        if (min_age!=undefined){
             ageRange[0]=min_age;
         }
-        if (max_age!=null){
+        if (max_age!=undefined){
             ageRange[1]=max_age;
         }
-        
+        key="ageRange";
+        demos[key] = ageRange;
+
+        return demos;
+    }//end selectedDemos()
+
+
+    /*filters data by demographic criteria
+    * Arguments: array of demo criterias, array of users
+    * returns: array of users that meet criterias.
+    *  */
+    function narrowData(demos,arrayData) {
+        var filteredData=[];
+        for(let e in arrayData) {
+
+            if (demos.genders != undefined) {
+                var gender= arrayData[e].gender;
+                if (demos.genders.find(function(element){return element == gender;})== undefined){
+                    /* TESTING TOOLS
+                    console.log("working so far: 2");
+                    console.log(arrayData[e].gender);
+                    delete(arrayData[e]);
+                    */
+                    continue;
+
+                }
+            }
+            if (demos.races != undefined ) {
+                var race= arrayData[e].race;
+                if (demos.races.find(function(element){return element == race;}) == undefined){
+                    /* TESTING TOOLS
+                    console.log("working so far: 2");
+                    //console.log(arrayData[e].gender);
+                    //delete(arrayData[e]);
+                    */
+                    continue;
+                }
+            }
+            if (demos.ageRange != undefined ) {
+                //console.log("working so far: 1");
+                var age= arrayData[e].age;
+                if (age<demos.ageRange[0] || age> demos.ageRange[1]){
+                    /* TESTING TOOLS
+                    console.log("working so far: 2");
+                    console.log(arrayData[e].gender);
+                    delete(arrayData[e]);
+                    */
+                    continue;
+                }
+            }
+           filteredData.push(arrayData[e]);
+
+
+        }
+        return filteredData;
+    }// end narrowData()
+
+    /* main method that runs onclick()*/
+    async function main() {
+        var Demos=await selectedDemos();
+        var fullData= await getData();
+
+
+        console.log("full Data:");
+        display(fullData);
+        var newSet=await narrowData(Demos,fullData);
+        console.log(newSet.length);
+        console.log("filtered Data:");
+        display(newSet);
     }
-    /*function narrowData() {
-        
-    } */
-    function narrowByRace(races) {
-
-    }
-    function narrowByAge() {
-
-    }
-    function narrowByGender() {
-
-    }
-    function narrowByMajor() {
-
-    }
-
-
-        /*const race=document.getElementById("race");
-const age=document.getElementById("age");
-const major=document.getElementById("major");
-
-while (race.checked){
-var raceOptions= document.createElement("input");
-raceOptions.type="checkbox";
-raceOptions.name="Black";
-raceOptions.value="value";
-raceOptions.id="id";
-
-var blackLabel= document.createElement("label");
-blackLabel.htmlFor="id";
-blackLabel.appendChild(document.createTextNode("Black"));
-
-race.appendChild(raceOptions);
-race.appendChild(blackLabel);
-
-*/
 
 </script>
 </html>
