@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert } from 'react-native';
-import Constants from 'expo-constants';
+import { AppRegistry, StyleSheet, Image, ImageBackground, Text, View, Button, Dimensions, Alert } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import styles from './frontendstyle';
 
-const {width,height} = Dimensions.get("window");
 const image = (require('../assets/background.jpg'));
 class SignupPage extends Component {
     constructor() {
@@ -24,14 +21,14 @@ class SignupPage extends Component {
     }
 
     getFoods = () => {
-        this.setState({isLoadingFoods: true});
-        fetch('http://192.168.1.204:5000/foods', {
+        this.setState({ isLoadingFoods: true });
+        fetch('http://192.168.1.116:5000/foods', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
         }).then(res => res.json()).then(json => {
-            this.setState({isLoadingFoods: false});
+            this.setState({ isLoadingFoods: false });
             if (json.result == 1) {
                 this.setState({
                     foodPrepared: true,
@@ -47,8 +44,8 @@ class SignupPage extends Component {
     }
 
     onSignUp = () => {
-        this.setState({isLoading: true});
-        fetch('http://192.168.1.204:5000/users/add', {
+        this.setState({ isLoading: true });
+        fetch('http://192.168.1.116:5000/users/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -102,56 +99,44 @@ class SignupPage extends Component {
         }
         return (
             <View style={styles.container}>
-                <ImageBackground style ={styles.backgroundImage} source={image} >
-                <View style = {styles.align}>
-                <Text style = {styles.signupLinkText}>
-                    Sign Up
+                <ImageBackground style={styles.backgroundImage} source={image} >
+                    <View style={styles.align}>
+                        <Text style={styles.signupLinkText}>
+                            Sign Up
                 </Text>
-                </View>
-                <View style={styles.wrapper}>
-                
-                <TextInput
-                    style={styles.input}
-                    placeholderTextColor="white"
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChangeText={text => { this.setState({username: text}) }}
-                />
-                </View>
-                <View style={styles.wrapper}>
-                <TextInput
-                    placeholderTextColor="white"
-                    style={styles.input}
-                    placeholder="Email"
-                    value={this.state.email}
-                    onChangeText={text => { this.setState({email: text}) }}
-                />
-                </View>
-                <View style={styles.wrapper}>
-                <TextInput
-                    style={styles.input}
-                    placeholderTextColor="white"
-                    
-                    placeholder="Password"
-                    value={this.state.password}
-                    onChangeText={text => { this.setState({password: text}) }}
-                    secureTextEntry
-                />
-                </View>
-                
-                
-                
-                    <Button onPress={this.onSignUp} title="Sign Up" style ={styles.button} fontSize = {20}/>
-                
-            </ImageBackground>
+                    </View>
+                    <View style={styles.wrapper}>
+                        <TextInput
+                            style={styles.input}
+                            placeholderTextColor="white"
+                            placeholder="Username"
+                            value={this.state.username}
+                            onChangeText={text => { this.setState({ username: text }) }}
+                        />
+                        <TextInput
+                            placeholderTextColor="white"
+                            style={styles.input}
+                            placeholder="Email"
+                            value={this.state.email}
+                            onChangeText={text => { this.setState({ email: text }) }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholderTextColor="white"
+                            placeholder="Password"
+                            value={this.state.password}
+                            onChangeText={text => { this.setState({ password: text }) }}
+                            secureTextEntry
+                        />
+                    </View>
+                    <View style = {styles.buttonContainerAlt}>
+                        <Button onPress={this.onSignUp} title="Sign Up" style={styles.button} fontSize={20} />
+                    </View>
+                </ImageBackground>
             </View>
         )
-    }  
+    }
 }
-	
-	
-	
-
 
 const mapStateToProps = (state) => {
     const { user } = state

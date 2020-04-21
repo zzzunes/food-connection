@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert } from 'react-native';
-import Constants from 'expo-constants';
 import { TextInput } from 'react-native-gesture-handler';
-import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import styles from '../frontendstyle';
 const image = (require('../../assets/background.jpg'));
-const {width,height} = Dimensions.get("window");
 
 class MajorQPage extends Component {
     constructor() {
@@ -23,7 +20,7 @@ class MajorQPage extends Component {
         this.setState({isLoading: true});
         const newUser = JSON.parse(JSON.stringify(this.props.user));
         newUser.major = this.state.newMajor;
-        fetch('http://192.168.1.204:5000/users/update', {
+        fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -79,14 +76,14 @@ class MajorQPage extends Component {
                     value={this.state.newMajor}
                     onChangeText={text => { this.setState({newMajor: text}) }}
                 />
-                <Button onPress={this.save} title="Save"/>
+                <View style = {styles.buttonContainerAlt}>
+                    <Button onPress={this.save} style={styles.button} title="Next" />
+                </View>
             </ImageBackground>
             </View>
         )
     }  
 }
-
-
 
 const mapStateToProps = (state) => {
     const { user } = state

@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import { AppRegistry,Picker,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert } from 'react-native';
-import Constants from 'expo-constants';
-import { TextInput } from 'react-native-gesture-handler';
-import { CommonActions } from '@react-navigation/native';
+import { AppRegistry, Picker, StyleSheet, Image, ImageBackground, Text, View, Button, Dimensions, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import styles from '../frontendstyle';
 const image = (require('../../assets/background.jpg'));
-const {width,height} = Dimensions.get("window");
 
 class ALQPage extends Component {
     constructor() {
@@ -22,7 +18,7 @@ class ALQPage extends Component {
         this.setState({ isLoading: true });
         const newUser = JSON.parse(JSON.stringify(this.props.user));
         newUser.activityLevel = this.state.newAL;
-        fetch('http://192.168.1.204:5000/users/update', {
+        fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -67,31 +63,31 @@ class ALQPage extends Component {
 
         return (
             <View style={styles.container}>
-                <ImageBackground style ={styles.backgroundImage} source={image} >
-                <Text style={styles.signupLinkText}>
-                    Set Activity Level
-                </Text>
+                <ImageBackground style={styles.backgroundImage} source={image} >
+                    <Text style={styles.signupLinkText}>
+                        Set Activity Level
+                    </Text>
+                    <Picker
+                        itemStyle={{ color: 'white' }}
+                        selectedValue={this.state.newAL}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.setState({ newAL: itemValue })
+                        }
+                        prompt="New Activity Level">
+                        <Picker.Item label="Sedentary" value="Sedentary" />
+                        <Picker.Item label="Low Active" value="Low" />
+                        <Picker.Item label="Active" value="Medium" />
+                        <Picker.Item label="Very Active" value="High" />
+                    </Picker>
 
-                <Picker
-                     itemStyle = {{color:'white'}}
-                    selectedValue={this.state.newAL}
-                    onValueChange={(itemValue, itemIndex) =>
-                        this.setState({ newAL: itemValue })
-                    }
-                    prompt = "New Activity Level">
-                    <Picker.Item label="Sedentary" value="Sedentary" />
-                    <Picker.Item label="Low Active" value="Low" />
-                    <Picker.Item label="Active" value="Medium" />
-                    <Picker.Item label="Very Active" value="High" />
-                </Picker>
-                <Button onPress={this.save} style = {styles.button} title="Save" />
-            </ImageBackground>
+                    <View style = {styles.buttonContainerAlt}>
+                        <Button onPress={this.save} style={styles.button} title="Next" />
+                    </View>
+                </ImageBackground>
             </View>
         )
     }
 }
-
-
 
 const mapStateToProps = (state) => {
     const { user } = state

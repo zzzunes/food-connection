@@ -22,7 +22,7 @@ class GenderQPage extends Component {
         this.setState({isLoading: true});
         const newUser = JSON.parse(JSON.stringify(this.props.user));
         newUser.gender = this.state.newGender;
-        fetch('http://192.168.1.204:5000/users/update', {
+        fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -82,14 +82,14 @@ class GenderQPage extends Component {
                     <Picker.Item label="Non-Binary" value="Non-Binary" />
                     <Picker.Item label="Male" value="Male" />
                 </Picker>
-                <Button onPress={this.save} title="Save"/>
+                <View style = {styles.buttonContainerAlt}>
+                    <Button onPress={this.save} style={styles.button} title="Next" />
+                </View>
             </ImageBackground>
             </View>
         )
     }  
 }
-
-
 
 const mapStateToProps = (state) => {
     const { user } = state

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity } from 'react-native';
-import Constants from 'expo-constants';
+import { AppRegistry, StyleSheet, Image, ImageBackground, Text, View, Button, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
@@ -8,7 +7,6 @@ import HealthScoreCalculator from '../tools/HealthScoreCalculator';
 import styles from './frontendstyle';
 
 const image = (require('../assets/background.jpg'));
-const {width,height} = Dimensions.get("window");
 
 class LoginPage extends Component {
     constructor(props) {
@@ -31,7 +29,7 @@ class LoginPage extends Component {
 
     getFoods = () => {
         this.setState({ isLoadingFoods: true });
-        fetch('http://192.168.1.204:5000/foods', {
+        fetch('http://192.168.1.116:5000/foods', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,7 +64,7 @@ class LoginPage extends Component {
 
     onLogin = () => {
         this.setState({ isLoading: true });
-        fetch('http://192.168.1.204:5000/users/login', {
+        fetch('http://192.168.1.116:5000/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -118,39 +116,35 @@ class LoginPage extends Component {
 
         return (
             <View style={styles.container}>
-                <ImageBackground style ={styles.backgroundImage} source={image} >
-                <Text style={styles.signupLinkText}>
-                    Login
-                </Text>
-                <View style={styles.wrapper}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Username"
-                    placeholderTextColor="white"
-                    value={this.state.username}
-                    onChangeText={text => { this.setState({ username: text }) }}
-                />
-                </View>
-                <View style={styles.wrapper}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    placeholderTextColor="white"
-                    onChangeText={text => { this.setState({ password: text }) }}
-                    value={this.state.password}
-                    secureTextEntry
-                />
-                </View>
-                
-                <Button onPress={this.onLogin} title="Login" style = {styles.button} />
-            </ImageBackground>
+                <ImageBackground style={styles.backgroundImage} source={image} >
+                    <Text style={styles.signupLinkText}>
+                        Login
+                    </Text>
+                    <View style={styles.wrapper}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Username"
+                            placeholderTextColor="white"
+                            value={this.state.username}
+                            onChangeText={text => { this.setState({ username: text }) }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            placeholderTextColor="white"
+                            onChangeText={text => { this.setState({ password: text }) }}
+                            value={this.state.password}
+                            secureTextEntry
+                        />
+                    </View>
+                    <View style = {styles.buttonContainerAlt}>
+                        <Button onPress={this.onLogin} title="Login" style={styles.button} />
+                    </View>
+                </ImageBackground>
             </View>
-        
         );
     }
 }
-
-
 
 const mapStateToProps = (state) => {
     return {

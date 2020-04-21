@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Linking, AppRegistry,StyleSheet,Image, ImageBackground, Text, View, Button,Dimensions, Alert,TouchableOpacity } from 'react-native';
+import { Linking, AppRegistry, StyleSheet, Image, ImageBackground, Text, View, Button, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import HealthScoreCalculator from '../tools/HealthScoreCalculator';
 import styles from './frontendstyle';
 
-const {width,height} = Dimensions.get("window");
 const image = (require('../assets/background.jpg'));
 
 class FoodPage extends Component {
@@ -24,7 +23,7 @@ class FoodPage extends Component {
 
     save = () => {
         this.setState({ isLoading: true });
-        fetch('http://192.168.1.204:5000/users/update', {
+        fetch('http://192.168.1.116:5000/users/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,65 +55,63 @@ class FoodPage extends Component {
 
         return (
             <View style={styles.container}>
-                <Text style={{width:'100%', paddingTop:40,paddingBottom:15,backgroundColor:'lightgreen',justifyContent:'center',fontSize:20,textAlign:'center'}}>Additional Info </Text>
+                <Text style={{ width: '100%', paddingTop: 40, paddingBottom: 15, backgroundColor: 'lightgreen', justifyContent: 'center', fontSize: 20, textAlign: 'center' }}>Additional Info </Text>
 
-                <ImageBackground style= {styles.backgroundImage} source= {image}>
-                <View style={styles.textContainer3}>
-                    <Text style={styles.restaurantStyle3}>
-                        {this.props.global.selectedFood.restaurant.name} - {this.props.global.selectedFood.restaurant.location}
+                <ImageBackground style={styles.backgroundImage} source={image}>
+                    <View style={styles.textContainer3}>
+                        <Text style={styles.restaurantStyle3}>
+                            {this.props.global.selectedFood.restaurant.name} - {this.props.global.selectedFood.restaurant.location}
+                        </Text>
+                    </View>
+                    <View style={styles.textContainer3}>
+                        <Text style={styles.textStyle3}>
+                            {this.props.global.selectedFood.name} - ${this.props.global.selectedFood.price}
+                        </Text>
+                    </View>
+                    <View style={styles.textContainer3}>
+                        <Text style={styles.textStyle3}>
+                            Health Score: {this.props.global.selectedFood.healthScore}
+                        </Text>
+                        <Text style={styles.textStyle3}>
+                            Calories: {this.props.global.selectedFood.calories}
+                        </Text>
+                    </View>
+                    <View style={styles.textContainer3}>
+                        <Text style={styles.textStyle3}>
+                            Fat: {this.props.global.selectedFood.fat}g
                     </Text>
-                </View>
-                <View style={styles.textContainer3}>
-                    <Text style={styles.textStyle3}>
-                        {this.props.global.selectedFood.name} - ${this.props.global.selectedFood.price}
+                        <Text style={styles.textStyle3}>
+                            Carbs: {this.props.global.selectedFood.carbs}g
                     </Text>
-                </View>
-                <View style={styles.textContainer3}>
-                    <Text style={styles.textStyle3}>
-                        Health Score: {this.props.global.selectedFood.healthScore}
+                        <Text style={styles.textStyle3}>
+                            Protein: {this.props.global.selectedFood.protein}g
                     </Text>
-                    <Text style={styles.textStyle3}>
-                        Calories: {this.props.global.selectedFood.calories}
+                    </View>
+                    <View style={styles.textContainer3}>
+                        <Text style={styles.textStyle3}>
+                            Fiber: {this.props.global.selectedFood.fiber}g
                     </Text>
-                </View>
-                <View style={styles.textContainer3}>
-                    <Text style={styles.textStyle3}>
-                        Fat: {this.props.global.selectedFood.fat}g
-                    </Text>
-                    <Text style={styles.textStyle3}>
-                        Carbs: {this.props.global.selectedFood.carbs}g
-                    </Text>
-                    <Text style={styles.textStyle3}>
-                        Protein: {this.props.global.selectedFood.protein}g
-                    </Text>
-                </View>
-                <View style={styles.textContainer3}>
-                    <Text style={styles.textStyle3}>
-                        Fiber: {this.props.global.selectedFood.fiber}g
-                    </Text>
-                    <Text style={styles.textStyle3}>
-                        Added Sugars: {this.props.global.selectedFood.addedSugar ? "Yes" : "No"}
-                    </Text>
-                </View>
-                <View style={styles.button}>
-                    <Button  onPress={() => {
-                        this.props.logFood({ food: this.props.global.selectedFood, time: Date.now() });
-                        this.setHealthScores();
-                        this.save();
-                    }} title="Log Food as Consumed" />
-                </View>
-                <View style={styles.button}>
-                    <Button  onPress={() =>
-                        Linking.openURL(`https://maps.google.com/?q=` + this.props.global.selectedFood.restaurant.location)
-                    } title="Click here to Navigate" />
-                </View>
-            </ImageBackground>
+                        <Text style={styles.textStyle3}>
+                            Added Sugars: {this.props.global.selectedFood.addedSugar ? "Yes" : "No"}
+                        </Text>
+                    </View>
+                    <View style={styles.button}>
+                        <Button onPress={() => {
+                            this.props.logFood({ food: this.props.global.selectedFood, time: Date.now() });
+                            this.setHealthScores();
+                            this.save();
+                        }} title="Log Food as Consumed" />
+                    </View>
+                    <View style={styles.button}>
+                        <Button onPress={() =>
+                            Linking.openURL(`https://maps.google.com/?q=` + this.props.global.selectedFood.restaurant.location)
+                        } title="Click here to Navigate" />
+                    </View>
+                </ImageBackground>
             </View>
         )
     }
 }
-
-
 
 const mapStateToProps = (state) => {
     const { user, global, foods } = state;
