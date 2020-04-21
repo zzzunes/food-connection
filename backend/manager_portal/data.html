@@ -9,29 +9,35 @@
 </head>
 <h1> Enter the New Food: </h1>
 <body>
-Demography: <br><br>
+    Demography: <br><br>
+        <div>
+        <label> All Users<input type="checkbox" name="allUsers" id="nuts"></label><br><br>
+        Race:
 
-    <label> All Users<input type="checkbox" name="allUsers" id="nuts"></label><br><br>
-    Race:
-    <div>
-        <label>black<input type="checkbox" name="black" value= "" id="black"></label>
-        <label>white<input type="checkbox" name="white" id="white"></label>
-        <label>asian<input type="checkbox" name="asian" id="asian"></label>
-        <label>hispanic<input type="checkbox" name="hispanic" id="hispanic"></label>
-    </div><br><br>
-    Age Range:
-    <div>
-        <label>min<input type="text" name="min_age" id="min_age"></label>
-        to
-        <label>max<input type="text" name="min_age" id="max_age"></label>
-    </div><br><br>
+            <label>black<input type="checkbox" name="black" value= "" id="black"></label>
+            <label>white<input type="checkbox" name="white" id="white"></label>
+            <label>asian<input type="checkbox" name="asian" id="asian"></label>
+            <label>hispanic<input type="checkbox" name="hispanic" id="hispanic"></label>
+        <br><br>
+        Age Range:
 
-    Gender:
-    <div >
-        <label>male<input type="checkbox" name="male" id="male"></label>
-        <label>female<input type="checkbox" name="female" id="female"></label>
-        <label>non-binary<input type="checkbox" name="non_binary" id="non_binary"></label>
-    </div><br><br>
+            <label>min<input type="number" name="min_age" id="min_age" value="0" min="1" max="100"></label>
+            <label>max<input type="number" name="min_age" id="max_age" value="100" min="1" max="100"></label>
+        <br><br>
+
+        Gender:
+
+            <label>male<input type="checkbox" name="male" id="male"></label>
+            <label>female<input type="checkbox" name="female" id="female"></label>
+            <label>non-binary<input type="checkbox" name="non_binary" id="non_binary"></label>
+        <br><br>
+    </div>
+    <!-- FOR FUTURE IMPLEMENTATION
+    <div>
+        Date:
+        <label> since: <input type="date" name="date_range_num" id="date_range_num" > </label>
+
+    </div>>
 
     Major:
     <div>
@@ -40,9 +46,9 @@ Demography: <br><br>
         <label>Liberal Arts<input type="checkbox" name="black" id="liberal_arts"></label>
         <label>Health Science<input type="checkbox" name="black" id="health_science"></label>
     </div><br><br>
-
-    <input type="submit" value="Submit" onclick="main()">
-    <label>Response<input type="text" name="kkk" id="kkk"></label>
+    FOR FUTURE IMPLEMENTATION-->
+    <input type="submit" value="Average Nutrients per Meal" onclick="perMeal()">
+    <input type="submit" value="Show Raw Data" >
 </body>
 <script type="text/javascript">
 
@@ -68,12 +74,9 @@ Demography: <br><br>
     * */
     function display(data){
 
-
         for (let e=0;e<data.length; e++){
             console.log(data[e].gender,data[e].age,data[e].race);
         }
-
-
     }//end display()
 
 
@@ -102,10 +105,9 @@ Demography: <br><br>
         if (non_binary.checked) {
             genders.push("Non-Binary");
         }
-
         var key="genders";
         demos[key]=genders;
-        console.log(demos.genders);
+
         var races=[];
         if (black.checked){
             races.push("Black");
@@ -123,12 +125,11 @@ Demography: <br><br>
         demos[key] = races;
 
         var ageRange=[];
-        if (min_age!=undefined){
-            ageRange[0]=min_age;
-        }
-        if (max_age!=undefined){
-            ageRange[1]=max_age;
-        }
+        ageRange[0]=min_age.value;
+        if(ageRange[0]=="") ageRange[0]=min_age.defaultValue;
+        ageRange[1]=max_age.value;
+        if(ageRange[1]=="") ageRange[1]=max_age.defaultValue;
+        //console.log(ageRange[0],ageRange[1]);
         key="ageRange";
         demos[key] = ageRange;
 
@@ -143,61 +144,76 @@ Demography: <br><br>
     function narrowData(demos,arrayData) {
         var filteredData=[];
         for(let e in arrayData) {
-
-            if (demos.genders != undefined) {
+            //console.log(demos.genders[0]);
+            if (demos.genders[0] != undefined) {
                 var gender= arrayData[e].gender;
                 if (demos.genders.find(function(element){return element == gender;})== undefined){
-                    /* TESTING TOOLS
-                    console.log("working so far: 2");
-                    console.log(arrayData[e].gender);
-                    delete(arrayData[e]);
-                    */
                     continue;
 
                 }
             }
-            if (demos.races != undefined ) {
+            //console.log(demos.races[0]);
+            if (demos.races[0] != undefined ) {
                 var race= arrayData[e].race;
                 if (demos.races.find(function(element){return element == race;}) == undefined){
-                    /* TESTING TOOLS
-                    console.log("working so far: 2");
-                    //console.log(arrayData[e].gender);
-                    //delete(arrayData[e]);
-                    */
                     continue;
                 }
             }
-            if (demos.ageRange != undefined ) {
-                //console.log("working so far: 1");
+            if (demos.ageRange[0] != 0 || demos.ageRange[1] != 100) {
                 var age= arrayData[e].age;
                 if (age<demos.ageRange[0] || age> demos.ageRange[1]){
-                    /* TESTING TOOLS
-                    console.log("working so far: 2");
-                    console.log(arrayData[e].gender);
-                    delete(arrayData[e]);
-                    */
                     continue;
                 }
             }
            filteredData.push(arrayData[e]);
-
-
         }
         return filteredData;
     }// end narrowData()
 
+    function getStatsPerMeal(userArray,option=0){
+        var microNutes=["calories","carbs","fat","protein"];
+        var populationMicroNutesPm;
+        var userCount=0;
+
+        var userMicroNutesPMeal=[];
+        for (let u in userArray){
+            var userTotals=[0,0,0,0]; //[calories,carbs,fat,protein]
+            let mealCount=0;
+            if (typeof userArray[u].foodHistory[0]=="undefined") continue;
+            else {
+                for (let f in userArray[u].foodHistory) {
+                    userTotals[0] += userArray[u].foodHistory[f].food.calories;
+                    userTotals[1] += userArray[u].foodHistory[f].food.carbs;
+                    userTotals[2] += userArray[u].foodHistory[f].food.fat;
+                    userTotals[3] += userArray[u].foodHistory[f].food.protein;
+                    mealCount++;
+                }
+                userMicroNutesPMeal.push({[microNutes[0]]:userTotals[0]/mealCount,[microNutes[1]]:userTotals[1]/mealCount,[microNutes[2]]:userTotals[2]/mealCount,[microNutes[3]]:userTotals[3]/mealCount});
+                userCount++;
+            }
+
+        }
+        var populationTots=[0,0,0,0];  //[calories,carbs,fat,protein]
+        for (let e in userMicroNutesPMeal){
+            populationTots[0] += userMicroNutesPMeal[e].calories;
+            populationTots[1] += userMicroNutesPMeal[e].carbs;
+            populationTots[2] += userMicroNutesPMeal[e].fat;
+            populationTots[3] += userMicroNutesPMeal[e].protein;
+        }
+        populationMicroNutesPm={[microNutes[0]]:(populationTots[0]/userCount).toPrecision(3),[microNutes[1]]:(populationTots[1]/userCount).toPrecision(3),[microNutes[2]]:(populationTots[2]/userCount).toPrecision(3),[microNutes[3]]:(populationTots[3]/userCount).toPrecision(3)};
+        if (option===0) return populationMicroNutesPm;
+        else return userMicroNutesPMeal;
+    }
+
+
     /* main method that runs onclick()*/
-    async function main() {
+    async function perMeal() {
         var Demos=await selectedDemos();
         var fullData= await getData();
-
-
-        console.log("full Data:");
-        display(fullData);
         var newSet=await narrowData(Demos,fullData);
-        console.log(newSet.length);
-        console.log("filtered Data:");
-        display(newSet);
+        var stats=getStatsPerMeal(newSet);
+        alert("(Per Meal) Avg Calories: "+ stats.calories +" Avg Carbs: "+ stats.carbs +" Avg Fat: "+ stats.fat +" Avg Protein: "+ stats.protein);
+
     }
 
 </script>
