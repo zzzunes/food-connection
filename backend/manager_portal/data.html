@@ -7,31 +7,60 @@
     <title>User Data</title>
 
 </head>
-<h1> Enter the New Food: </h1>
 <body>
-    Demography: <br><br>
+<h1> User Data Statistics</h1>
+    Choose all the criteria of users to be used in calculation of statistics: <br><br>
         <div>
-        <label> All Users<input type="checkbox" name="allUsers" id="nuts"></label><br><br>
-        Race:
+        If no selection is made, result will reflect all users in the database.<br><br><br>
 
-            <label>black<input type="checkbox" name="black" value= "" id="black"></label>
-            <label>white<input type="checkbox" name="white" id="white"></label>
-            <label>asian<input type="checkbox" name="asian" id="asian"></label>
-            <label>hispanic<input type="checkbox" name="hispanic" id="hispanic"></label>
+            <div class="checkboxes" >
+                Gender:
+                <label style="padding-left: 30px">male<input type="checkbox" name="male" id="male"></label>
+                <label>female<input type="checkbox" name="female" id="female"></label>
+                <label>non-binary<input type="checkbox" name="non_binary" id="non_binary"></label>
+                <br><br>
+            </div>
+
+            <div class="checkboxes">
+                Race:
+                <label style="padding-left: 30px">Black<input type="checkbox" name="black" value= "" id="black"></label>
+                <label>White<input type="checkbox" name="white" id="white"></label>
+                <label>Asian<input type="checkbox" name="asian" id="asian"></label>
+                <label>Native American<input type="checkbox" name="native_am" id="native_am"></label>
+                <label>Native Hawaiian<input type="checkbox" name="native_haw" id="native_haw"></label>
+                <label>Other<input type="checkbox" name="other" id="other"></label>
+            </div>
         <br><br>
+
         Age Range:
 
-            <label>min<input type="number" name="min_age" id="min_age" value="0" min="1" max="100"></label>
-            <label>max<input type="number" name="min_age" id="max_age" value="100" min="1" max="100"></label>
+            <label style="padding-left: 30px ">min<input type="number" name="min_age" id="min_age" value="18" min="1" max="100"></label>
+            <label style="display: inline-block">max<input type="number" name="min_age" id="max_age" value="25" min="1" max="100"></label>
         <br><br>
 
-        Gender:
+        Weight:
+            <label style="padding-left: 30px ">min<input type="number" name="min_weight" id="min_weight" value="100" min="1" max="1000"></label>
+            <label style="display: inline-block">max<input type="number" name="max_weight" id="max_weight" value="250" min="1" max="12"></label>
+            <br><br>
 
-            <label>male<input type="checkbox" name="male" id="male"></label>
-            <label>female<input type="checkbox" name="female" id="female"></label>
-            <label>non-binary<input type="checkbox" name="non_binary" id="non_binary"></label>
+        Height:
+            <label style="padding-left: 30px ">min<input type="number" name="min_height" id="min_height" value="0" min="1" max="100"></label>
+            <label style="display: inline-block">max<input type="number" name="min_height" id="max_height" value="100" min="1" max="100"></label>
+            <br><br>
+
+
+            <div class="checkboxes">
+                Activity level:
+                <label style="padding-left: 30px">Sedentary<input type="checkbox" name="sedentary" id="sedentary"></label>
+                <label>Active (Low)<input type="checkbox" name="active_low" id="active_low"></label>
+                <label>Active (Medium)<input type="checkbox" name="active_med" id="active_med"></label>
+                <label>Active (High)<input type="checkbox" name="active_hi" id="active_hi"></label>
+                </div>
         <br><br>
-    </div>
+
+
+
+        </div>
     <!-- FOR FUTURE IMPLEMENTATION
     <div>
         Date:
@@ -52,7 +81,19 @@
 </body>
 <script type="text/javascript">
 
-
+    $( "body" ).on( "change", ".checkbox-inline > input[type=checkbox]", function() {
+        if ($(this).hasClass("any")) { //Any checkbox tick
+            if ($(this).prop("checked")) { //User checked any
+                //Other checkboxes are unchecked
+                $(".checkbox-inline > input[type=checkbox][name=" + $(this).attr("name") + "]:not(.any)").prop("checked", false)
+            }
+        } else { //Other checkbox tick
+            if ($(this).prop("checked")) {//User checked another checkbox
+                //Any checkbox is unchecked
+                $("[name=" + $(this).attr("name") + "].any").prop("checked", false);
+            }
+        }
+    });
     /*Fetch data from DB
     * returns array of User objects
     * */
@@ -217,4 +258,21 @@
     }
 
 </script>
+<style>
+    label, input {
+        display: inline-block;
+        padding-left: 10px;
+        text-wrap: avoid;
+    }
+    label {
+        margin-bottom: 20px;
+        color: white;
+    }
+    body {
+        background-color: #2d2d2d;
+        color: white;
+    }
+
+
+</style>
 </html>
