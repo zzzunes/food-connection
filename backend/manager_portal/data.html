@@ -81,19 +81,7 @@
 </body>
 <script type="text/javascript">
 
-    $( "body" ).on( "change", ".checkbox-inline > input[type=checkbox]", function() {
-        if ($(this).hasClass("any")) { //Any checkbox tick
-            if ($(this).prop("checked")) { //User checked any
-                //Other checkboxes are unchecked
-                $(".checkbox-inline > input[type=checkbox][name=" + $(this).attr("name") + "]:not(.any)").prop("checked", false)
-            }
-        } else { //Other checkbox tick
-            if ($(this).prop("checked")) {//User checked another checkbox
-                //Any checkbox is unchecked
-                $("[name=" + $(this).attr("name") + "].any").prop("checked", false);
-            }
-        }
-    });
+
     /*Fetch data from DB
     * returns array of User objects
     * */
@@ -116,7 +104,7 @@
     function display(data){
 
         for (let e=0;e<data.length; e++){
-            console.log(data[e].gender,data[e].age,data[e].race);
+            console.log(data[e].gender,data[e].age,data[e].race, data[e].activityLevel, data[e].height, data[e].weight);
         }
     }//end display()
 
@@ -132,10 +120,19 @@
         const black = document.getElementById("black");
         const white = document.getElementById("white");
         const asian = document.getElementById("asian");
-        const hispanic = document.getElementById("hispanic");
+        const natAmerican = document.getElementById("native_am");
+        const natHawaiian = document.getElementById("native_haw");
         const min_age = document.getElementById("min_age");
         const max_age = document.getElementById("max_age");
-        
+        const min_weight = document.getElementById("min_weight").value;
+        const max_weight = document.getElementById("max_weight").value;
+        const min_height = document.getElementById("min_height").value;
+        const max_height = document.getElementById("max_height").value;
+        const sedentary=document.getElementById("sedentary");
+        const act_low=document.getElementById("active_low");
+        const act_med=document.getElementById("active_med");
+        const act_high=document.getElementById("active_hi");
+
         var genders=[];
         if (male.checked){
             genders.push("Male");
@@ -159,7 +156,10 @@
         if (asian.checked){
             races.push("Asian");
         }
-        if (hispanic.checked){
+        if (natAmerican.checked){
+            races.push("Hispanic");
+        }
+        if (natHawaiian.checked){
             races.push("Hispanic");
         }
         key="races";
@@ -173,6 +173,40 @@
         //console.log(ageRange[0],ageRange[1]);
         key="ageRange";
         demos[key] = ageRange;
+
+        var weightRange=[];
+        weightRange[0]=min_weight.value;
+        if(weightRange[0]=="") weightRange[0]=min_age.defaultValue;
+        weightRange[1]=max_weight.value;
+        if(weightRange[1]=="") weightRange[1]=max_age.defaultValue;
+        //console.log(ageRange[0],ageRange[1]);
+        key="weightRange";
+        demos[key] = weightRange;
+
+        var heightRange=[];
+        heightRange[0]=min_height.value;
+        if(heightRange[0]=="") heightRange[0]=min_height.defaultValue;
+        heightRange[1]=max_height.value;
+        if(heightRange[1]=="") heightRange[1]=max_height.defaultValue;
+        //console.log(ageRange[0],ageRange[1]);
+        key="heightRange";
+        demos[key] = heightRange;
+
+        var actLevels=[]
+        if (sedentary.checked){
+            actLevels.push("Sedentary");
+        }
+        if (act_low.checked){
+            actLevels.push("Low");
+        }
+        if (act_med.checked){
+            actLevels.push("Medium");
+        }
+        if (act_low.checked){
+            actLevels.push("High");
+        }
+        key="activity";
+        demos[key] = actLevels;
 
         return demos;
     }//end selectedDemos()
@@ -200,6 +234,13 @@
                     continue;
                 }
             }
+            if (demos.activity[0] != undefined ) {
+                var activityLevel= arrayData[e].activityLevel;
+                if (demos.activity.find(function(element){return element == activityLevel;}) == undefined){
+                    continue;
+                }
+            }
+
             if (demos.ageRange[0] != 0 || demos.ageRange[1] != 100) {
                 var age= arrayData[e].age;
                 if (age<demos.ageRange[0] || age> demos.ageRange[1]){
@@ -252,8 +293,13 @@
         var Demos=await selectedDemos();
         var fullData= await getData();
         var newSet=await narrowData(Demos,fullData);
+        console.log("ALL USERS (",fullData.length,") users:");
+        display(fullData);
+        console.log("FILTERED USERS (",newSet.length,") users:");
+        display(newSet);
         var stats=getStatsPerMeal(newSet);
         alert("(Per Meal) Avg Calories: "+ stats.calories +" Avg Carbs: "+ stats.carbs +" Avg Fat: "+ stats.fat +" Avg Protein: "+ stats.protein);
+
 
     }
 
