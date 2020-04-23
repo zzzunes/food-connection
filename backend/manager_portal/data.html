@@ -39,8 +39,8 @@
         <br><br>
 
         Weight:
-            <label style="padding-left: 30px ">min<input type="number" name="min_weight" id="min_weight" value="100" min="1" max="1000"></label>
-            <label style="display: inline-block">max<input type="number" name="max_weight" id="max_weight" value="250" min="1" max="12"></label>
+            <label style="padding-left: 30px ">min<input type="number" name="min_weight" id="min_weight" value="1"  min="1" max="1000"></label>
+            <label style="display: inline-block">max<input type="number" name="max_weight" id="max_weight" value="500"  min="1" max="500"></label>
             <br><br>
 
         Height:
@@ -61,6 +61,10 @@
 
 
         </div>
+
+
+        <input type="submit" value="Average Nutrients per Meal" onclick="perMeal()">
+        <input type="submit" value="Show Raw Data" onclick="showRaw()" >
     <!-- FOR FUTURE IMPLEMENTATION
     <div>
         Date:
@@ -76,8 +80,7 @@
         <label>Health Science<input type="checkbox" name="black" id="health_science"></label>
     </div><br><br>
     FOR FUTURE IMPLEMENTATION-->
-    <input type="submit" value="Average Nutrients per Meal" onclick="perMeal()">
-    <input type="submit" value="Show Raw Data" >
+
 </body>
 <script type="text/javascript">
 
@@ -94,17 +97,17 @@
         }).then(res=>res.json())
             .then( json=> {return json;});
         console.log("Data fetched.");
-        return jsonData;
+        return jsonData; //Array of users
     }//end getData()
 
 
     /*Displays data
-    * prints: user data as: gender, age, race
+    * prints: user data as: gender, age, race, height, weight activity level.
     * */
     function display(data){
 
         for (let e=0;e<data.length; e++){
-            console.log(data[e].gender,data[e].age,data[e].race, data[e].activityLevel, data[e].height, data[e].weight);
+            console.log(data[e].gender,data[e].age,data[e].race, data[e].height, data[e].weight, data[e].activityLevel);
         }
     }//end display()
 
@@ -122,8 +125,8 @@
         const asian = document.getElementById("asian");
         const natAmerican = document.getElementById("native_am");
         const natHawaiian = document.getElementById("native_haw");
-        const min_age = document.getElementById("min_age");
-        const max_age = document.getElementById("max_age");
+        const min_age = document.getElementById("min_age").value;
+        const max_age = document.getElementById("max_age").value;
         const min_weight = document.getElementById("min_weight").value;
         const max_weight = document.getElementById("max_weight").value;
         const min_height = document.getElementById("min_height").value;
@@ -132,6 +135,7 @@
         const act_low=document.getElementById("active_low");
         const act_med=document.getElementById("active_med");
         const act_high=document.getElementById("active_hi");
+
 
         var genders=[];
         if (male.checked){
@@ -165,32 +169,38 @@
         key="races";
         demos[key] = races;
 
+       // var numInputs=[];//Used to check number input compliance.
+
         var ageRange=[];
-        ageRange[0]=min_age.value;
-        if(ageRange[0]=="") ageRange[0]=min_age.defaultValue;
-        ageRange[1]=max_age.value;
+        ageRange[0]=min_age;
+        if(typeof min_age=="") ageRange[0]=min_age.defaultValue;
+        ageRange[1]=max_age;
         if(ageRange[1]=="") ageRange[1]=max_age.defaultValue;
         //console.log(ageRange[0],ageRange[1]);
         key="ageRange";
         demos[key] = ageRange;
+        //numInputs.push(ageRange);
 
         var weightRange=[];
-        weightRange[0]=min_weight.value;
-        if(weightRange[0]=="") weightRange[0]=min_age.defaultValue;
-        weightRange[1]=max_weight.value;
+        weightRange[0]=min_weight;
+        if(typeof min_weight=="") weightRange[0]=min_age.defaultValue;
+        weightRange[1]=max_weight;
         if(weightRange[1]=="") weightRange[1]=max_age.defaultValue;
         //console.log(ageRange[0],ageRange[1]);
         key="weightRange";
         demos[key] = weightRange;
+        //numInputs.push(weightRange);
+        //console.log(weightRange);
 
         var heightRange=[];
-        heightRange[0]=min_height.value;
+        heightRange[0]=min_height;
         if(heightRange[0]=="") heightRange[0]=min_height.defaultValue;
-        heightRange[1]=max_height.value;
+        heightRange[1]=max_height;
         if(heightRange[1]=="") heightRange[1]=max_height.defaultValue;
-        //console.log(ageRange[0],ageRange[1]);
         key="heightRange";
         demos[key] = heightRange;
+
+
 
         var actLevels=[]
         if (sedentary.checked){
@@ -202,7 +212,7 @@
         if (act_med.checked){
             actLevels.push("Medium");
         }
-        if (act_low.checked){
+        if (act_high.checked){
             actLevels.push("High");
         }
         key="activity";
@@ -244,6 +254,18 @@
             if (demos.ageRange[0] != 0 || demos.ageRange[1] != 100) {
                 var age= arrayData[e].age;
                 if (age<demos.ageRange[0] || age> demos.ageRange[1]){
+                    continue;
+                }
+            }
+            if (demos.weightRange[0] != 0 || demos.weightRange[1] != 100) {
+                var age= arrayData[e].weight;
+                if (age<demos.weightRange[0] || age> demos.weightRange[1]){
+                    continue;
+                }
+            }
+            if (demos.heightRange[0] != 0 || demos.heightRange[1] != 100) {
+                var age= arrayData[e].height;
+                if (age<demos.heightRange[0] || age> demos.heightRange[1]){
                     continue;
                 }
             }
@@ -300,6 +322,18 @@
         var stats=getStatsPerMeal(newSet);
         alert("(Per Meal) Avg Calories: "+ stats.calories +" Avg Carbs: "+ stats.carbs +" Avg Fat: "+ stats.fat +" Avg Protein: "+ stats.protein);
 
+
+    }
+    async function showRaw(){
+        var Demos=await selectedDemos();
+        var fullData= await getData();
+        var newSet=await narrowData(Demos,fullData);
+        var stats=await getStatsPerMeal(newSet,1);
+        var viewable=[]
+        for (let e=0;e<newSet.length; e++){
+            viewable.push(String(newSet[e].username),String(newSet[e].gender),String(newSet[e].age),String(newSet[e].race), String(newSet[e].height), String(newSet[e].weight), String(newSet[e].activityLevel),"\n");
+        }
+        alert(viewable);
 
     }
 
