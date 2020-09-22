@@ -9,6 +9,8 @@ npm-debug.*
 *.orig.*
 web-build/
 web-report/
+backend/.env
 
 # macOS
 .DS_Store
+todo.txt
