@@ -18,7 +18,7 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
     const user = req.body;
-    if (exists(user)) return res.status(400).json({ result: 0, message: "Error: User cannot be null." });
+    if (!exists(user)) return res.status(400).json({ result: 0, message: "Error: User cannot be null." });
     const newUser = new User(user);
     if (newUser.password.length < passwordMinimum) {
         return res.status(400).json({ result: 0, message: "Error: Password length must be at least 6 characters." });
