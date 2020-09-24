@@ -22,20 +22,11 @@ $ npm start
 
 This will run the nodemon (nodemonitor) which adjusts to live changes in the backend. You should see a message similar to `Server is running on port: XXXX`.
 
-
-# Contributing to Food Connection
-
-In order for your contribution to be accepted, please respect the following guidelines:
-
-    - No business logic in React components
-    - Make sure any existing tests pass
-
-
 # Testing the application using Expo
 
 Before you can run expo for the first time, you must first install it using npm:
 ```
-# npm install -g expo expo-cli
+# npm install -g expo-cli
 ```
 To run the application and test it on your phone, first install the Expo app from the Google Play Store / iOS store.
 Then, run `npm start` while in the `food-connection` directory. This will bring up and host an expo server locally. At this point, it will provide a QR
